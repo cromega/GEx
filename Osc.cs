@@ -30,7 +30,7 @@ namespace chirpcore {
         public static double[] GenerateSineTable() {
             var table = new double[LOOKUP_TABLE_LENGTH];
             for (int i=0; i<table.Length; i++) {
-                table[i] = Math.Sin((Math.PI * 2 * i / 1000));
+                table[i] = Math.Sin((Math.PI * 2 * i / LOOKUP_TABLE_LENGTH));
             }
             return table;
         }
