@@ -20,7 +20,9 @@ namespace chirpcore {
             sv.BufferEnd += (_) => Console.WriteLine("sound test. buffer end");
 
             var buffer = new short[8820 * 5];
-            Osc.Sine(buffer, 440);
+            var beeper = new Instrument(new SineGenerator());
+            beeper.Activate(440);
+            beeper.Render(buffer);
             var ds = DataStream.Create(buffer, canRead: true, canWrite: false);
             var ab = new AudioBuffer(ds);
 

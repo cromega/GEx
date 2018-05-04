@@ -1,27 +1,22 @@
 using System;
 
 namespace chirpcore {
-    public static class Osc {
+    public class SineGenerator : IGenerator {
         public static double[] SineTable = GenerateSineTable();
         const int LOOKUP_TABLE_LENGTH = 1000;
 
-        public static void Noise(short[] buffer) {
-            var rnd = new Random();
+        private int phaseIndex = 0;
 
-            short sample;
-            for (int i=0; i<buffer.Length / 2; i++) {
-                sample = (short)rnd.Next(0, short.MaxValue);
-                buffer[i*2] = sample;
-                buffer[i*2+1] = sample;
-            }
+        public SineGenerator() {
+            phaseIndex = 0;
         }
 
-        public static void Sine(short[] buffer, double freq) {
-            double increment = LOOKUP_TABLE_LENGTH * freq / 44100;
-            int phaseIndex = 0;
+        public void Fill(short[] buffer, double frequency) {
+            double increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
+
             for (int i=0; i<buffer.Length / 2; i++) {
                 phaseIndex = (int)Math.Round(phaseIndex + increment) % LOOKUP_TABLE_LENGTH;
-                var sample = (short)Math.Round(SineTable[phaseIndex] * 32767);
+                var sample = (short)Math.Round(SineTable[phaseIndex] * short.MaxValue);
                 buffer[i*2] = sample;
                 buffer[i*2+1] = sample;
             }
