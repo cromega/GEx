@@ -8,6 +8,7 @@ namespace chirpcore {
         private double currentFrequency;
         private TriggerMode currentMode;
         private int time;
+        private MTime TTL;
 
         public Instrument(IGenerator g, Envelope e = null) {
             generator = g;
@@ -23,6 +24,13 @@ namespace chirpcore {
             time = 0;
         }
 
+        public void Activate(double frequency, int ms) {
+            if (IsActive) { throw new Exception("instrument already active"); }
+            IsActive = true;
+            currentFrequency = frequency;
+            TTL = MTime.FromMs(ms);
+        }
+
         public void Deactivate() {
             if (!IsActive) { throw new Exception("instrument is not active"); }
             IsActive = false;
@@ -30,8 +38,16 @@ namespace chirpcore {
 
         public void Render(short[] buffer) {
             generator.Fill(buffer, currentFrequency);
-            envelope.Modulate(buffer, time);
+            envelope.Modulate(buffer, time, StopIn: TTL);
             time += buffer.Length;
+            Update(new MTime(buffer.Length));;
+        }
+
+        private void Update(MTime framesPassed) {
+            TTL.Frames -= framesPassed.Frames;
+            if (TTL.Frames <= 0) {
+                Deactivate();
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace chirpcore {
             Release = release;
         }
 
-        public void Modulate(short[] buffer, int time) {
+        public void Modulate(short[] buffer, int time, MTime StopIn) {
             short value;
             double phase;
             for (int i=0; i<buffer.Length/2; i++) {
