@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 
 
 namespace chirpcore {
-    public class Sound {
+    public class SoundSystem {
         private XAudio2 XAudio;
         private MasteringVoice masteringVoice;
-        public Sound() {
+        public SoundSystem() {
             XAudio = new XAudio2();
             masteringVoice = new MasteringVoice(XAudio, inputChannels: 2, inputSampleRate: 44100);
         }
@@ -18,7 +18,6 @@ namespace chirpcore {
             var wf = new SharpDX.Multimedia.WaveFormat(44100, 16, 2);
             var sv = new SourceVoice(XAudio, wf);
 
-            // var buffers = new SwappingBuffer(8820);
             var e = new Envelope(4000, 0, 0.6, 100);
             var beeper = new Instrument(new SineGenerator(), e);
 
