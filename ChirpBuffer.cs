@@ -4,8 +4,8 @@ using SharpDX;
 
 namespace chirpcore {
     public class ChirpBuffer {
-        public short[] Memory;
-        public DataPointer Pointer;
+        public readonly short[] Memory;
+        public readonly DataPointer Pointer;
 
         public ChirpBuffer(int size) {
             Memory = new short[size];

@@ -1,7 +1,6 @@
 ﻿using System;
-using SharpDX;
-using SharpDX.XAudio2;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace chirpcore
 {
@@ -13,8 +12,10 @@ namespace chirpcore
         static void Main(string[] args)
         {
             CoInitialize(IntPtr.Zero);
-            var sound = new Sound();
-            sound.Test();
+
+            var song = new Song(File.ReadAllText("song.txt"));
+            var sound = new SoundSystem(song.Tempo);
+            song.Play();
         }
     }
 }

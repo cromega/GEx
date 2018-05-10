@@ -6,10 +6,10 @@ namespace chirpcore {
     public class BufferRing {
         private ChirpBuffer[] Buffers;
         private int index;
-        public BufferRing(int numBuffers, int samples) {
+        public BufferRing(int numBuffers, int frames) {
             Buffers = new ChirpBuffer[numBuffers];
-            for (int i=0; i<2; i++) {
-                Buffers[i] = new ChirpBuffer(samples);
+            for (int i=0; i<numBuffers; i++) {
+                Buffers[i] = new ChirpBuffer(frames * 2);
             }
         }
 
