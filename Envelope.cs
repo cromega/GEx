@@ -14,33 +14,35 @@ namespace chirpcore {
             Release = release;
         }
 
-        public void Modulate(short[] buffer, int time, MTime StopIn) {
+        public void Modulate(short[] buffer, Trigger trigger) {
             short value;
             double phase;
             for (int i=0; i<buffer.Length/2; i++) {
-                if (time <= Attack) {
-                    value = (short)(buffer[i*2] * ((double)time / Attack));
+                if (trigger.ActiveFor() < Decay) {
+                    value = (short)(buffer[i*2] * ((double)trigger.ActiveFor() / Attack));
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (time <= Attack + Decay) {
-                    phase = (time - Attack) / (double)Decay;
+                else if (trigger.ActiveFor() <= Attack + Decay) {
+                    phase = (trigger.ActiveFor() - Attack) / (double)Decay;
                     value = (short)(buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain);
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (time > Attack + Decay) {
+                else if (trigger.ActiveFor() > Attack + Decay) {
                     value = (short)(buffer[i*2] * Sustain);
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (time > Decay) {
-                    return;
+                else if (trigger.ActiveFor() > Decay) {
+                    phase = (trigger.ActiveFor() - Attack) / (double)Decay;
+                    value = (short)(buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain);
+                    
                 }
-                time++;
+                trigger.Update(1);
             }
         }
     }
