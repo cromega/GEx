@@ -15,8 +15,8 @@ namespace chirpcore {
             var instruments = new List<Instrument>();
             var lines = SongData.Split("\n".ToCharArray());
 
-            // 0:1
-            lines[0].Split(":".ToCharArray()).ToList().ForEach(instrument =>
+            // 0 1
+            lines[0].Split(" ".ToCharArray()).ToList().ForEach(instrument =>
                 instruments.Add(CreateInstrument(instrument))
             );
             Instruments = instruments.ToArray();
@@ -43,10 +43,12 @@ namespace chirpcore {
                     var instrumentIndex = int.Parse(nodeParams[0]);
                     var triggerLength = int.Parse(nodeParams[1]);
                     var freq = int.Parse(nodeParams[2]);
-                    Instruments[0].Activate((double)freq, Tempo * triggerLength);
+                    Instruments[instrumentIndex].Activate((double)freq, Tempo * triggerLength);
                 }
 
-                Sound.Render(Instruments[0]);
+                Instruments.Where(inst => inst.IsActive()).ToList().ForEach(instr => {
+                    Sound.Render(instr);
+                });
                 System.Threading.Thread.Sleep(Tempo);
             }
         }

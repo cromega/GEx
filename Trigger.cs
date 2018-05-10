@@ -15,7 +15,7 @@ namespace chirpcore {
         }
 
         public bool IsActive() {
-            return TTL.Frames <= 0;
+            return TTL.Frames > 0;
         }
 
         public int ActiveFor() {
