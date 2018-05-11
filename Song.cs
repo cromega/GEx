@@ -17,7 +17,7 @@ namespace chirpcore {
 
             // 0 1
             lines[0].Split(" ".ToCharArray()).ToList().ForEach(instrument =>
-                instruments.Add(CreateInstrument(instrument))
+                instruments.Add(InstrumentParser.Parse(instrument))
             );
             Instruments = instruments.ToArray();
 
@@ -51,18 +51,6 @@ namespace chirpcore {
                 });
                 System.Threading.Thread.Sleep(Tempo);
             }
-        }
-
-        private Instrument CreateInstrument(string instrument) {
-            // oscillator type
-            switch (instrument) {
-                case "0":
-                    return new Instrument(new NoiseGenerator());
-                case "1":
-                    return new Instrument(new SineGenerator());
-            }
-
-            throw new Exception(String.Format("Can't create instrument from \"{0}\"", instrument));
         }
     }
 }
