@@ -11,12 +11,13 @@ namespace chirpcore {
             phaseIndex = 0;
         }
 
-        public void Fill(short[] buffer, double frequency) {
+        public void Fill(double[] buffer, double frequency) {
             double increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
 
+            double sample;
             for (int i=0; i<buffer.Length / 2; i++) {
                 phaseIndex = (int)Math.Round(phaseIndex + increment) % LOOKUP_TABLE_LENGTH;
-                var sample = (short)Math.Round(SineTable[phaseIndex] * short.MaxValue);
+                sample = SineTable[phaseIndex];
                 buffer[i*2] = sample;
                 buffer[i*2+1] = sample;
             }

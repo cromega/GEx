@@ -26,9 +26,10 @@ namespace chirpcore {
         }
 
         public void Render(short[] buffer) {
-            var buffers = new List<short[]>();
+            var mixedBuffer = new double[buffer.Length];
+            var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
-                var buf = new short[buffer.Length];
+                var buf = new double[buffer.Length];
                 generator.Fill(buf, trigger.Frequency);
                 trigger.Update(buffer.Length / 2);
                 buffers.Add(buf);
@@ -38,20 +39,16 @@ namespace chirpcore {
 
             var bufs = buffers.ToArray();
             for (int i=0; i<buffer.Length; i++) {
-                int value = bufs[0][i];
+                double value = bufs[0][i];
                 for (int j=1; j<bufs.Length; j++) {
-                    if (value + bufs[j][i] > short.MaxValue) {
-                        value = short.MaxValue;
-                        break;
-                    }
-
-                    if (value + bufs[j][i] < short.MinValue) {
-                        value = short.MinValue;
-                        break;
-                    }
                     value += bufs[j][i];
                 }
-                buffer[i] = (short)value;
+                mixedBuffer[i] = value / bufs.Length;
+            }
+
+            new Normalizer().Normalize(mixedBuffer);
+            for (int i=0; i<mixedBuffer.Length; i++) {
+                buffer[i] = (short)mixedBuffer[i];
             }
         }
 
