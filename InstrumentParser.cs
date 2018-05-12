@@ -17,6 +17,8 @@ namespace chirpcore {
                     return new Instrument(new NoiseGenerator());
                 case "1":
                     return new Instrument(new SineGenerator());
+                case "2":
+                    return new Instrument(new SquareGenerator());
             }
 
             throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));
