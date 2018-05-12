@@ -51,6 +51,13 @@ namespace chirpcore {
                 });
                 System.Threading.Thread.Sleep(Tempo);
             }
+
+            while (Instruments.Any(inst => inst.IsActive())) {
+                Instruments.Where(inst => inst.IsActive()).ToList().ForEach(instr => {
+                    Sound.Render(instr);
+                });
+                System.Threading.Thread.Sleep(Tempo);
+            }
         }
     }
 }

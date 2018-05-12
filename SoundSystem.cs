@@ -17,7 +17,6 @@ namespace chirpcore {
             masteringVoice = new MasteringVoice(XAudio, inputChannels: 2, inputSampleRate: 44100);
             var wf = new SharpDX.Multimedia.WaveFormat(44100, 16, 2);
             sourceVoice = new SourceVoice(XAudio, wf);
-            sourceVoice.BufferStart += (_) => Console.WriteLine("starting buffer");
             Buffers = new BufferRing(2, 4410);
 
         }
