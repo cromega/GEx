@@ -4,6 +4,7 @@ using SharpDX.XAudio2;
 using SharpDX.Multimedia;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Collections.Generic;
 
 
 namespace chirpcore {
@@ -20,61 +21,34 @@ namespace chirpcore {
             masteringVoice = new MasteringVoice(XAudio, inputChannels: 2, inputSampleRate: 44100);
             var wf = new SharpDX.Multimedia.WaveFormat(44100, 16, 2);
             sourceVoice = new SourceVoice(XAudio, wf);
-            sourceVoice.BufferEnd += (ptr) => semaphore.Set();
+            sourceVoice.BufferStart += (_) => { Logger.Log("buffer started"); };
+            sourceVoice.BufferEnd += (_) => {
+                semaphore.Set();
+                Logger.Log("buffer finished");
+            };
 
             Buffers = new BufferRing(2, 4410);
         }
 
-        public void Render(Instrument instrument) {
+        public void AddBuffers(List<double[]> buffers) {
             var buffer = Buffers.Next();
-            instrument.Render(buffer.Memory);
+            var mixedBuffer = new double[8820];
+            new Mixer().Mix(mixedBuffer, buffers);
+            new Normalizer().Normalize(mixedBuffer, buffer.Memory);
+            WaitForBuffer();
+            Write(buffer);
+        }
+
+        public void Write(ChirpBuffer buffer) {
             var ab = new AudioBuffer(buffer.Pointer);
             sourceVoice.SubmitSourceBuffer(ab, null);
             sourceVoice.Start();
+            Logger.Log("buffer {0} written", buffer.Pointer.Pointer);
         }
 
         public void WaitForBuffer() {
             semaphore.WaitOne();
             semaphore.Reset();
-        }
-
-// V        public void Test() {
-
-//             var e = new Envelope(4000, 0, 0.6, 100);
-//             var beeper = new Instrument(new SineGenerator(), e);
-
-//             AudioBuffer audioBuffer;
-//             var Buffers = new BufferRing(2, 8820);
-//             ChirpBuffer buffer;
-//             beeper.Activate(440, 200);
-
-//             sv.BufferStart += (_) => Console.WriteLine("sound test. buffer start");
-//             sv.BufferEnd += (_) => {
-//                 Console.WriteLine("sound test. buffer end");
-//                 buffer = Buffers.Next();
-
-//                 beeper.Render(buffer.Memory);
-//                 audioBuffer = new AudioBuffer(buffer.Pointer);
-                
-//                 sv.SubmitSourceBuffer(audioBuffer, null);
-//                 sv.Start();
-//             };
-//             buffer = Buffers.Next();
-
-//             beeper.Render(buffer.Memory);
-//             audioBuffer = new AudioBuffer(buffer.Pointer);
-//             sv.SubmitSourceBuffer(audioBuffer, null);
-//             sv.Start();
-        //     System.Threading.Thread.Sleep(1200);
-        //     Console.WriteLine("end");
-        //     sv.DestroyVoice();
-        //     sv.Dispose();
-        // }
-
-
-        public void Dispose() {
-            masteringVoice.Dispose();
-            XAudio.Dispose();
         }
     }
 }

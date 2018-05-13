@@ -22,32 +22,18 @@ namespace chirpcore {
             return Triggers.Any(trigger => trigger.IsActive());
         }
 
-        public void Render(short[] buffer) {
-            var mixedBuffer = new double[buffer.Length];
+        public List<double[]> RenderAll(int frames) {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
-                var buf = new double[buffer.Length];
+                var buf = new double[frames * 2];
                 generator.Fill(buf, trigger.Frequency);
-                trigger.Update(buffer.Length / 2);
+                trigger.Update(frames);
                 buffers.Add(buf);
             });
+            // Logger.Log("Rendered {0} triggers", Triggers.Count);
             Triggers.RemoveAll(trigger => !trigger.IsActive());
-            if (buffers.Count() == 0) { return; }
 
-            var bufs = buffers.ToArray();
-            Logger.Log("number of buffers: {0}", bufs.Length);
-            for (int i=0; i<buffer.Length; i++) {
-                double value = bufs[0][i];
-                for (int j=1; j<bufs.Length; j++) {
-                    value += bufs[j][i];
-                }
-                mixedBuffer[i] = value / bufs.Length;
-            }
-
-            new Normalizer().Normalize(mixedBuffer);
-            for (int i=0; i<mixedBuffer.Length; i++) {
-                buffer[i] = (short)mixedBuffer[i];
-            }
+            return buffers;
         }
     }
 }

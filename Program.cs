@@ -15,8 +15,15 @@ namespace chirpcore
             Logger.On();
 
             var sound = new SoundSystem();
-            var song = new Song(File.ReadAllText("song.txt"), sound);
-            song.Play();
+            var song = new Song(File.ReadAllText("song.txt"));
+
+            do {
+                var buffers = song.RenderNext(4420);
+                Logger.Log("rendering finished");
+                sound.AddBuffers(buffers);
+            } while (!song.Ended());
+
+            System.Threading.Thread.Sleep(300);
         }
     }
 }

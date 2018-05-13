@@ -6,12 +6,12 @@ using System.Threading;
 namespace chirpcore {
     public class Song {
         private Instrument[] Instruments;
-        private SoundSystem Sound;
         private int Channels;
         private string[] TrackLines;
+        private int trackIndex;
         public readonly int Tempo;
 
-        public Song(string SongData, SoundSystem sound) {
+        public Song(string SongData) {
             var instruments = new List<Instrument>();
             var lines = SongData.Split("\n".ToCharArray());
 
@@ -25,39 +25,43 @@ namespace chirpcore {
             // channels, length of a pattern line in ms
             var trackParams = lines[1].Split(",".ToCharArray());
             Channels = int.Parse(trackParams[0]);
-            Tempo = int.Parse(trackParams[1]);
+
+            Tempo = 100;
+            // Tempo = int.Parse(trackParams[1]);
 
             TrackLines = lines.Skip(2).Take(lines.Length - 2).ToArray();
-            Sound = sound;
+            trackIndex = 0;
         }
 
-        public void Play() {
-            for (int i=0; i<TrackLines.Length; i++) {
-                var trackLine = TrackLines[i];
-                var nodes = trackLine.Split(" ".ToCharArray());
-                for (int j=0; j<nodes.Length; j++) {
-                    if (nodes[j] == "-") { continue; }
-                    // 0,8,440
-                    // instrument index, trigger length in track lines, frequency
-                    var nodeParams = nodes[j].Split(",".ToCharArray());
-                    var instrumentIndex = int.Parse(nodeParams[0]);
-                    var triggerLength = int.Parse(nodeParams[1]);
-                    var freq = int.Parse(nodeParams[2]);
-                    Instruments[instrumentIndex].Activate((double)freq, Tempo * triggerLength);
-                }
+        public List<double[]> RenderNext(int frames) {
+            Logger.Log("rendering started");
+            var buffers = new List<double[]>();
+            var trackLine = TrackLines[trackIndex++];
+            var nodes = trackLine.Split(" ".ToCharArray());
+            // Logger.Log("rendering line: {0}", trackLine);
 
-                Instruments.Where(inst => inst.IsActive()).ToList().ForEach(instr => {
-                    Sound.Render(instr);
-                });
-                Sound.WaitForBuffer();
+            // update song state with new trackline
+            foreach (var node in nodes) {
+                if (node == "-") { continue; }
+                // 0,8,440
+                // instrument index, trigger length in track lines, frequency
+                var nodeParams = node.Split(",".ToCharArray());
+                var instrumentIndex = int.Parse(nodeParams[0]);
+                var triggerLength = int.Parse(nodeParams[1]);
+                var freq = int.Parse(nodeParams[2]);
+                Instruments[instrumentIndex].Activate((double)freq, Tempo * triggerLength);
             }
 
-            while (Instruments.Any(inst => inst.IsActive())) {
-                Instruments.Where(inst => inst.IsActive()).ToList().ForEach(instr => {
-                    Sound.Render(instr);
-                });
-                Sound.WaitForBuffer();
-            }
+            // render instruments
+            Instruments.Where(instr => instr.IsActive()).ToList().ForEach(instr => {
+                buffers.AddRange(instr.RenderAll(frames));             
+            });
+
+            return buffers;
+        }
+
+        public bool Ended() {
+            return !Instruments.Any(inst => inst.IsActive());
         }
     }
 }
