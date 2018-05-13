@@ -10,6 +10,7 @@ namespace chirpcore {
             }
 
             var ratio = short.MaxValue / minmax;
+            Logger.Log("normalized buffer to {0}", ratio);
             for (int i=0; i<buffer.Length; i++) {
                 buffer[i] *= ratio;
             }

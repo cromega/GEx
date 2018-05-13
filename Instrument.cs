@@ -35,6 +35,7 @@ namespace chirpcore {
             if (buffers.Count() == 0) { return; }
 
             var bufs = buffers.ToArray();
+            Logger.Log("number of buffers: {0}", bufs.Length);
             for (int i=0; i<buffer.Length; i++) {
                 double value = bufs[0][i];
                 for (int j=1; j<bufs.Length; j++) {
