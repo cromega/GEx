@@ -1,0 +1,18 @@
+{
+    "LineCount.excludes": [
+        "**/.vscode/**",
+        "obj/*",
+        "bin/*",
+        "*.sln",
+        "*.csproj",
+        ".gitignore"
+    ],
+    "LineCount.output": {
+        "txt": false,
+        "json": false,
+        "csv": false,
+        "md": false,
+        "outdir": "out"
+    },
+    "LineCount.showStatusBarItem": false
+}
