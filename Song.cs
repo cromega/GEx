@@ -11,7 +11,7 @@ namespace chirpcore {
         private string[] TrackLines;
         public readonly int Tempo;
 
-        public Song(string SongData) {
+        public Song(string SongData, SoundSystem sound) {
             var instruments = new List<Instrument>();
             var lines = SongData.Split("\n".ToCharArray());
 
@@ -28,7 +28,7 @@ namespace chirpcore {
             Tempo = int.Parse(trackParams[1]);
 
             TrackLines = lines.Skip(2).Take(lines.Length - 2).ToArray();
-            Sound = new SoundSystem(Tempo);
+            Sound = sound;
         }
 
         public void Play() {

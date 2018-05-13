@@ -14,7 +14,7 @@ namespace chirpcore {
         private BufferRing Buffers;
         private ManualResetEvent semaphore;
 
-        public SoundSystem(int Tempo) {
+        public SoundSystem() {
             semaphore = new ManualResetEvent(initialState: true);
             XAudio = new XAudio2();
             masteringVoice = new MasteringVoice(XAudio, inputChannels: 2, inputSampleRate: 44100);

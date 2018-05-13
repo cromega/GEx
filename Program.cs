@@ -14,8 +14,8 @@ namespace chirpcore
             CoInitialize(IntPtr.Zero);
             Logger.On();
 
-            var song = new Song(File.ReadAllText("song.txt"));
-            var sound = new SoundSystem(song.Tempo);
+            var sound = new SoundSystem();
+            var song = new Song(File.ReadAllText("song.txt"), sound);
             song.Play();
         }
     }
