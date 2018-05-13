@@ -3,6 +3,7 @@ using SharpDX;
 using SharpDX.XAudio2;
 using SharpDX.Multimedia;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 
 namespace chirpcore {
@@ -11,14 +12,17 @@ namespace chirpcore {
         private MasteringVoice masteringVoice;
         private SourceVoice sourceVoice;
         private BufferRing Buffers;
+        private ManualResetEvent semaphore;
 
         public SoundSystem(int Tempo) {
+            semaphore = new ManualResetEvent(initialState: true);
             XAudio = new XAudio2();
             masteringVoice = new MasteringVoice(XAudio, inputChannels: 2, inputSampleRate: 44100);
             var wf = new SharpDX.Multimedia.WaveFormat(44100, 16, 2);
             sourceVoice = new SourceVoice(XAudio, wf);
-            Buffers = new BufferRing(2, 4410);
+            sourceVoice.BufferEnd += (ptr) => semaphore.Set();
 
+            Buffers = new BufferRing(2, 4410);
         }
 
         public void Render(Instrument instrument) {
@@ -27,6 +31,11 @@ namespace chirpcore {
             var ab = new AudioBuffer(buffer.Pointer);
             sourceVoice.SubmitSourceBuffer(ab, null);
             sourceVoice.Start();
+        }
+
+        public void WaitForBuffer() {
+            semaphore.WaitOne();
+            semaphore.Reset();
         }
 
 // V        public void Test() {

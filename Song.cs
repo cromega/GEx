@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace chirpcore {
     public class Song {
@@ -49,14 +50,14 @@ namespace chirpcore {
                 Instruments.Where(inst => inst.IsActive()).ToList().ForEach(instr => {
                     Sound.Render(instr);
                 });
-                System.Threading.Thread.Sleep(Tempo);
+                Sound.WaitForBuffer();
             }
 
             while (Instruments.Any(inst => inst.IsActive())) {
                 Instruments.Where(inst => inst.IsActive()).ToList().ForEach(instr => {
                     Sound.Render(instr);
                 });
-                System.Threading.Thread.Sleep(Tempo);
+                Sound.WaitForBuffer();
             }
         }
     }
