@@ -6,7 +6,6 @@ using System.Threading;
 namespace chirpcore {
     public class Song {
         private Instrument[] Instruments;
-        private string SongData;
         private SoundSystem Sound;
         private int Channels;
         private string[] TrackLines;

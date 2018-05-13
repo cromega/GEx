@@ -6,9 +6,6 @@ namespace chirpcore {
     public class Instrument {
         private IGenerator generator;
         private Envelope envelope;
-        private TriggerMode currentMode;
-        private int time;
-        private MTime TTL;
         private List<Trigger> Triggers;
 
         public Instrument(IGenerator g, Envelope e = null) {
@@ -50,9 +47,6 @@ namespace chirpcore {
             for (int i=0; i<mixedBuffer.Length; i++) {
                 buffer[i] = (short)mixedBuffer[i];
             }
-        }
-
-        private void Update(MTime framesPassed) {
         }
     }
 }
