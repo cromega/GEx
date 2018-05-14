@@ -18,8 +18,7 @@ namespace chirpcore
             var song = new Song(File.ReadAllText("song.txt"));
 
             do {
-                var buffers = song.RenderNext(4420);
-                Logger.Log("rendering finished");
+                var buffers = song.RenderNext(4410);
                 sound.AddBuffers(buffers);
             } while (!song.Ended());
 

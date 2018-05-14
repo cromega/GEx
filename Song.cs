@@ -57,6 +57,7 @@ namespace chirpcore {
                 buffers.AddRange(instr.RenderAll(frames));             
             });
 
+            Logger.Log("rendering finished");
             return buffers;
         }
 

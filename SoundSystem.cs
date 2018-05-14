@@ -14,6 +14,7 @@ namespace chirpcore {
         private SourceVoice sourceVoice;
         private BufferRing Buffers;
         private ManualResetEvent semaphore;
+        private int buffersSubmmitted;
 
         public SoundSystem() {
             semaphore = new ManualResetEvent(initialState: true);
@@ -21,32 +22,40 @@ namespace chirpcore {
             masteringVoice = new MasteringVoice(XAudio, inputChannels: 2, inputSampleRate: 44100);
             var wf = new SharpDX.Multimedia.WaveFormat(44100, 16, 2);
             sourceVoice = new SourceVoice(XAudio, wf);
-            sourceVoice.BufferStart += (_) => { Logger.Log("buffer started"); };
-            sourceVoice.BufferEnd += (_) => {
+            sourceVoice.BufferStart += (ptr) => { Logger.Log("buffer {0} started", ptr); };
+            sourceVoice.BufferEnd += (ptr) => {
                 semaphore.Set();
-                Logger.Log("buffer finished");
+                Logger.Log("buffer {0} finished", ptr);
             };
 
             Buffers = new BufferRing(2, 4410);
+            buffersSubmmitted = 0;
         }
 
         public void AddBuffers(List<double[]> buffers) {
-            var buffer = Buffers.Next();
             var mixedBuffer = new double[8820];
             new Mixer().Mix(mixedBuffer, buffers);
-            new Normalizer().Normalize(mixedBuffer, buffer.Memory);
             WaitForBuffer();
+            var buffer = Buffers.Next();
+            new Normalizer().Normalize(mixedBuffer, buffer.Memory);
             Write(buffer);
         }
 
         public void Write(ChirpBuffer buffer) {
-            var ab = new AudioBuffer(buffer.Pointer);
+            var ab = new AudioBuffer(buffer.Pointer) { 
+                Flags = BufferFlags.None,
+                Context = buffer.Pointer.Pointer
+            };
             sourceVoice.SubmitSourceBuffer(ab, null);
+            buffersSubmmitted++;
             sourceVoice.Start();
             Logger.Log("buffer {0} written", buffer.Pointer.Pointer);
         }
 
         public void WaitForBuffer() {
+            // skip waiting after the first buffer to preload the second one
+            if (buffersSubmmitted == 1) { return; }
+
             semaphore.WaitOne();
             semaphore.Reset();
         }
