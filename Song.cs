@@ -62,7 +62,7 @@ namespace chirpcore {
         }
 
         public bool Ended() {
-            return !Instruments.Any(inst => inst.IsActive());
+            return trackIndex == TrackLines.Length && !Instruments.Any(inst => inst.IsActive());
         }
     }
 }
