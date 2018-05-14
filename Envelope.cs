@@ -14,7 +14,7 @@ namespace chirpcore {
             Release = release;
         }
 
-        public void Modulate(short[] buffer, Trigger trigger) {
+        public void Modulate(double[] buffer, Trigger trigger) {
             short value;
             double phase;
             for (int i=0; i<buffer.Length/2; i++) {
@@ -44,6 +44,21 @@ namespace chirpcore {
                 }
                 trigger.Update(1);
             }
+        }
+
+        public static Envelope Parse(string envelopeData) {
+            int attack, decay, release;
+            double sustain;
+            try {
+                var bits = envelopeData.Split(",".ToCharArray());
+                attack = int.Parse(bits[0]);
+                decay = int.Parse(bits[1]);
+                sustain = double.Parse(bits[2]);
+                release = int.Parse(bits[3]);
+            } catch {
+                throw new Exception(String.Format("don't know how to create envelope from {0}", envelopeData));
+            }
+            return new Envelope(attack, decay, sustain, release);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace chirpcore {
             Triggers.ForEach(trigger => {
                 var buf = new double[frames * 2];
                 generator.Fill(buf, trigger.Frequency);
+                envelope.Modulate(buf, trigger);
                 trigger.Update(frames);
                 buffers.Add(buf);
             });

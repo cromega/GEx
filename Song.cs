@@ -47,9 +47,9 @@ namespace chirpcore {
                 // instrument index, trigger length in track lines, frequency
                 var nodeParams = node.Split(",".ToCharArray());
                 var instrumentIndex = int.Parse(nodeParams[0]);
-                var triggerLength = int.Parse(nodeParams[1]);
+                var triggerLength = double.Parse(nodeParams[1]);
                 var freq = int.Parse(nodeParams[2]);
-                Instruments[instrumentIndex].Activate((double)freq, Tempo * triggerLength);
+                Instruments[instrumentIndex].Activate((double)freq, (int)(Tempo * triggerLength));
             }
 
             // render instruments

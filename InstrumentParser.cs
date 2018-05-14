@@ -12,13 +12,16 @@ namespace chirpcore {
         }
 
         private Instrument CreateInstrument() {
-            switch (InstrumentData) {
+            var parts = InstrumentData.Split(":".ToCharArray());
+            Envelope envelope = null;
+            if (parts.Length > 1) { envelope = Envelope.Parse(parts[1]); }
+            switch (parts[0]) {
                 case "0":
-                    return new Instrument(new NoiseGenerator());
+                    return new Instrument(new NoiseGenerator(), envelope);
                 case "1":
-                    return new Instrument(new SineGenerator());
+                    return new Instrument(new SineGenerator(), envelope);
                 case "2":
-                    return new Instrument(new SquareGenerator());
+                    return new Instrument(new SquareGenerator(), envelope);
             }
 
             throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));
