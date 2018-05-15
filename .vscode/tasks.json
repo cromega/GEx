@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/chirpcore.csproj"
+                "${workspaceFolder}/ChirpCore/chirpcore.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
