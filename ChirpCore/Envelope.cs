@@ -2,44 +2,44 @@ using System;
 
 namespace chirpcore {
     public class Envelope {
-        public readonly int Attack;
-        public readonly int Decay;
+        public readonly MTime Attack ;
+        public readonly MTime Decay;
         public readonly double Sustain;
-        public readonly int Release;
+        public readonly MTime Release;
 
         public Envelope(int attack, int decay, double sustain, int release) {
-            Attack = attack;
-            Decay = decay;
+            Attack = MTime.FromMs(attack);
+            Decay = MTime.FromMs(decay);
             Sustain = sustain;
-            Release = release;
+            Release = MTime.FromMs(release);
         }
 
         public void Modulate(double[] buffer, Trigger trigger) {
             double value;
             double phase;
             for (int i=0; i<buffer.Length/2; i++) {
-                if (trigger.Age.Milliseconds < Decay) {
-                    value = buffer[i*2] * (trigger.Age.Milliseconds / Attack);
+                if (trigger.Age.Frames < Decay.Frames) {
+                    value = buffer[i*2] * (trigger.Age.Frames / (double)Attack.Frames);
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (trigger.Age.Milliseconds <= Attack + Decay) {
-                    phase = (trigger.Age.Milliseconds - Attack) / (double)Decay;
+                else if (trigger.Age.Frames <= Attack.Frames + Decay.Frames) {
+                    phase = (trigger.Age.Frames - Attack.Frames) / (double)Decay.Frames;
                     value = buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain;
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (trigger.ActiveFor() > Attack + Decay) {
-                    value = (short)(buffer[i*2] * Sustain);
+                else if (trigger.Age.Frames > Attack.Frames + Decay.Frames) {
+                    value = buffer[i*2] * Sustain;
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (trigger.ActiveFor() > Decay) {
-                    phase = (trigger.ActiveFor() - Attack) / (double)Decay;
-                    value = (short)(buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain);
+                else if (trigger.Age.Frames > Decay.Frames) {
+                    // phase = (trigger.Age.Frames - Attack.Frames) / (double)Decay.Frames;
+                    // value = buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain;
                     
                 }
                 trigger.Update(1);
