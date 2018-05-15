@@ -26,12 +26,14 @@ namespace chirpcore {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
                 var buf = new double[frames * 2];
-                generator.Fill(buf, trigger.Frequency);
+                var length = trigger.TTL.Frames;
+                if (envelope != null) { length += envelope.Release; }
+                length = Math.Min(length, buf.Length / 2);
+                generator.Fill(buf, trigger.Frequency, length);
                 envelope.Modulate(buf, trigger);
                 trigger.Update(frames);
                 buffers.Add(buf);
             });
-            // Logger.Log("Rendered {0} triggers", Triggers.Count);
             Triggers.RemoveAll(trigger => !trigger.IsActive());
 
             return buffers;

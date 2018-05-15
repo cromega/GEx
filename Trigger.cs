@@ -3,15 +3,18 @@ using System;
 namespace chirpcore {
     public class Trigger {
         public double Frequency;
-        private MTime TTL;
+        public MTime TTL;
+        public MTime Age;
 
         public Trigger(double freq, int length) {
             Frequency = freq;
             TTL = MTime.FromMs(length);
+            Age = MTime.FromMs(0);
         }
 
         public void Update(int frames) {
             TTL.Frames -= frames;
+            Age.Frames += frames;
         }
 
         public bool IsActive() {

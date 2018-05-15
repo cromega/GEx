@@ -22,6 +22,18 @@ namespace chirpcore {
             }
         }
 
+        public void Fill(double[] buffer, double frequency, int frames) {
+            double increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
+
+            double sample;
+            for (int i=0; i<frames; i++) {
+                phaseIndex = (int)Math.Round(phaseIndex + increment) % LOOKUP_TABLE_LENGTH;
+                sample = SineTable[phaseIndex] * short.MaxValue;
+                buffer[i*2] = sample;
+                buffer[i*2+1] = sample;
+            }
+        }
+
         public static double[] GenerateSineTable() {
             var table = new double[LOOKUP_TABLE_LENGTH];
             for (int i=0; i<table.Length; i++) {

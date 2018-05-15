@@ -2,10 +2,10 @@ using System;
 
 namespace chirpcore {
     public class Envelope {
-        private int Attack;
-        private int Decay;
-        private double Sustain;
-        private int Release;
+        public readonly int Attack;
+        public readonly int Decay;
+        public readonly double Sustain;
+        public readonly int Release;
 
         public Envelope(int attack, int decay, double sustain, int release) {
             Attack = attack;
@@ -15,18 +15,18 @@ namespace chirpcore {
         }
 
         public void Modulate(double[] buffer, Trigger trigger) {
-            short value;
+            double value;
             double phase;
             for (int i=0; i<buffer.Length/2; i++) {
-                if (trigger.ActiveFor() < Decay) {
-                    value = (short)(buffer[i*2] * ((double)trigger.ActiveFor() / Attack));
+                if (trigger.Age.Milliseconds < Decay) {
+                    value = buffer[i*2] * (trigger.Age.Milliseconds / Attack);
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
 
-                else if (trigger.ActiveFor() <= Attack + Decay) {
-                    phase = (trigger.ActiveFor() - Attack) / (double)Decay;
-                    value = (short)(buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain);
+                else if (trigger.Age.Milliseconds <= Attack + Decay) {
+                    phase = (trigger.Age.Milliseconds - Attack) / (double)Decay;
+                    value = buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain;
                     buffer[i*2] = value;
                     buffer[i*2+1] = value;
                 }
