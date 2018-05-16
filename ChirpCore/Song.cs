@@ -49,11 +49,11 @@ namespace chirpcore {
                 var instrumentIndex = int.Parse(nodeParams[0]);
                 var triggerLength = double.Parse(nodeParams[1]);
                 var freq = int.Parse(nodeParams[2]);
-                Instruments[instrumentIndex].Activate((double)freq, (int)(Tempo * triggerLength));
+                Instruments[instrumentIndex].Activate((double)freq, MTime.FromMs((int)(Tempo * triggerLength)).Frames);
             }
 
             // render instruments
-            Instruments.Where(instr => instr.IsActive()).ToList().ForEach(instr => {
+            Instruments.ToList().ForEach(instr => {
                 buffers.AddRange(instr.RenderAll(frames));             
             });
 

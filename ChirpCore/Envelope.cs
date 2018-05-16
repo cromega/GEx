@@ -38,8 +38,8 @@ namespace chirpcore {
                         buffer[i * 2 + 1] = value;
                     }
                 } else {
-                    if (Math.Abs(trigger.TTL) < Decay) {
-                        phase = 1 - Math.Abs(trigger.TTL) / (double)Decay;
+                    if (Math.Abs(trigger.TTL) < Release) {
+                        phase = 1 - Math.Abs(trigger.TTL) / (double)Release;
                         value = buffer[i * 2] * phase * Sustain;
                         buffer[i * 2] = value;
                         buffer[i * 2 + 1] = value;

@@ -25,16 +25,15 @@ namespace chirpcore {
         public List<double[]> RenderAll(int frames) {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
-                var buf = new double[frames * 2];
-                var length = trigger.TTL;
+                var buffer = new double[frames * 2];
+                var length = Math.Abs(trigger.TTL);
                 if (envelope != null) { length += envelope.Release; }
-                length = Math.Min(length, buf.Length / 2);
-                generator.Fill(buf, trigger.Frequency, length);
-                envelope.Modulate(buf, trigger);
-                trigger.Update(frames);
-                buffers.Add(buf);
+                length = Math.Min(length, frames);
+                generator.Fill(buffer, trigger.Frequency, length);
+                envelope.Modulate(buffer, trigger);
+                buffers.Add(buffer);
             });
-            Triggers.RemoveAll(trigger => !trigger.IsActive());
+            Triggers.RemoveAll(trigger => trigger.Ended);
 
             return buffers;
         }
