@@ -17,30 +17,38 @@ namespace chirpcore {
         public void Modulate(double[] buffer, Trigger trigger) {
             double value;
             double phase;
-            for (int i=0; i<buffer.Length/2; i++) {
-                if (trigger.Age< Decay) {
-                    value = buffer[i*2] * (trigger.Age/ (double)Attack);
-                    buffer[i*2] = value;
-                    buffer[i*2+1] = value;
-                }
+            for (int i = 0; i < buffer.Length / 2; i++) {
+                if (trigger.TTL > 0) {
+                    if (trigger.Age < Decay) {
+                        value = buffer[i * 2] * (trigger.Age / (double)Attack);
+                        buffer[i * 2] = value;
+                        buffer[i * 2 + 1] = value;
+                    }
 
-                else if (trigger.Age<= Attack+ Decay) {
-                    phase = (trigger.Age- Attack) / (double)Decay;
-                    value = buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain;
-                    buffer[i*2] = value;
-                    buffer[i*2+1] = value;
-                }
+                    else if (trigger.Age <= Attack + Decay) {
+                        phase = (trigger.Age - Attack) / (double)Decay;
+                        value = buffer[i * 2] * (1.0 - phase * Sustain);
+                        buffer[i * 2] = value;
+                        buffer[i * 2 + 1] = value;
+                    }
 
-                else if (trigger.Age> Attack+ Decay) {
-                    value = buffer[i*2] * Sustain;
-                    buffer[i*2] = value;
-                    buffer[i*2+1] = value;
-                }
-
-                else if (trigger.Age> Decay) {
-                    // phase = (trigger.Age.Frames - Attack.Frames) / (double)Decay.Frames;
-                    // value = buffer[i*2] * (1 - phase) * 1.0 + phase * Sustain;
-                    
+                    else if (trigger.Age > Attack + Decay) {
+                        value = buffer[i * 2] * Sustain;
+                        buffer[i * 2] = value;
+                        buffer[i * 2 + 1] = value;
+                    }
+                } else {
+                    if (Math.Abs(trigger.TTL) < Decay) {
+                        phase = 1 - Math.Abs(trigger.TTL) / (double)Decay;
+                        value = buffer[i * 2] * phase * Sustain;
+                        buffer[i * 2] = value;
+                        buffer[i * 2 + 1] = value;
+                    }
+                    else {
+                        trigger.End();
+                        buffer[i * 2] = 0;
+                        buffer[i * 2 + 1] = 0;
+                    }
                 }
                 trigger.Update(1);
             }
