@@ -26,8 +26,8 @@ namespace chirpcore {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
                 var buf = new double[frames * 2];
-                var length = trigger.TTL.Frames;
-                if (envelope != null) { length += envelope.Release.Frames; }
+                var length = trigger.TTL;
+                if (envelope != null) { length += envelope.Release; }
                 length = Math.Min(length, buf.Length / 2);
                 generator.Fill(buf, trigger.Frequency, length);
                 envelope.Modulate(buf, trigger);
