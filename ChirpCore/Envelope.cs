@@ -27,7 +27,7 @@ namespace chirpcore {
 
                     else if (trigger.Age <= Attack + Decay) {
                         phase = (trigger.Age - Attack) / (double)Decay;
-                        value = buffer[i * 2] * (1.0 - phase * Sustain);
+                        value = buffer[i * 2] * (1.0 - phase * (1 - Sustain));
                         buffer[i * 2] = value;
                         buffer[i * 2 + 1] = value;
                     }
