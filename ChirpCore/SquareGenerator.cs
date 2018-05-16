@@ -25,7 +25,8 @@ namespace chirpcore {
             double sample;
             for (int i=0; i<frames; i++) {
                 PhaseIndex = (int)Math.Round(PhaseIndex + increment) % SineGenerator.LOOKUP_TABLE_LENGTH;
-                sample = SineGenerator.SineTable[PhaseIndex] < 0 ? -1 : 1;
+                //sample = SineGenerator.SineTable[PhaseIndex] < 0 ? -1 : 1;
+                sample = SineGenerator.SineTable[PhaseIndex] < 0 ? -20000 : 20000;
                 buffer[i*2] = sample;
                 buffer[i*2+1] = sample;
             }

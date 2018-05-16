@@ -3,6 +3,11 @@ using System;
 namespace chirpcore {
     public class Normalizer {
         public void Normalize(double[] source, short[] output) {
+            for (int i=0; i<source.Length; i++) {
+                output[i] = (short)source[i];
+            }
+            return;
+
             var minmax = source[0];
 
             for (int i=0; i<source.Length; i++) {
