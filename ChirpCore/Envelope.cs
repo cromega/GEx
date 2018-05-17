@@ -19,7 +19,7 @@ namespace chirpcore {
             double phase;
             for (int i = 0; i < buffer.Length / 2; i++) {
                 if (trigger.TTL > 0) {
-                    if (trigger.Age < Decay) {
+                    if (trigger.Age < Attack) {
                         value = buffer[i * 2] * (trigger.Age / (double)Attack);
                         buffer[i * 2] = value;
                         buffer[i * 2 + 1] = value;
