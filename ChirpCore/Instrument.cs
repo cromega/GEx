@@ -30,7 +30,7 @@ namespace chirpcore {
                 if (envelope != null) { length += envelope.Release; }
                 length = Math.Min(length, frames);
                 generator.Fill(buffer, trigger.Frequency, length);
-                envelope.Modulate(buffer, trigger);
+                if (envelope != null) { envelope.Modulate(buffer, trigger); }
                 buffers.Add(buffer);
             });
             Triggers.RemoveAll(trigger => trigger.Ended);
