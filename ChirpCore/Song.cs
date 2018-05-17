@@ -13,7 +13,7 @@ namespace chirpcore {
 
         public Song(string SongData) {
             var instruments = new List<Instrument>();
-            var lines = SongData.Split("\n".ToCharArray());
+            var lines = SongData.Split(Environment.NewLine.ToCharArray());
 
             // 0 1
             lines[0].Split(" ".ToCharArray()).ToList().ForEach(instrument =>
@@ -29,7 +29,7 @@ namespace chirpcore {
             Tempo = 100;
             // Tempo = int.Parse(trackParams[1]);
 
-            TrackLines = lines.Skip(2).Take(lines.Length - 2).ToArray();
+            TrackLines = lines.Skip(2).Take(lines.Length - 2).Where(line => line != "").ToArray();
             trackIndex = 0;
         }
 
