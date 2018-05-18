@@ -12,7 +12,7 @@ namespace chirpcore {
                     value += buffers[j][i];
                 }
 
-                output[i] = value / buffers.Count;
+                output[i] = Math.Min(value, short.MaxValue);
             }
         }
     }
