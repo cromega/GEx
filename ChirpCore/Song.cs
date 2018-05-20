@@ -6,7 +6,6 @@ using System.Threading;
 namespace chirpcore {
     public class Song {
         private Instrument[] Instruments;
-        private int Channels;
         private string[] TrackLines;
         private int trackIndex;
         public readonly int Tempo;
@@ -21,15 +20,10 @@ namespace chirpcore {
             );
             Instruments = instruments.ToArray();
 
-            //4:100
-            // channels, length of a pattern line in ms
-            var trackParams = lines[1].Split(",".ToCharArray());
-            Channels = int.Parse(trackParams[0]);
-
             Tempo = 100;
             // Tempo = int.Parse(trackParams[1]);
 
-            TrackLines = lines.Skip(2).Take(lines.Length - 2).Where(line => line != "").ToArray();
+            TrackLines = lines.Skip(1).Take(lines.Length - 2).Where(line => line != "").ToArray();
             trackIndex = 0;
         }
 
