@@ -16,7 +16,7 @@ namespace chirpcore {
             double sample;
             for (int i=0; i<frames; i++) {
                 phaseIndex += increment;
-                sample = SineTable[(int)Math.Round(phaseIndex) % SineTable.Length] * 15000;
+                sample = SineTable[(int)Math.Round(phaseIndex) % SineTable.Length];
                 buffer[i*2] = sample;
                 buffer[i*2+1] = sample;
             }

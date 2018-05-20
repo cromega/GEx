@@ -4,13 +4,15 @@ using System.Linq;
 
 namespace chirpcore {
     public class Instrument {
-        private IGenerator generator;
-        private Envelope envelope;
+        private IGenerator Generator;
+        private Envelope Envelope;
+        private double Volume;
         private List<Trigger> Triggers;
 
-        public Instrument(IGenerator g, Envelope e = null) {
-            generator = g;
-            envelope = e;        
+        public Instrument(IGenerator g, double v, Envelope e = null) {
+            Generator = g;
+            Volume = v;
+            Envelope = e;        
             Triggers = new List<Trigger>();
         }
 
@@ -26,11 +28,12 @@ namespace chirpcore {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
                 var buffer = new double[frames * 2];
-                var length = Math.Abs(trigger.TTL);
-                if (envelope != null) { length += envelope.Release; }
+                var length = Math.Abs(trigger.TTL) + Envelope.Release;
                 length = Math.Min(length, frames);
-                generator.Fill(buffer, trigger.Frequency, length);
-                if (envelope != null) { envelope.Modulate(buffer, trigger); }
+                Generator.Fill(buffer, trigger.Frequency, length);
+                var gain = Volume * short.MaxValue;
+                new Scaler().Scale(buffer, gain);
+                Envelope.Modulate(buffer, trigger);
                 buffers.Add(buffer);
             });
             Triggers.RemoveAll(trigger => trigger.Ended);
