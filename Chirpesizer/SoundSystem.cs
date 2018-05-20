@@ -39,7 +39,7 @@ namespace Chirpesizer {
             new Mixer().Mix(mixedBuffer, buffers);
             WaitForBuffer();
             var buffer = Buffers.Next();
-            new Normalizer().Normalize(mixedBuffer, buffer.Memory);
+            new Converter().Convert(mixedBuffer, buffer.Memory);
             Write(buffer);
         }
 

@@ -17,11 +17,11 @@ namespace Chirpesizer {
             Envelope envelope = Envelope.Parse(parts[2]);
             switch (parts[0]) {
                 case "0":
-                    return new Instrument(new NoiseGenerator(), volume, envelope);
+                    return new Instrument(Oscillator.Noise, volume, envelope);
                 case "1":
-                    return new Instrument(new SineGenerator(), volume, envelope);
+                    return new Instrument(Oscillator.Sine, volume, envelope);
                 case "2":
-                    return new Instrument(new SquareGenerator(), volume, envelope);
+                    return new Instrument(Oscillator.Square, volume, envelope);
             }
 
             throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));

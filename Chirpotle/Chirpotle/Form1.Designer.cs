@@ -120,6 +120,11 @@
             this.ReleaseValue.Name = "ReleaseValue";
             this.ReleaseValue.Size = new System.Drawing.Size(120, 20);
             this.ReleaseValue.TabIndex = 7;
+            this.ReleaseValue.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             // 
             // SustainValue
             // 
@@ -133,6 +138,11 @@
             this.SustainValue.Name = "SustainValue";
             this.SustainValue.Size = new System.Drawing.Size(120, 20);
             this.SustainValue.TabIndex = 6;
+            this.SustainValue.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             // 
             // DecayValue
             // 
@@ -145,6 +155,11 @@
             this.DecayValue.Name = "DecayValue";
             this.DecayValue.Size = new System.Drawing.Size(120, 20);
             this.DecayValue.TabIndex = 5;
+            this.DecayValue.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
             // AttackValue
             // 
@@ -157,6 +172,11 @@
             this.AttackValue.Name = "AttackValue";
             this.AttackValue.Size = new System.Drawing.Size(120, 20);
             this.AttackValue.TabIndex = 4;
+            this.AttackValue.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
             // SustainLabel
             // 
@@ -197,7 +217,7 @@
             // VolumeValue
             // 
             this.VolumeValue.DecimalPlaces = 1;
-            this.VolumeValue.Location = new System.Drawing.Point(250, 184);
+            this.VolumeValue.Location = new System.Drawing.Point(260, 180);
             this.VolumeValue.Maximum = new decimal(new int[] {
             1,
             0,
@@ -206,19 +226,24 @@
             this.VolumeValue.Name = "VolumeValue";
             this.VolumeValue.Size = new System.Drawing.Size(120, 20);
             this.VolumeValue.TabIndex = 8;
+            this.VolumeValue.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             // 
             // VolumeLabel
             // 
             this.VolumeLabel.AutoSize = true;
-            this.VolumeLabel.Location = new System.Drawing.Point(202, 190);
+            this.VolumeLabel.Location = new System.Drawing.Point(183, 182);
             this.VolumeLabel.Name = "VolumeLabel";
-            this.VolumeLabel.Size = new System.Drawing.Size(35, 13);
+            this.VolumeLabel.Size = new System.Drawing.Size(42, 13);
             this.VolumeLabel.TabIndex = 9;
-            this.VolumeLabel.Text = "label1";
+            this.VolumeLabel.Text = "Volume";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(831, 282);
+            this.button1.Location = new System.Drawing.Point(641, 224);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;

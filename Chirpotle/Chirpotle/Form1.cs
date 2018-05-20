@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Chirpesizer;
 
 namespace Chirpotle {
     public partial class Form1 : Form {
@@ -20,13 +21,13 @@ namespace Chirpotle {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            chirpcore.IGenerator osc;
+            Oscillator osc;
             if (NoiseGeneratorButton.Checked) {
-                osc = new chirpcore.NoiseGenerator();
+                osc = Oscillator.Noise;
             } else if (SineGeneratorButton.Checked) {
-                osc = new chirpcore.SineGenerator();
+                osc = Oscillator.Sine;
             } else {
-                osc = new chirpcore.SquareGenerator();
+                osc = Oscillator.Square;
             }
 
             var i = new Chirpesizer.Instrument(osc, (double)VolumeValue.Value, new Chirpesizer.Envelope((int)((double)AttackValue.Value * 44.1), (int)((double)DecayValue.Value * 44.1), (double)SustainValue.Value, (int)((double)ReleaseValue.Value * 44.1)));
