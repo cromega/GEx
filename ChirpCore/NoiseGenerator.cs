@@ -21,8 +21,7 @@ namespace chirpcore {
         public void Fill(double[] buffer, double frequency, int frames) {
             double sample;
             for (int i=0; i<frames; i++) {
-                sample = (short)random.Next(0, short.MaxValue);
-                sample = random.NextDouble();
+                sample = random.NextDouble() * 2 - 1;
                 buffer[i*2] = sample;
                 buffer[i*2+1] = sample;
             }
