@@ -9,15 +9,15 @@ namespace chirpcore {
         private double Volume;
         private List<Trigger> Triggers;
 
-        public Instrument(IGenerator g, double v, Envelope e = null) {
+        public Instrument(IGenerator g, double v, Envelope e) {
             Generator = g;
             Volume = v;
             Envelope = e;        
             Triggers = new List<Trigger>();
         }
 
-        public void Activate(double frequency, int ms) {
-            Triggers.Add(new Trigger(frequency, ms));
+        public void Activate(double frequency, int length) {
+            Triggers.Add(new Trigger(frequency, length));
         }
 
         public bool IsActive() {

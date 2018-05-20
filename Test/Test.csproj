@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChirpCore\chirpcore.csproj" />
+    <ProjectReference Include="..\ChirpCore\chirpcoree.csproj" />
   </ItemGroup>
 
 </Project>
