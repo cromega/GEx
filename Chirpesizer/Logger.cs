@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public static class Logger {
         private static int StartTime;
         private static bool IsOn;

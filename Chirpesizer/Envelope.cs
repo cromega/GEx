@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class Envelope {
         public readonly int Attack ;
         public readonly int Decay;

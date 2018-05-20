@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class Song {
         private Instrument[] Instruments;
         private string[] TrackLines;

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Collections.Generic;
 
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class SoundSystem {
         private XAudio2 XAudio;
         private MasteringVoice masteringVoice;

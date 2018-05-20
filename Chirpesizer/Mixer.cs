@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class Mixer {
         public void Mix(double[] output, List<double[]> buffers) {
             if (buffers.Count == 0) { return; }

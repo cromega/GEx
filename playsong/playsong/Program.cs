@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.IO;
-using chirpcore;
+using Chirpesizer;
 
 namespace playsong {
     class Program {

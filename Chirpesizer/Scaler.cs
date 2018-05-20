@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class Scaler {
         public void Scale(double[] buffer, double amount) {
             for (int i = 0; i < buffer.Length; i++) {

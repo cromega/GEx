@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class Instrument {
         private IGenerator Generator;
         private Envelope Envelope;

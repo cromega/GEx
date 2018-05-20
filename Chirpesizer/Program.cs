@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace chirpcore
+namespace Chirpesizer
 {
     class Program
     {

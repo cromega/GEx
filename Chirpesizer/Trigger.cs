@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class Trigger {
         public double Frequency;
         public int TTL;

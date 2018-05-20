@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class BufferRing {
         private ChirpBuffer[] Buffers;
         private int index;

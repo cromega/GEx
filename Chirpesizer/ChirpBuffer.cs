@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using SharpDX;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class ChirpBuffer {
         public readonly short[] Memory;
         public readonly DataPointer Pointer;

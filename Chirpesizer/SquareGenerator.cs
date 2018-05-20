@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class SquareGenerator : IGenerator {
         private double PhaseIndex;
 

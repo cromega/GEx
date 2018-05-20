@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class InstrumentParser {
         private string InstrumentData;
         public static Instrument Parse(string data) {

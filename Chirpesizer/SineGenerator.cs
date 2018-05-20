@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
     public class SineGenerator : IGenerator {
         public static double[] SineTable = GenerateSineTable();
         public const int LOOKUP_TABLE_LENGTH = 1000;

@@ -1,6 +1,6 @@
 using System;
 
-namespace chirpcore {
+namespace Chirpesizer {
 
     ///
     /// converts between frames and milliseconds
