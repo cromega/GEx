@@ -16,8 +16,9 @@ namespace Chirpesizer {
         }
 
         public void Activate(double frequency, int length) {
-            //Triggers.Add(new Trigger(Oscillator.Create(Osc, frequency), new ModulatedValue(Volume * short.MaxValue, 10, 10000), length));
-            Triggers.Add(new Trigger(Oscillator.Create(Osc, frequency), new StaticValue(Volume * short.MaxValue), length));
+            var osc = Oscillator.Create(Osc, new ModulatedValue(frequency, 10, 100));
+            var trig = new Trigger(osc, new ModulatedValue(0.5 * short.MaxValue, 5, 10000), length);
+            Triggers.Add(trig);
         }
 
         public bool IsActive() {

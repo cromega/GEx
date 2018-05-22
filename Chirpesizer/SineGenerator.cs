@@ -6,10 +6,12 @@ namespace Chirpesizer {
         public const int LOOKUP_TABLE_LENGTH = 1000;
         private double PhaseIndex = 0;
         private double Increment;
+        private IValue Frequency;
 
-        public SineGenerator(double frequency) {
+        public SineGenerator(IValue frequency) {
             PhaseIndex = 0;
-            Increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
+            Frequency = frequency;
+            Increment = LOOKUP_TABLE_LENGTH * Frequency.Get() / 44100;
         }
 
         public void Fill(double[] buffer, int frames) {
@@ -19,6 +21,7 @@ namespace Chirpesizer {
                 sample = SineTable[(int)Math.Round(PhaseIndex) % SineTable.Length];
                 buffer[i*2] = sample;
                 buffer[i*2+1] = sample;
+                Increment = LOOKUP_TABLE_LENGTH * Frequency.Get() / 44100;
             }
         }
 

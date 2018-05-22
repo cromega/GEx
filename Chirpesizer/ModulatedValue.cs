@@ -8,12 +8,12 @@ namespace Chirpesizer {
     public class ModulatedValue : IValue {
         private double Value;
         private SineGenerator Osc;
-        private int Height;
+        private double Height;
 
-        public ModulatedValue(double initial, double frequency, int height) {
+        public ModulatedValue(double initial, double frequency, double height) {
             Value = initial;
             Height = height;
-            Osc = new SineGenerator(frequency);
+            Osc = new SineGenerator(new StaticValue(frequency));
         }
 
         public double Get() {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chirpesizer {
     public static class Oscillator {
-        public static IGenerator Create(OscillatorType type, double frequency) {
+        public static IGenerator Create(OscillatorType type, IValue frequency) {
             switch (type) {
                 case OscillatorType.Noise: return new NoiseGenerator();
                 case OscillatorType.Sine: return new SineGenerator(frequency);

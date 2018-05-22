@@ -3,18 +3,18 @@ using System;
 namespace Chirpesizer {
     public class SquareGenerator : IGenerator {
         private double PhaseIndex;
-        private double Frequency;
         private double Increment;
+        private IValue Frequency;
 
-        public SquareGenerator(double frequency) {
+        public SquareGenerator(IValue frequency) {
             Frequency = frequency;
             PhaseIndex = 0;
-            Increment = SineGenerator.LOOKUP_TABLE_LENGTH * frequency / 44100;
         }
 
         public void Fill(double[] buffer, int frames) {
             double sample;
             for (int i=0; i<frames; i++) {
+                Increment = SineGenerator.LOOKUP_TABLE_LENGTH * Frequency.Get() / 44100;
                 PhaseIndex += Increment;
                 sample = SineGenerator.SineTable[(int)Math.Round(PhaseIndex) % SineGenerator.SineTable.Length] < 0 ? -1 : 1;
                 buffer[i*2] = sample;
