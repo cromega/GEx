@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chirpesizer {
-    public enum Oscillator : int {
-        Noise = 0,
-        Sine = 1,
-        Square = 2,
+    public static class Oscillator {
+        public static IGenerator Create(OscillatorType type, double frequency) {
+            switch (type) {
+                case OscillatorType.Noise: return new NoiseGenerator();
+                case OscillatorType.Sine: return new SineGenerator(frequency);
+                case OscillatorType.Square: return new SquareGenerator(frequency);
+            }
+
+            throw new Exception("don't know how to create oscillator");
+        }
     }
 }

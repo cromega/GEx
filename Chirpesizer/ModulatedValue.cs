@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chirpesizer {
-    public class ModulatedValue {
+    public class ModulatedValue : IValue {
         private double Value;
         private SineGenerator Osc;
         private int Height;

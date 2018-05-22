@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Chirpesizer {
     public class Scaler {
-        public void Scale(double[] buffer, ModulatedValue amount) {
+        public void Scale(double[] buffer, IValue amount) {
             double modulatedAmount;
             for (int i = 0; i < buffer.Length / 2; i++) {
                 modulatedAmount = amount.Get();

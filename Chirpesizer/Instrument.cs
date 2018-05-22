@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Chirpesizer {
     public class Instrument {
-        private Oscillator Osc;
+        private OscillatorType Osc;
         private Envelope Envelope;
         private double Volume;
         private List<Trigger> Triggers;
 
-        public Instrument(Oscillator osc, double v, Envelope e) {
+        public Instrument(OscillatorType osc, double v, Envelope e) {
             Osc = osc;
             Volume = v;
             Envelope = e;        
@@ -16,7 +16,8 @@ namespace Chirpesizer {
         }
 
         public void Activate(double frequency, int length) {
-            Triggers.Add(new Trigger(NewOscillator(frequency), new ModulatedValue(Volume * short.MaxValue, 10, 10000), length));
+            //Triggers.Add(new Trigger(Oscillator.Create(Osc, frequency), new ModulatedValue(Volume * short.MaxValue, 10, 10000), length));
+            Triggers.Add(new Trigger(Oscillator.Create(Osc, frequency), new StaticValue(Volume * short.MaxValue), length));
         }
 
         public bool IsActive() {
@@ -37,16 +38,6 @@ namespace Chirpesizer {
             Triggers.RemoveAll(trigger => trigger.Ended);
 
             return buffers;
-        }
-
-        private IGenerator NewOscillator(double frequency) {
-            switch (Osc) {
-                case Oscillator.Noise: return new NoiseGenerator();
-                case Oscillator.Sine: return new SineGenerator(frequency);
-                case Oscillator.Square: return new SquareGenerator(frequency);
-            }
-
-            throw new Exception("don't know how to create oscillator");
         }
     }
 }

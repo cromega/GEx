@@ -21,13 +21,13 @@ namespace Chirpotle {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            Oscillator osc;
+            OscillatorType osc;
             if (NoiseGeneratorButton.Checked) {
-                osc = Oscillator.Noise;
+                osc = OscillatorType.Noise;
             } else if (SineGeneratorButton.Checked) {
-                osc = Oscillator.Sine;
+                osc = OscillatorType.Sine;
             } else {
-                osc = Oscillator.Square;
+                osc = OscillatorType.Square;
             }
 
             var i = new Chirpesizer.Instrument(osc, (double)VolumeValue.Value, new Chirpesizer.Envelope((int)((double)AttackValue.Value * 44.1), (int)((double)DecayValue.Value * 44.1), (double)SustainValue.Value, (int)((double)ReleaseValue.Value * 44.1)));

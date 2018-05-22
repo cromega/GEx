@@ -6,9 +6,9 @@ namespace Chirpesizer {
         public int TTL;
         public int Age;
         public bool Ended;
-        public ModulatedValue Volume;
+        public IValue Volume;
 
-        public Trigger(IGenerator osc, ModulatedValue volume, int length) {
+        public Trigger(IGenerator osc, IValue volume, int length) {
             Osc = osc;
             TTL = length;
             Age = 0;
