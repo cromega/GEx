@@ -14,30 +14,38 @@ namespace Chirpotle {
         public Form1() {
             InitializeComponent();
         }
-        private Chirpesizer.SoundSystem Sound;
+        private SoundSystem Sound;
 
         private void Form1_Load(object sender, EventArgs e) {
-            Sound = new Chirpesizer.SoundSystem(4410);
+            Sound = new SoundSystem(4410);
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            OscillatorType osc;
-            if (NoiseGeneratorButton.Checked) {
-                osc = OscillatorType.Noise;
-            } else if (SineGeneratorButton.Checked) {
-                osc = OscillatorType.Sine;
-            } else {
-                osc = OscillatorType.Square;
+            //var songData = string.Format("{0}\r\n0,4,440");
+            //var sound = new SoundSystem(4410);
+            //var song = new Song(songData);
+            //do {
+            //    var buffers = song.RenderNext(4410);
+            //    sound.AddBuffers(buffers);
+            //} while (!song.Ended());
+        }
+
+        private void AddInstrumentButton_Click(object sender, EventArgs e) {
+            string instrumentData;
+            using (var instrcreator = new InstrumentEditor()) {
+                instrcreator.ShowDialog();
+                instrumentData = instrcreator.InstrumentData;
+            }
+            InstrumentSelector.Items.Add(instrumentData);
+        }
+
+        private void EditInstrumentButton_Click(object sender, EventArgs e) {
+            if (InstrumentSelector.SelectedIndex == -1) {
+                MessageBox.Show("Select an instrument");
+                return;
             }
 
-            var i = new Chirpesizer.Instrument(osc, (double)VolumeValue.Value, new Chirpesizer.Envelope((int)((double)AttackValue.Value * 44.1), (int)((double)DecayValue.Value * 44.1), (double)SustainValue.Value, (int)((double)ReleaseValue.Value * 44.1)));
-            i.Activate(440, (int)(1000 * 44.1));
-
-            while (true) {
-                var buffers = i.RenderAll(4410);
-                Sound.AddBuffers(buffers);
-                if (!i.IsActive()) { break; }
-            }
+            MessageBox.Show("Nothing to see here.");
         }
     }
 }
