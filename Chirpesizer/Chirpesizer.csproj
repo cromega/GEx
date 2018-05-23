@@ -50,6 +50,7 @@
     <Compile Include="BufferRing.cs" />
     <Compile Include="ChirpBuffer.cs" />
     <Compile Include="Envelope.cs" />
+    <Compile Include="IEncodable.cs" />
     <Compile Include="IGenerator.cs" />
     <Compile Include="Instrument.cs" />
     <Compile Include="InstrumentParser.cs" />

@@ -1,7 +1,7 @@
 using System;
 
 namespace Chirpesizer {
-    public class Envelope {
+    public class Envelope : IEncodable {
         public readonly int Attack ;
         public readonly int Decay;
         public readonly double Sustain;
@@ -67,6 +67,24 @@ namespace Chirpesizer {
                 throw new Exception(String.Format("don't know how to create envelope from {0}", envelopeData));
             }
             return new Envelope(attack, decay, sustain, release);
+        }
+
+        public string Encode() {
+            return String.Format("{0},{1},{2},{3}", Attack, Decay, Sustain, Release);
+        }
+
+        public static Envelope Decode(string data) {
+            try {
+                var values = data.Split(",".ToCharArray());
+                return new Envelope(
+                    MTime.FromMs(int.Parse(values[0])).Frames,
+                    MTime.FromMs(int.Parse(values[1])).Frames,
+                    double.Parse(values[2]),
+                    MTime.FromMs(int.Parse(values[3])).Frames
+                );
+            } catch (Exception e) {
+                throw new Exception(String.Format("Can't create envelope from {0}", data));
+            }
         }
     }
 }
