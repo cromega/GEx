@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace Chirpesizer {
     public class Instrument {
         private OscillatorType Osc;
         private Envelope Envelope;
-        private double Volume;
+        private IValue Volume;
         private List<Trigger> Triggers;
 
-        public Instrument(OscillatorType osc, double v, Envelope e) {
+        public Instrument(OscillatorType osc, IValue volume, Envelope envelope) {
             Osc = osc;
-            Volume = v;
-            Envelope = e;        
+            Volume = volume;
+            Envelope = envelope;        
             Triggers = new List<Trigger>();
         }
 
-        public void Activate(double frequency, int length) {
-            var osc = Oscillator.Create(Osc, new ModulatedValue(frequency, 10, 100));
-            var trig = new Trigger(osc, new ModulatedValue(0.5 * short.MaxValue, 5, 10000), length);
+        public void Activate(IValue frequency, int length) {
+            var osc = Oscillator.Create(Osc, frequency);
+            var trig = new Trigger(osc, Volume, length);
             Triggers.Add(trig);
         }
 

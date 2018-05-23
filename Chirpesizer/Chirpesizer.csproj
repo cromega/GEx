@@ -59,6 +59,7 @@
     <Compile Include="Mixer.cs" />
     <Compile Include="ModulatedValue.cs" />
     <Compile Include="Mtime.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="NoiseGenerator.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Oscillator.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="StaticValue.cs" />
     <Compile Include="Trigger.cs" />
     <Compile Include="TriggerMode.cs" />
+    <Compile Include="ValueParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

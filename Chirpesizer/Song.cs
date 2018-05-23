@@ -12,38 +12,42 @@ namespace Chirpesizer {
 
         public Song(string SongData) {
             var instruments = new List<Instrument>();
-            var lines = SongData.Split(Environment.NewLine.ToCharArray());
+            var lines = SongData.Split(Environment.NewLine.ToCharArray()).Where(line => !line.StartsWith("//") && line != "").ToArray();
+            // skip comments
 
-            // 0 1
-            lines[0].Split(" ".ToCharArray()).ToList().ForEach(instrument =>
-                instruments.Add(InstrumentParser.Parse(instrument))
-            );
+            int linesToSkip = 0;
+            while (true) {
+                var line = lines[linesToSkip];
+                if (!line.StartsWith("i")) { break; }
+                instruments.Add(InstrumentParser.Parse(line.TrimStart("i".ToCharArray())));
+                linesToSkip++;
+            }
             Instruments = instruments.ToArray();
+            if (Instruments.Count() == 0) { throw new Exception("Song has no instruments"); }
 
             Tempo = 100;
             // Tempo = int.Parse(trackParams[1]);
 
-            TrackLines = lines.Skip(1).Take(lines.Length - 2).Where(line => line != "").ToArray();
+            TrackLines = lines.Skip(linesToSkip).Where(line => line != "").ToArray();
             trackIndex = 0;
         }
 
         public List<double[]> RenderNext(int frames) {
             Logger.Log("rendering started");
             var buffers = new List<double[]>();
-            var trackLine = TrackLines[trackIndex++];
-            var nodes = trackLine.Split(" ".ToCharArray());
-            // Logger.Log("rendering line: {0}", trackLine);
+            // only increment tracklines if there are still lines to read
+            // otherwise keep playing the triggers until they all finish
+            // FIXME: this shit
+            if (!EndOfTrack()) {
+                var trackLine = TrackLines[trackIndex++];
+                var nodes = trackLine.Split(" ".ToCharArray());
 
-            // update song state with new trackline
-            foreach (var node in nodes) {
-                if (node == "-") { continue; }
-                // 0,8,440
-                // instrument index, trigger length in track lines, frequency
-                var nodeParams = node.Split(",".ToCharArray());
-                var instrumentIndex = int.Parse(nodeParams[0]);
-                var triggerLength = double.Parse(nodeParams[1]);
-                var freq = int.Parse(nodeParams[2]);
-                Instruments[instrumentIndex].Activate((double)freq, MTime.FromMs((int)(Tempo * triggerLength)).Frames);
+                // update song state with new trackline
+                foreach (var nodeData in nodes) {
+                    if (nodeData == "-") { continue; }
+                    var node = Node.Parse(nodeData);
+                    Instruments[node.InstrumentIndex].Activate(node.Frequency, MTime.FromMs((int)(Tempo * node.Length)).Frames);
+                }
             }
 
             // render instruments

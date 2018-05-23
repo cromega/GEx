@@ -12,17 +12,23 @@ namespace Chirpesizer {
         }
 
         private Instrument CreateInstrument() {
-            var parts = InstrumentData.Split(":".ToCharArray());
-            var volume = double.Parse(parts[1]);
-            Envelope envelope = Envelope.Parse(parts[2]);
+            //2;0.5:1,0.2;20,20,0.5,20;
+            var parts = InstrumentData.Split(";".ToCharArray());
+            OscillatorType osc = OscillatorType.Sine;
             switch (parts[0]) {
                 case "0":
-                    return new Instrument(OscillatorType.Noise, volume, envelope);
+                    osc = OscillatorType.Noise;
+                    break;
                 case "1":
-                    return new Instrument(OscillatorType.Sine, volume, envelope);
+                    osc = OscillatorType.Sine;
+                    break;
                 case "2":
-                    return new Instrument(OscillatorType.Square, volume, envelope);
+                    osc = OscillatorType.Square;
+                    break;
             }
+            var volume = ValueParser.Parse(parts[1]);
+            Envelope envelope = Envelope.Parse(parts[2]);
+            return new Instrument(osc, volume, envelope);
 
             throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));
         }
