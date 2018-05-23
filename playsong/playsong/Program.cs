@@ -16,7 +16,7 @@ namespace playsong {
                 sound.AddBuffers(buffers);
             } while (!song.Ended());
 
-            //System.Threading.Thread.Sleep(300);
+            System.Threading.Thread.Sleep(300);
         }
     }
 }
