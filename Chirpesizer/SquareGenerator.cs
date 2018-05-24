@@ -8,7 +8,7 @@ namespace Chirpesizer {
 
         public SquareGenerator(IValue frequency) {
             Frequency = frequency;
-            PhaseIndex = 0;
+            PhaseIndex = new Random().Next(0, SineGenerator.LOOKUP_TABLE_LENGTH);
         }
 
         public void Fill(double[] buffer, int frames) {

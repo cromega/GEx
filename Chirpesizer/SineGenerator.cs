@@ -9,7 +9,7 @@ namespace Chirpesizer {
         private IValue Frequency;
 
         public SineGenerator(IValue frequency) {
-            PhaseIndex = 0;
+            PhaseIndex = new Random().Next(0, LOOKUP_TABLE_LENGTH);
             Frequency = frequency;
             Increment = LOOKUP_TABLE_LENGTH * Frequency.Get() / 44100;
         }
