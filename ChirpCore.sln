@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirpotle", "Chirpotle\Chir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirpesizer", "Chirpesizer\Chirpesizer.csproj", "{C56C3A68-AB8C-4CC6-8E21-709CD63379BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "playsong", "playsong\playsong\playsong.csproj", "{15314CF6-A6F3-481B-9E1A-4C674474A3E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "playsong", "playsong\playsong.csproj", "{15314CF6-A6F3-481B-9E1A-4C674474A3E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
