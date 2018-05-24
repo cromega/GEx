@@ -88,7 +88,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chirpesizer\Chirpesizer.csproj">
+    <ProjectReference Include="..\Chirpesizer\Chirpesizer.csproj">
       <Project>{c56c3a68-ab8c-4cc6-8e21-709cd63379bc}</Project>
       <Name>Chirpesizer</Name>
     </ProjectReference>
