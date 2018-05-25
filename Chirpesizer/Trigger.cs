@@ -6,28 +6,21 @@ namespace Chirpesizer {
         public int TTL;
         public int Age;
         public bool Ended;
-        public IValue Volume;
 
-        public Trigger(IGenerator osc, IValue volume, int length) {
+        public Trigger(IGenerator osc, int length) {
             Osc = osc;
             TTL = length;
             Age = 0;
-            Volume = volume;
             Ended = false;
         }
 
-        public void Update(int frames) {
-            TTL -= frames;
-            Age += frames;
+        public void Tick() {
+            TTL -= 1;
+            Age += 1;
         }
 
         public bool IsActive() {
             return TTL > 0;
-        }
-
-        public void End()
-        {
-            Ended = true;
         }
     }
 }

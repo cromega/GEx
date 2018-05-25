@@ -14,44 +14,25 @@ namespace Chirpesizer {
             Release = release;
         }
 
-        public void Modulate(double[] buffer, Trigger trigger) {
-            double value;
+        public double Next(int time, bool isActive) {
+            double value = 0;
             double phase;
-            for (int i = 0; i < buffer.Length / 2; i++) {
-                if (trigger.TTL > 0) {
-                    if (trigger.Age < Attack) {
-                        value = buffer[i * 2] * (trigger.Age / (double)Attack);
-                        buffer[i * 2] = value;
-                        buffer[i * 2 + 1] = value;
-                    }
-
-                    else if (trigger.Age <= Attack + Decay) {
-                        phase = (trigger.Age - Attack) / (double)Decay;
-                        value = buffer[i * 2] * (1.0 - phase * (1 - Sustain));
-                        buffer[i * 2] = value;
-                        buffer[i * 2 + 1] = value;
-                    }
-
-                    else if (trigger.Age > Attack + Decay) {
-                        value = buffer[i * 2] * Sustain;
-                        buffer[i * 2] = value;
-                        buffer[i * 2 + 1] = value;
-                    }
+            if (isActive) {
+                if (time < Attack) {
+                    value = time / (double)Attack;
+                } else if (time <= Attack + Decay) {
+                    phase = (time - Attack) / (double)Decay;
+                    value = (1.0 - phase * (1 - Sustain));
                 } else {
-                    if (Math.Abs(trigger.TTL) < Release) {
-                        phase = 1 - Math.Abs(trigger.TTL) / (double)Release;
-                        value = buffer[i * 2] * phase * Sustain;
-                        buffer[i * 2] = value;
-                        buffer[i * 2 + 1] = value;
-                    }
-                    else {
-                        trigger.End();
-                        buffer[i * 2] = 0;
-                        buffer[i * 2 + 1] = 0;
-                    }
+                    value = Sustain;
                 }
-                trigger.Update(1);
+            } else {
+                if (time < Release) {
+                    phase = 1 - time / (double)Release;
+                    value = phase * Sustain;
+                }
             }
+            return value;
         }
 
         public static Envelope Parse(string envelopeData) {
