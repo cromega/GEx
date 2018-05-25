@@ -27,7 +27,7 @@ namespace Chirpesizer {
                     break;
             }
             var volume = ValueParser.Parse(parts[1]);
-            Envelope envelope = Envelope.Parse(parts[2]);
+            Envelope envelope = Envelope.Decode(parts[2]);
             return new Instrument(osc, volume, envelope);
 
             throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));

@@ -35,21 +35,6 @@ namespace Chirpesizer {
             return value;
         }
 
-        public static Envelope Parse(string envelopeData) {
-            int attack, decay, release;
-            double sustain;
-            try {
-                var bits = envelopeData.Split(",".ToCharArray());
-                attack = MTime.FromMs(int.Parse(bits[0])).Frames;
-                decay = MTime.FromMs(int.Parse(bits[1])).Frames;
-                sustain = double.Parse(bits[2]);
-                release = MTime.FromMs(int.Parse(bits[3])).Frames;
-            } catch {
-                throw new Exception(String.Format("don't know how to create envelope from {0}", envelopeData));
-            }
-            return new Envelope(attack, decay, sustain, release);
-        }
-
         public string Encode() {
             return String.Format("{0},{1},{2},{3}", Attack, Decay, Sustain, Release);
         }
