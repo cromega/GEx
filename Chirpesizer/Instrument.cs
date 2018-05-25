@@ -17,8 +17,8 @@ namespace Chirpesizer {
         }
 
         public void Activate(IValue frequency, int length) {
-            var osc = Oscillator.Create(Osc, frequency);
-            var trig = new Trigger(osc, length);
+            var osc = new Oscillator(Osc);
+            var trig = new Trigger(osc, frequency, length);
             Triggers.Add(trig);
         }
 
@@ -26,7 +26,7 @@ namespace Chirpesizer {
             return (Triggers.Count > 0);
         }
 
-        public List<double[]> RenderAll(int frames) {
+        public List<double[]> RenderTriggers(int frames) {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
                 var buffer = new double[frames * 2];
@@ -34,7 +34,7 @@ namespace Chirpesizer {
                 length = Math.Min(length, frames);
                 double sample;
                 for (int i=0; i<length; i++) {
-                    sample = trigger.Osc.Next() * Volume.Get() * short.MaxValue * Envelope.Next(trigger.Age, trigger.IsActive());
+                    sample = trigger.Osc.Next(trigger.Frequency.Get()) * Volume.Get() * short.MaxValue * Envelope.Next(trigger.Age, trigger.IsActive());
                     buffer[i * 2] = sample;
                     buffer[i * 2 + 1] = sample;
                     trigger.Tick();

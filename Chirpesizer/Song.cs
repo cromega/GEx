@@ -52,7 +52,7 @@ namespace Chirpesizer {
 
             // render instruments
             Instruments.ToList().ForEach(instr => {
-                buffers.AddRange(instr.RenderAll(frames));             
+                buffers.AddRange(instr.RenderTriggers(frames));             
             });
 
             Logger.Log("rendering finished");

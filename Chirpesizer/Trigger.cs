@@ -2,13 +2,15 @@ using System;
 
 namespace Chirpesizer {
     public class Trigger {
-        public IGenerator Osc;
+        public Oscillator Osc;
+        public IValue Frequency;
         public int TTL;
         public int Age;
         public bool Ended;
 
-        public Trigger(IGenerator osc, int length) {
+        public Trigger(Oscillator osc, IValue frequency, int length) {
             Osc = osc;
+            Frequency = frequency;
             TTL = length;
             Age = 0;
             Ended = false;
