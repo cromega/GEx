@@ -34,8 +34,8 @@ namespace Chirpesizer {
                 length = Math.Min(length, frames);
                 double sample;
                 for (int i = 0; i < length; i++) {
-                    sample = trigger.Osc.Next(trigger.Frequency.Get(trigger.Age));
-                    sample *= Volume.Get(trigger.Age);
+                    sample = trigger.Osc.Next(trigger.Frequency.Get(trigger.Age, trigger.IsActive));
+                    sample *= Volume.Get(trigger.Age, trigger.IsActive);
                     sample *= short.MaxValue;
                     sample *= Envelope.Next(trigger.Age, trigger.IsActive);
                     buffer[i * 2] = sample;

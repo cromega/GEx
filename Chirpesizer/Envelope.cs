@@ -29,7 +29,7 @@ namespace Chirpesizer {
             } else {
                 if (Release == 0) {
                     value = 0;
-                } else {
+                } else if (time < Release) {
                     phase = 1 - Math.Abs(time) / (double)Release;
                     value = phase * Sustain;
                 }

@@ -65,6 +65,7 @@
     <Compile Include="TestEnvelope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestTrigger.cs" />
+    <Compile Include="TestValueParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

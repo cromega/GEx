@@ -2,6 +2,6 @@
 
 namespace Chirpesizer {
     public interface IValue {
-        double Get(int time);
+        double Get(int time, bool isActive);
     }
 }

@@ -31,5 +31,11 @@ namespace ChirpesizerTest {
             var e = new Envelope(5, 10, 0.5, 0);
             Assert.Equal(0, e.Next(1, false));
         }
+
+        [Fact]
+        public void WhenAgeIsHigherThanRelease() {
+            var e = new Envelope(5, 10, 0.5, 20);
+            Assert.Equal(0, e.Next(21, false));
+        }
     }
 }
