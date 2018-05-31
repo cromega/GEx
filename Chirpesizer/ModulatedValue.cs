@@ -11,14 +11,14 @@ namespace Chirpesizer {
         private double Height;
         public double Frequency;
 
-        public ModulatedValue(double initial, double frequency, double height) {
-            Value = initial;
+        public ModulatedValue(double startValue, double frequency, double height) {
+            Value = startValue;
             Height = height;
             Frequency = frequency;
             Osc = new Oscillator(OscillatorType.Sine);
         }
 
-        public double Get() {
+        public double Get(int time) {
             return Value + Osc.Next(Frequency) * Height;
         }
     }

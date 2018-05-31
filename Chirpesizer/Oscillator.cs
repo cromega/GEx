@@ -14,7 +14,7 @@ namespace Chirpesizer {
                 case OscillatorType.Square: Generator = Square; break;
             }
             Rnd = new Random();
-            PhaseIndex = Rnd.Next(0, LOOKUP_TABLE_LENGTH);
+            PhaseIndex = 0;
         }
 
         public double Next(double frequency) {

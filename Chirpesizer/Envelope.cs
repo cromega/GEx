@@ -20,18 +20,21 @@ namespace Chirpesizer {
             if (isActive) {
                 if (time < Attack) {
                     value = time / (double)Attack;
-                } else if (time <= Attack + Decay) {
+                } else if (time < Attack + Decay) {
                     phase = (time - Attack) / (double)Decay;
                     value = (1.0 - phase * (1 - Sustain));
                 } else {
                     value = Sustain;
                 }
             } else {
-                if (time < Release) {
-                    phase = 1 - time / (double)Release;
+                if (Release == 0) {
+                    value = 0;
+                } else {
+                    phase = 1 - Math.Abs(time) / (double)Release;
                     value = phase * Sustain;
                 }
             }
+            if (double.IsNaN(value) || double.IsInfinity(value)) { throw new Exception("value is NaN, check divisions"); }
             return value;
         }
 

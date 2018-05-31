@@ -7,7 +7,7 @@ namespace Chirpesizer {
             Value = value;
         }
 
-        public double Get() {
+        public double Get(int _) {
             return Value;
         }
     }

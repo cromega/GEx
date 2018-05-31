@@ -11,7 +11,10 @@ namespace Chirpesizer {
                 var frequencyParts = valueData.Split(":".ToCharArray());
                 var valueParts = frequencyParts[1].Split(",".ToCharArray());
                 //TODO: parse oscillator type as well?
-                return new ModulatedValue(double.Parse(frequencyParts[0]), double.Parse(valueParts[1]), double.Parse(valueParts[2]));
+                var value = double.Parse(frequencyParts[0]);
+                var frequency = double.Parse(valueParts[1]);
+                var oscillationHeight = double.Parse(valueParts[2]);
+                return new ModulatedValue(value, frequency, oscillationHeight);
             } else {
                 var value = double.Parse(valueData);
                 return new StaticValue(value);

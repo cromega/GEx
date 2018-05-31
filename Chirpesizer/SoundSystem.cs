@@ -52,5 +52,11 @@ namespace Chirpesizer {
             semaphore.WaitOne();
             semaphore.Reset();
         }
+
+        public void Close() {
+            sourceVoice.Dispose();
+            masteringVoice.Dispose();
+            XAudio.Dispose();
+        }
     }
 }

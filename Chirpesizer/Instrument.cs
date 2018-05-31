@@ -30,19 +30,21 @@ namespace Chirpesizer {
             var buffers = new List<double[]>();
             Triggers.ForEach(trigger => {
                 var buffer = new double[frames * 2];
-                var length = Math.Abs(trigger.TTL) + Envelope.Release;
+                var length = trigger.TTL + Envelope.Release;
                 length = Math.Min(length, frames);
                 double sample;
-                for (int i=0; i<length; i++) {
-                    sample = trigger.Osc.Next(trigger.Frequency.Get()) * Volume.Get() * short.MaxValue * Envelope.Next(trigger.Age, trigger.IsActive());
+                for (int i = 0; i < length; i++) {
+                    sample = trigger.Osc.Next(trigger.Frequency.Get(trigger.Age));
+                    sample *= Volume.Get(trigger.Age);
+                    sample *= short.MaxValue;
+                    sample *= Envelope.Next(trigger.Age, trigger.IsActive);
                     buffer[i * 2] = sample;
                     buffer[i * 2 + 1] = sample;
                     trigger.Tick();
                 }
-                if (!trigger.IsActive() && Math.Abs(trigger.TTL) > Envelope.Decay) { trigger.Ended = true; }
                 buffers.Add(buffer);
             });
-            Triggers.RemoveAll(trigger => trigger.Ended);
+            Triggers.RemoveAll(trigger => !trigger.IsActive && trigger.Age >= Envelope.Release);
 
             return buffers;
         }

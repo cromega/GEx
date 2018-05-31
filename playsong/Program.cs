@@ -26,6 +26,7 @@ namespace playsong {
             ww.Close();
 
             System.Threading.Thread.Sleep(300);
+            audioOutput.Close();
         }
 
         public static short[] MixBuffers(List<double[]> buffers) {
