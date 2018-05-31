@@ -17,5 +17,17 @@ namespace Chirpesizer {
             var frequency = ValueParser.Parse(parts[2]);
             return new Node() { InstrumentIndex = index, Length = length, Frequency = frequency };
         }
+
+        public static Node[] ParseAll(string line) {
+            var nodes = new List<Node>();
+            if (line == "-") { return nodes.ToArray(); }
+
+            var nodeDescriptions = line.Split(" ".ToCharArray());
+            foreach(string nodeDescription in nodeDescriptions) {
+                nodes.Add(Parse(nodeDescription));
+            }
+
+            return nodes.ToArray();
+        }
     }
 }

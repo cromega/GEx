@@ -40,13 +40,12 @@ namespace Chirpesizer {
             // FIXME: this shit
             if (!EndOfTrack()) {
                 var trackLine = TrackLines[trackIndex++];
-                var nodes = trackLine.Split(" ".ToCharArray());
 
                 // update song state with new trackline
-                foreach (var nodeData in nodes) {
-                    if (nodeData == "-") { continue; }
-                    var node = Node.Parse(nodeData);
-                    Instruments[node.InstrumentIndex].Activate(node.Frequency, MTime.FromMs((int)(Tempo * node.Length)).Frames);
+                var nodes = Node.ParseAll(trackLine);
+                foreach (var trigger in nodes) {
+                    var lengthInSamples = MTime.FromMs((int)(Tempo * trigger.Length)).Frames;
+                    Instruments[trigger.InstrumentIndex].Activate(trigger.Frequency, lengthInSamples);
                 }
             }
 
