@@ -28,5 +28,10 @@ namespace Chirpesizer {
             }
             Age += 1;
         }
+
+        public void End() {
+            _IsActive = false;
+            Age = 0;
+        }
     }
 }
