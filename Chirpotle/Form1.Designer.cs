@@ -1,4 +1,4 @@
-﻿namespace Chirpotle {
+namespace Chirpotle {
     partial class Form1 {
         /// <summary>
         /// Required designer variable.

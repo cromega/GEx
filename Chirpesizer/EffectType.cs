@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chirpesizer {
-    public interface IEncodable {
-        string Encode();
+    enum EffectType : int {
+        Tremolo = 0,
+        Vibrato = 1,
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Chirpotle {
+namespace Chirpotle {
     partial class InstrumentEditor {
         /// <summary>
         /// Required designer variable.

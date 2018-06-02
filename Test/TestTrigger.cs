@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Chirpesizer;
 using Xunit;
 
