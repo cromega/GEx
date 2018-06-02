@@ -46,6 +46,10 @@ namespace Chirpesizer {
                 }
             });
 
+            if (effects.Any(eff => eff.GetEffectType() == EffectType.Vibrato) && effects.Any(eff => eff.GetEffectType() == EffectType.PitchEnvelope)) {
+                throw new Exception("Can't have vibrato and pitch envelope at the same time");
+            }
+
             return effects;
         }
     }
