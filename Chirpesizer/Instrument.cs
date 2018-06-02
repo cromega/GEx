@@ -19,31 +19,28 @@ namespace Chirpesizer {
             Effects = effects;
         }
 
-        public void Activate(double frequency, int length) {
+        public Trigger Activate(double frequency, int length) {
             var freq = GetFreqencyWithEffects(frequency);
             var osc = new Oscillator(Osc);
             var trig = new Trigger(osc, freq, length);
             Triggers.Add(trig);
+            return trig;
         }
 
         private IValue GetFreqencyWithEffects(double frequency) {
             IValue freq;
-            IEffect effect;
-            effect = Effects.Find(eff => eff.GetEffectType() == EffectType.Vibrato);
-            if (effect != null) {
-                var vibrato = (Vibrato)effect;
-                freq = new ModulatedValue(frequency, vibrato.Osc, vibrato.Frequency, vibrato.Height); 
+            var vibrato = Effects.Find(eff => eff.GetEffectType() == EffectType.Vibrato);
+            var PitchEnvelope = Effects.Find(eff => eff.GetEffectType() == EffectType.PitchEnvelope);
+            if (vibrato != null) {
+                var effect = (Vibrato)vibrato;
+                freq = new ModulatedValue(frequency, effect.Osc, effect.Frequency, effect.Height);
+            } else if (PitchEnvelope != null) {
+                var effect = (PitchEnvelope)PitchEnvelope;
+                freq = new ModulatedValue(frequency, effect.Envelope);
             } else {
                 freq = new StaticValue(frequency);
             }
 
-            effect = Effects.Find(eff => eff.GetEffectType() == EffectType.PitchEnvelope);
-            if (effect != null) {
-                var pitch = (PitchEnvelope)effect;
-                freq = new ModulatedValue(frequency, pitch.Envelope);
-            } else {
-                freq = new StaticValue(frequency);
-            }
             return freq;
         }
 
