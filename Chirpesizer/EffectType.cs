@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Chirpesizer {
-    enum EffectType : int {
+    public enum EffectType : int {
         Tremolo = 0,
         Vibrato = 1,
+        PitchEnvelope = 2,
     }
 }

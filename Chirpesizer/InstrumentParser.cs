@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using Chirpesizer.Effects;
+using System.Collections.Generic;
 
 namespace Chirpesizer {
     public class InstrumentParser {
@@ -12,7 +15,6 @@ namespace Chirpesizer {
         }
 
         private Instrument CreateInstrument() {
-            //2;0.5:1,0.2;20,20,0.5,20;
             var parts = InstrumentData.Split(";".ToCharArray());
             OscillatorType osc = OscillatorType.Sine;
             switch (parts[0]) {
@@ -28,9 +30,23 @@ namespace Chirpesizer {
             }
             var volume = ValueParser.Parse(parts[1]);
             Envelope envelope = Envelope.Decode(parts[2]);
-            return new Instrument(osc, volume, envelope);
+            var effects = ParseEffects(parts.Skip(3));
+            return new Instrument(osc, volume, envelope, effects);
 
             throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));
+        }
+
+        private List<IEffect> ParseEffects(IEnumerable<string> effectsData) {
+            var effects = new List<IEffect>();
+            effectsData.ToList().ForEach(effect => {
+                var effectType = effect.Substring(0, 1);
+                switch (effectType) {
+                    case "1": effects.Add(Vibrato.Parse(effect.Substring(1))); break;
+                    case "2": effects.Add(PitchEnvelope.Parse(effect.Substring(1))); break;
+                }
+            });
+
+            return effects;
         }
     }
 }

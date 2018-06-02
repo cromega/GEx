@@ -2,7 +2,7 @@ using System;
 using Chirpesizer;
 using Xunit;
 
-namespace ChirpesizerTest {
+namespace Test {
     public class TestEnvelope {
 
         [Fact]

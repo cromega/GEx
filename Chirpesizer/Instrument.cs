@@ -1,25 +1,50 @@
 using System;
 using System.Collections.Generic;
+using Chirpesizer.Effects;
 
 
 namespace Chirpesizer {
     public class Instrument {
-        private OscillatorType Osc;
-        private Envelope Envelope;
-        private IValue Volume;
+        public readonly OscillatorType Osc;
+        public readonly Envelope Envelope;
+        public readonly IValue Volume;
         private List<Trigger> Triggers;
+        public readonly List<IEffect> Effects;
 
-        public Instrument(OscillatorType osc, IValue volume, Envelope envelope) {
+        public Instrument(OscillatorType osc, IValue volume, Envelope envelope, List<IEffect> effects) {
             Osc = osc;
             Volume = volume;
             Envelope = envelope;        
             Triggers = new List<Trigger>();
+            Effects = effects;
         }
 
-        public void Activate(IValue frequency, int length) {
+        public void Activate(double frequency, int length) {
+            var freq = GetFreqencyWithEffects(frequency);
             var osc = new Oscillator(Osc);
-            var trig = new Trigger(osc, frequency, length);
+            var trig = new Trigger(osc, freq, length);
             Triggers.Add(trig);
+        }
+
+        private IValue GetFreqencyWithEffects(double frequency) {
+            IValue freq;
+            IEffect effect;
+            effect = Effects.Find(eff => eff.GetEffectType() == EffectType.Vibrato);
+            if (effect != null) {
+                var vibrato = (Vibrato)effect;
+                freq = new ModulatedValue(frequency, vibrato.Osc, vibrato.Frequency, vibrato.Height); 
+            } else {
+                freq = new StaticValue(frequency);
+            }
+
+            effect = Effects.Find(eff => eff.GetEffectType() == EffectType.PitchEnvelope);
+            if (effect != null) {
+                var pitch = (PitchEnvelope)effect;
+                freq = new ModulatedValue(frequency, pitch.Envelope);
+            } else {
+                freq = new StaticValue(frequency);
+            }
+            return freq;
         }
 
         public bool IsActive() {

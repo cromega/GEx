@@ -8,13 +8,13 @@ namespace Chirpesizer {
     public struct Node {
         public int InstrumentIndex;
         public double Length;
-        public IValue Frequency;
+        public double Frequency;
         
         public static Node Parse(string data) {
             var parts = data.Split(";".ToCharArray());
             var index = int.Parse(parts[0]);
             var length = double.Parse(parts[1]);
-            var frequency = ValueParser.Parse(parts[2]);
+            var frequency = double.Parse(parts[2]);
             return new Node() { InstrumentIndex = index, Length = length, Frequency = frequency };
         }
 
