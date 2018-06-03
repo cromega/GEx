@@ -40,9 +40,10 @@ namespace Test {
         [Fact]
         public void TestParseInstrumentThrowsErrorIfVibratoAndPitchEnvelopeAreDefined() {
             var instrumentData = "1;0.5:l1,10,0.5;10,20,0.5,30;11,10,50;210,20,0.5,30";
-            Assert.Throws<Exception>(() => {
+            var ex = Assert.Throws<Exception>(() => {
                 InstrumentParser.Parse(instrumentData);
             });
+            Assert.Equal("Can't have vibrato and pitch envelope at the same time", ex.Message);
         }
     }
 }
