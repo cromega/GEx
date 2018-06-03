@@ -25,9 +25,9 @@ namespace Chirpotle {
         private void InitializeComponent() {
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.AddInstrumentButton = new System.Windows.Forms.Button();
-            this.EditInstrumentButton = new System.Windows.Forms.Button();
             this.InstrumentSelector = new System.Windows.Forms.ListBox();
+            this.EditInstrumentButton = new System.Windows.Forms.Button();
+            this.AddInstrumentButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,15 +53,13 @@ namespace Chirpotle {
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Instruments";
             // 
-            // AddInstrumentButton
+            // InstrumentSelector
             // 
-            this.AddInstrumentButton.Location = new System.Drawing.Point(132, 19);
-            this.AddInstrumentButton.Name = "AddInstrumentButton";
-            this.AddInstrumentButton.Size = new System.Drawing.Size(75, 23);
-            this.AddInstrumentButton.TabIndex = 12;
-            this.AddInstrumentButton.Text = "Add";
-            this.AddInstrumentButton.UseVisualStyleBackColor = true;
-            this.AddInstrumentButton.Click += new System.EventHandler(this.AddInstrumentButton_Click);
+            this.InstrumentSelector.FormattingEnabled = true;
+            this.InstrumentSelector.Location = new System.Drawing.Point(6, 19);
+            this.InstrumentSelector.Name = "InstrumentSelector";
+            this.InstrumentSelector.Size = new System.Drawing.Size(120, 95);
+            this.InstrumentSelector.TabIndex = 14;
             // 
             // EditInstrumentButton
             // 
@@ -73,13 +71,15 @@ namespace Chirpotle {
             this.EditInstrumentButton.UseVisualStyleBackColor = true;
             this.EditInstrumentButton.Click += new System.EventHandler(this.EditInstrumentButton_Click);
             // 
-            // InstrumentSelector
+            // AddInstrumentButton
             // 
-            this.InstrumentSelector.FormattingEnabled = true;
-            this.InstrumentSelector.Location = new System.Drawing.Point(6, 19);
-            this.InstrumentSelector.Name = "InstrumentSelector";
-            this.InstrumentSelector.Size = new System.Drawing.Size(120, 95);
-            this.InstrumentSelector.TabIndex = 14;
+            this.AddInstrumentButton.Location = new System.Drawing.Point(132, 19);
+            this.AddInstrumentButton.Name = "AddInstrumentButton";
+            this.AddInstrumentButton.Size = new System.Drawing.Size(75, 23);
+            this.AddInstrumentButton.TabIndex = 12;
+            this.AddInstrumentButton.Text = "Add";
+            this.AddInstrumentButton.UseVisualStyleBackColor = true;
+            this.AddInstrumentButton.Click += new System.EventHandler(this.AddInstrumentButton_Click);
             // 
             // Form1
             // 

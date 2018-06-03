@@ -7,56 +7,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Chirpesizer;
+using Chirpesizer.Effects;
 
 namespace Chirpotle {
     public partial class InstrumentEditor : Form {
-        public string InstrumentData;
+        public Instrument Instrument;
+        public string InstrumentName;
 
         public InstrumentEditor() {
             InitializeComponent();
         }
 
         private void SaveButton_Click(object sender, EventArgs e) {
-            var instr = new StringBuilder();
-            if (SineGeneratorButton.Checked) {
-                instr.Append("1:");
-            } else if (SquareGeneratorButton.Checked) {
-                instr.Append("2:");
-            } else if (NoiseGeneratorButton.Checked) {
-                instr.Append("0:");
-            }
-            instr.AppendFormat("{0}:", VolumeValue.Value);
-            instr.AppendFormat("{0},{1},{2},{3}:", AttackValue.Value, DecayValue.Value, SustainValue.Value, ReleaseValue.Value);
-            
-            if (LFO1OnCheckbox.Checked) {
-                instr.AppendFormat("l");
-                if (LFO1SineGeneratorButton.Checked) {
-                    instr.Append("1-");
-                } else if (LFO1SquareGeneratorButton.Checked) {
-                    instr.Append("2-");
-                } else if (LFO1NoiseGeneratorButton.Checked) {
-                    instr.Append("0-");
-                }
-                instr.AppendFormat("{0}-", LFO1FrequencyValue.Value);
-                instr.Append(LFO1RoutingSelector.SelectedIndex);
-            }
-            instr.Append(":");
-            if (LFO2OnCheckbox.Checked) {
-                instr.AppendFormat("l");
-                if (LFO2SineGeneratorButton.Checked) {
-                    instr.Append("1-");
-                } else if (LFO2SquareGeneratorButton.Checked) {
-                    instr.Append("2-");
-                } else if (LFO2NoiseGeneratorButton.Checked) {
-                    instr.Append("0-");
-                }
-                instr.AppendFormat("{0}-", LFO2FrequencyValue.Value);
-                instr.Append(LFO2RoutingSelector.SelectedIndex);
+            if (NameEdit.Text == "") {
+                MessageBox.Show("Specify a name");
+                return;
             }
 
-            InstrumentData = instr.ToString();
-            DialogResult = DialogResult.OK;
-            Close();
+            var envelope = new Envelope(
+                MTime.FromMs(envelopeControl1.Attack).Frames,
+                MTime.FromMs(envelopeControl1.Decay).Frames,
+                envelopeControl1.Sustain,
+                MTime.FromMs(envelopeControl1.Release).Frames
+                );
+
+            InstrumentName = NameEdit.Text;
+            Instrument = new Instrument(waveSelector1.SignalType, new StaticValue(Convert.ToDouble(VolumeValue.Value)), envelope, new List<IEffect>());
         }
     }
 }
