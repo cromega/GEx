@@ -3,7 +3,8 @@ using System;
 namespace Chirpesizer {
     public class Trigger {
         public readonly Oscillator Osc;
-        public readonly IValue Frequency;
+        public readonly PatchableValue Frequency;
+        public readonly PatchableValue Volume;
 
         private int _TTL;
         public int TTL { get { return _TTL; } }
@@ -15,12 +16,19 @@ namespace Chirpesizer {
             get { return _IsActive; }
         }
 
-        public Trigger(Oscillator osc, IValue frequency, int length) {
+        private bool _Finished;
+        public bool Finished {
+            get { return _Finished; }
+        }
+
+        public Trigger(Oscillator osc, PatchableValue frequency, int length, PatchableValue volume) {
             Osc = osc;
             Frequency = frequency;
             _TTL = length;
             _Age = 0;
             _IsActive = true;
+            Volume = volume;
+            _Finished = false;
         }
 
         public void Tick() {
@@ -35,6 +43,22 @@ namespace Chirpesizer {
         public void End() {
             _IsActive = false;
             _Age = 0;
+        }
+
+        public double[] Render(int frames) {
+            var buffer = new double[frames * 2];
+            double sample;
+            for (int i = 0; i < frames; i++) {
+                sample = Osc.Next(Frequency.Get(Age, IsActive));
+                sample *= Volume.Get(Age, IsActive);
+                sample *= short.MaxValue;
+                //sample *= Envelope.Next(trigger.Age, trigger.IsActive); patchable volume should cover this one
+                buffer[i * 2] = sample;
+                buffer[i * 2 + 1] = sample;
+                if (!_IsActive && Age >= MTime.FromMs(Envelope.MAX_TIME).Frames) { _Finished = true; }
+                Tick();
+            }
+            return buffer;
         }
     }
 }

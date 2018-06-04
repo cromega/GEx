@@ -2,6 +2,8 @@ using System;
 
 namespace Chirpesizer {
     public class Envelope : IEncodable {
+        public const int MAX_TIME = 1000;
+
         public readonly int Attack ;
         public readonly int Decay;
         public readonly double Sustain;

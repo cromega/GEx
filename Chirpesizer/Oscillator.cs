@@ -6,8 +6,10 @@ namespace Chirpesizer {
         private double Increment;
         Func<double> Generator;
         private Random Rnd;
+        public readonly OscillatorType OscillatorType;
 
         public Oscillator(OscillatorType type) {
+            OscillatorType = type;
             switch (type) {
                 case OscillatorType.Noise: Generator = Noise; break;
                 case OscillatorType.Sine: Generator = Sine; break;

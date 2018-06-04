@@ -9,6 +9,7 @@ namespace Chirpesizer {
         private string[] TrackLines;
         private int trackIndex;
         public readonly int Tempo;
+        public List<Trigger> Triggers;
 
         public Song(string SongData) {
             var instruments = new List<Instrument>();
@@ -30,6 +31,7 @@ namespace Chirpesizer {
 
             TrackLines = lines.Skip(linesToSkip).Where(line => line != "").ToArray();
             trackIndex = 0;
+            Triggers = new List<Trigger>();
         }
 
         public List<double[]> RenderNext(int frames) {
@@ -45,14 +47,15 @@ namespace Chirpesizer {
                 var nodes = Node.ParseAll(trackLine);
                 foreach (var trigger in nodes) {
                     var lengthInSamples = MTime.FromMs((int)(Tempo * trigger.Length)).Frames;
-                    Instruments[trigger.InstrumentIndex].Activate(trigger.Frequency, lengthInSamples);
+                    Triggers.Add(Instruments[trigger.InstrumentIndex].Activate(trigger.Frequency, lengthInSamples));
                 }
             }
 
             // render instruments
-            Instruments.ToList().ForEach(instr => {
-                buffers.AddRange(instr.RenderTriggers(frames));             
+            Triggers.ForEach(trigger => {
+                buffers.Add(trigger.Render(4410));
             });
+            Triggers.RemoveAll(trigger => trigger.Finished);
 
             Logger.Log("rendering finished");
             return buffers;
@@ -68,7 +71,7 @@ namespace Chirpesizer {
         }
 
         private bool NoInstrumentsPlaying() {
-            return !Instruments.Any(inst => inst.IsActive());
+            return Triggers.Count() == 0;
         }
     }
 }
