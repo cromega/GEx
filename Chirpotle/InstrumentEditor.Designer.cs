@@ -29,15 +29,23 @@ namespace Chirpotle {
             this.VolumeValue = new System.Windows.Forms.NumericUpDown();
             this.NameEdit = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.TestPanel = new System.Windows.Forms.Panel();
             this.waveSelector1 = new Chirpotle.WaveSelector();
+            this.EffectsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modlulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainEnvelope = new Chirpotle.EnvelopeControl();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(250, 14);
+            this.SaveButton.Location = new System.Drawing.Point(629, 42);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 7;
@@ -102,14 +110,14 @@ namespace Chirpotle {
             this.label2.TabIndex = 15;
             this.label2.Text = "Name";
             // 
-            // panel2
+            // TestPanel
             // 
-            this.panel2.BackColor = System.Drawing.Color.YellowGreen;
-            this.panel2.Location = new System.Drawing.Point(45, 278);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(669, 71);
-            this.panel2.TabIndex = 16;
-            this.panel2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseClick);
+            this.TestPanel.BackColor = System.Drawing.Color.YellowGreen;
+            this.TestPanel.Location = new System.Drawing.Point(38, 487);
+            this.TestPanel.Name = "TestPanel";
+            this.TestPanel.Size = new System.Drawing.Size(669, 71);
+            this.TestPanel.TabIndex = 16;
+            this.TestPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseClick);
             // 
             // waveSelector1
             // 
@@ -118,13 +126,68 @@ namespace Chirpotle {
             this.waveSelector1.Size = new System.Drawing.Size(150, 29);
             this.waveSelector1.TabIndex = 10;
             // 
+            // EffectsPanel
+            // 
+            this.EffectsPanel.AutoScroll = true;
+            this.EffectsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.EffectsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EffectsPanel.Location = new System.Drawing.Point(3, 40);
+            this.EffectsPanel.Name = "EffectsPanel";
+            this.EffectsPanel.Size = new System.Drawing.Size(666, 251);
+            this.EffectsPanel.TabIndex = 17;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.EffectsPanel);
+            this.groupBox1.Controls.Add(this.menuStrip1);
+            this.groupBox1.Location = new System.Drawing.Point(35, 187);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(672, 294);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Patch panel";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(3, 16);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(666, 24);
+            this.menuStrip1.TabIndex = 18;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.modlulatorsToolStripMenuItem});
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.addToolStripMenuItem.Text = "Add";
+            // 
+            // modlulatorsToolStripMenuItem
+            // 
+            this.modlulatorsToolStripMenuItem.Name = "modlulatorsToolStripMenuItem";
+            this.modlulatorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modlulatorsToolStripMenuItem.Text = "Modlulators";
+            // 
+            // MainEnvelope
+            // 
+            this.MainEnvelope.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainEnvelope.Location = new System.Drawing.Point(234, 12);
+            this.MainEnvelope.Name = "MainEnvelope";
+            this.MainEnvelope.Size = new System.Drawing.Size(189, 169);
+            this.MainEnvelope.TabIndex = 19;
+            // 
             // InstrumentEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1059, 740);
             this.ControlBox = false;
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.MainEnvelope);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.TestPanel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.NameEdit);
             this.Controls.Add(this.panel1);
@@ -138,6 +201,10 @@ namespace Chirpotle {
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,6 +218,12 @@ namespace Chirpotle {
         private System.Windows.Forms.NumericUpDown VolumeValue;
         private System.Windows.Forms.TextBox NameEdit;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel TestPanel;
+        private System.Windows.Forms.FlowLayoutPanel EffectsPanel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modlulatorsToolStripMenuItem;
+        private EnvelopeControl MainEnvelope;
     }
 }

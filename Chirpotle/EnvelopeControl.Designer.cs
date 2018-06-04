@@ -73,6 +73,11 @@
             this.SustainValue.Name = "SustainValue";
             this.SustainValue.Size = new System.Drawing.Size(120, 20);
             this.SustainValue.TabIndex = 8;
+            this.SustainValue.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             // 
             // ReleaseValue
             // 
@@ -180,9 +185,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.groupBox1);
             this.Name = "EnvelopeControl";
-            this.Size = new System.Drawing.Size(207, 171);
+            this.Size = new System.Drawing.Size(189, 169);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SustainValue)).EndInit();

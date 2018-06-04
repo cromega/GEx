@@ -13,10 +13,12 @@ namespace Chirpotle {
 
         private SoundSystem Audio;
         private List<Trigger> Triggers;
+        private bool LoopStop;
 
         public Triggerer() {
             Audio = new SoundSystem(2205);
             Triggers = new List<Trigger>();
+            LoopStop = false;
             var thread = new Thread(new ThreadStart(TriggerLoop));
             thread.Start();
 
@@ -27,6 +29,7 @@ namespace Chirpotle {
             var converter = new Converter();
 
             while (true) {
+                if (LoopStop) { break; }
                 if (Triggers.Count == 0) {
                     Thread.Sleep(10);
                     continue;
@@ -49,6 +52,10 @@ namespace Chirpotle {
                     Triggers.RemoveAll(trig => trig.Finished);
                 }
             }
+        }
+
+        public void Stop() {
+            LoopStop = true;
         }
 
         public static Triggerer Instance {

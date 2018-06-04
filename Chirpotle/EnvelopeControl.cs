@@ -31,8 +31,8 @@ namespace Chirpotle {
         }
 
         public EnvelopeControl(string title) {
-            groupBox1.Text = title;
             InitializeComponent();
+            groupBox1.Text = title;
         }
     }
 }

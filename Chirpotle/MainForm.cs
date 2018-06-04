@@ -28,6 +28,8 @@ namespace Chirpotle {
         private void AddInstrumentButton_Click(object sender, EventArgs e) {
             using (var instrcreator = new InstrumentEditor()) {
                 instrcreator.ShowDialog();
+                if (instrcreator.DialogResult != DialogResult.OK) { return; }
+
                 Instruments.Add(instrcreator.Instrument);
                 InstrumentSelector.Items.Add(instrcreator.InstrumentName);   
             }

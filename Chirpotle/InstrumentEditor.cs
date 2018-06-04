@@ -28,7 +28,7 @@ namespace Chirpotle {
 
             InstrumentName = NameEdit.Text;
             Instrument = CreateInstrument();
-            //Instrument = new Instrument(waveSelector1.SignalType, new StaticValue(Convert.ToDouble(VolumeValue.Value)), envelope, new List<IEffect>());
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -54,13 +54,18 @@ namespace Chirpotle {
 
 
         private void InstrumentEditor_KeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyData == Keys.Escape) {
+                DialogResult = DialogResult.Cancel;
+                InstrumentPlayer.Stop();
+                Close();
+            }
+
             if (Pressedkeys.Contains(e.KeyData)) { return; }
             Pressedkeys.Add(e.KeyData);
-            if (!panel2.Focused) { e.Handled = true; return; }
+            if (!TestPanel.Focused) { e.Handled = true; return; }
             if (!KeysToNotes.ContainsKey(e.KeyData)) {
                 return;
             }
-            Debug.WriteLine("keydowned");
 
             var instru = CreateInstrument();
             var trigger = instru.Activate(KeysToNotes[e.KeyData] * Math.Pow(2, 4), -1);
@@ -70,7 +75,7 @@ namespace Chirpotle {
 
         private void InstrumentEditor_KeyUp(object sender, KeyEventArgs e) {
             Pressedkeys.Remove(e.KeyData);
-            if (!panel2.Focused) { e.Handled = true; return; }
+            if (!TestPanel.Focused) { e.Handled = true; return; }
             if (!KeysToNotes.ContainsKey(e.KeyData)) {
                 return;
             }
@@ -85,11 +90,13 @@ namespace Chirpotle {
         }
 
         private Instrument CreateInstrument() {
-            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, new List<IModulator>());
+            var envelope = new Envelope(MTime.FromMs(MainEnvelope.Attack).Frames, MTime.FromMs(MainEnvelope.Decay).Frames, MainEnvelope.Sustain, MTime.FromMs(MainEnvelope.Release).Frames);
+            var volumeEnvelope = new EnvelopeModulator(envelope, "v");
+            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, new List<IModulator>() { volumeEnvelope });
         }
 
         private void panel2_MouseClick(object sender, MouseEventArgs e) {
-            panel2.Focus();
+            TestPanel.Focus();
         }
     }
 }
