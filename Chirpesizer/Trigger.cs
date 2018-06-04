@@ -52,7 +52,6 @@ namespace Chirpesizer {
                 sample = Osc.Next(Frequency.Get(Age, IsActive));
                 sample *= Volume.Get(Age, IsActive);
                 sample *= short.MaxValue;
-                //sample *= Envelope.Next(trigger.Age, trigger.IsActive); patchable volume should cover this one
                 buffer[i * 2] = sample;
                 buffer[i * 2 + 1] = sample;
                 if (!_IsActive && Age >= MTime.FromMs(Envelope.MAX_TIME).Frames) { _Finished = true; }
