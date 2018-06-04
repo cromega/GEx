@@ -20,7 +20,7 @@ namespace Chirpotle {
         }
 
         private OscillatorType GetSignalType() {
-            switch (comboBox1.SelectedText) {
+            switch (comboBox1.SelectedItem) {
                 case "Noise": return OscillatorType.Noise;
                 case "Sine": return OscillatorType.Sine;
                 case "Square": return OscillatorType.Square;

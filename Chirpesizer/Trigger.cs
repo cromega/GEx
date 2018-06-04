@@ -40,7 +40,7 @@ namespace Chirpesizer {
             _Age += 1;
         }
 
-        public void End() {
+        public void Release() {
             _IsActive = false;
             _Age = 0;
         }

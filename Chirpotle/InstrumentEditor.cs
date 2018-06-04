@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -25,15 +26,70 @@ namespace Chirpotle {
                 return;
             }
 
-            var envelope = new Envelope(
-                MTime.FromMs(envelopeControl1.Attack).Frames,
-                MTime.FromMs(envelopeControl1.Decay).Frames,
-                envelopeControl1.Sustain,
-                MTime.FromMs(envelopeControl1.Release).Frames
-                );
-
             InstrumentName = NameEdit.Text;
-            Instrument = new Instrument(waveSelector1.SignalType, new StaticValue(Convert.ToDouble(VolumeValue.Value)), envelope, new List<IEffect>());
+            Instrument = CreateInstrument();
+            //Instrument = new Instrument(waveSelector1.SignalType, new StaticValue(Convert.ToDouble(VolumeValue.Value)), envelope, new List<IEffect>());
+            Close();
+        }
+
+
+        private Dictionary<Keys, double> KeysToNotes = new Dictionary<Keys, double>() {
+            { Keys.Q, 16.35 },
+            { Keys.A, 17.32 },
+            { Keys.W, 18.35 },
+            { Keys.S, 19.45 },
+            { Keys.E, 20.60 },
+            { Keys.R, 21.83 },
+            { Keys.F, 23.12 },
+            { Keys.T, 24.50 },
+            { Keys.G, 25.96 },
+            { Keys.Y, 27.50 },
+            { Keys.H, 29.14 },
+            { Keys.U, 30.87 },
+        };
+
+        private Dictionary<Keys, Trigger> ActiveTriggers = new Dictionary<Keys, Trigger>();
+        private Triggerer InstrumentPlayer = new Triggerer();
+        private HashSet<Keys> Pressedkeys = new HashSet<Keys>();
+
+
+        private void InstrumentEditor_KeyDown(object sender, KeyEventArgs e) {
+            if (Pressedkeys.Contains(e.KeyData)) { return; }
+            Pressedkeys.Add(e.KeyData);
+            if (!panel2.Focused) { e.Handled = true; return; }
+            if (!KeysToNotes.ContainsKey(e.KeyData)) {
+                return;
+            }
+            Debug.WriteLine("keydowned");
+
+            var instru = CreateInstrument();
+            var trigger = instru.Activate(KeysToNotes[e.KeyData] * Math.Pow(2, 4), -1);
+            ActiveTriggers[e.KeyData] = trigger;
+            InstrumentPlayer.Add(trigger);
+        }
+
+        private void InstrumentEditor_KeyUp(object sender, KeyEventArgs e) {
+            Pressedkeys.Remove(e.KeyData);
+            if (!panel2.Focused) { e.Handled = true; return; }
+            if (!KeysToNotes.ContainsKey(e.KeyData)) {
+                return;
+            }
+
+            var trigger = ActiveTriggers[e.KeyData];
+            if (trigger != null) {
+                trigger.Release();
+                ActiveTriggers.Remove(e.KeyData);
+            } else {
+                throw new Exception("wtf");
+            }
+        }
+
+        private Instrument CreateInstrument() {
+            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, new List<IModulator>());
+        }
+
+        private void panel2_MouseClick(object sender, MouseEventArgs e) {
+            panel2.Focus();
         }
     }
 }

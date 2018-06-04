@@ -21,6 +21,8 @@ namespace Chirpesizer {
         }
 
         public double Get(int time, bool isActive) {
+            if (Modulators.Count == 0 && !isActive) { return 0; }
+
             var value = Value;
             Modulators.ForEach(mod => {
                 value *= mod.Get(time, isActive);
