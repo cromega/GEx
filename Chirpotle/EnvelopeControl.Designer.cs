@@ -49,7 +49,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 18);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(180, 136);
             this.groupBox1.TabIndex = 0;
@@ -188,7 +188,7 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.groupBox1);
             this.Name = "EnvelopeControl";
-            this.Size = new System.Drawing.Size(189, 169);
+            this.Size = new System.Drawing.Size(189, 146);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SustainValue)).EndInit();

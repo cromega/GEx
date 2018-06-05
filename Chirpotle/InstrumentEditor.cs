@@ -120,5 +120,8 @@ namespace Chirpotle {
             }
             return modulators;
         }
+
+        private void InstrumentEditor_Load(object sender, EventArgs e) {
+        }
     }
 }

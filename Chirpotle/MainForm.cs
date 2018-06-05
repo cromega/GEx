@@ -20,6 +20,7 @@ namespace Chirpotle {
         private void Form1_Load(object sender, EventArgs e) {
             Sound = new SoundSystem(4410);
             Instruments = new List<Instrument>();
+            
         }
 
         private void button1_Click(object sender, EventArgs e) {

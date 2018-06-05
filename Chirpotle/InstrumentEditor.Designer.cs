@@ -30,7 +30,6 @@ namespace Chirpotle {
             this.NameEdit = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.TestPanel = new System.Windows.Forms.Panel();
-            this.waveSelector1 = new Chirpotle.WaveSelector();
             this.EffectsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -38,6 +37,7 @@ namespace Chirpotle {
             this.modlulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lFOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainEnvelope = new Chirpotle.EnvelopeControl();
+            this.waveSelector1 = new Chirpotle.WaveSelector();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -120,13 +120,6 @@ namespace Chirpotle {
             this.TestPanel.TabIndex = 16;
             this.TestPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseClick);
             // 
-            // waveSelector1
-            // 
-            this.waveSelector1.Location = new System.Drawing.Point(28, 42);
-            this.waveSelector1.Name = "waveSelector1";
-            this.waveSelector1.Size = new System.Drawing.Size(150, 29);
-            this.waveSelector1.TabIndex = 10;
-            // 
             // EffectsPanel
             // 
             this.EffectsPanel.AutoScroll = true;
@@ -171,13 +164,13 @@ namespace Chirpotle {
             this.modlulatorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lFOToolStripMenuItem});
             this.modlulatorsToolStripMenuItem.Name = "modlulatorsToolStripMenuItem";
-            this.modlulatorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modlulatorsToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.modlulatorsToolStripMenuItem.Text = "Modlulators";
             // 
             // lFOToolStripMenuItem
             // 
             this.lFOToolStripMenuItem.Name = "lFOToolStripMenuItem";
-            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.lFOToolStripMenuItem.Text = "LFO";
             this.lFOToolStripMenuItem.Click += new System.EventHandler(this.lFOToolStripMenuItem_Click);
             // 
@@ -186,8 +179,15 @@ namespace Chirpotle {
             this.MainEnvelope.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainEnvelope.Location = new System.Drawing.Point(234, 12);
             this.MainEnvelope.Name = "MainEnvelope";
-            this.MainEnvelope.Size = new System.Drawing.Size(189, 169);
+            this.MainEnvelope.Size = new System.Drawing.Size(189, 147);
             this.MainEnvelope.TabIndex = 19;
+            // 
+            // waveSelector1
+            // 
+            this.waveSelector1.Location = new System.Drawing.Point(28, 42);
+            this.waveSelector1.Name = "waveSelector1";
+            this.waveSelector1.Size = new System.Drawing.Size(150, 29);
+            this.waveSelector1.TabIndex = 10;
             // 
             // InstrumentEditor
             // 
@@ -206,6 +206,7 @@ namespace Chirpotle {
             this.KeyPreview = true;
             this.Name = "InstrumentEditor";
             this.Text = "InstrumentEditor";
+            this.Load += new System.EventHandler(this.InstrumentEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InstrumentEditor_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InstrumentEditor_KeyUp);
             this.panel1.ResumeLayout(false);

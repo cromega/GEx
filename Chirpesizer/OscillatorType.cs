@@ -9,5 +9,7 @@ namespace Chirpesizer {
         Noise = 0,
         Sine = 1,
         Square = 2,
+        Sawtooth = 3,
+        Triangle = 4,
     }
 }
