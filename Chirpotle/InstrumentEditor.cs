@@ -46,6 +46,7 @@ namespace Chirpotle {
             { Keys.Y, 27.50 },
             { Keys.H, 29.14 },
             { Keys.U, 30.87 },
+            { Keys.I, 32.70 },
         };
 
         private Dictionary<Keys, Trigger> ActiveTriggers = new Dictionary<Keys, Trigger>();
@@ -92,11 +93,32 @@ namespace Chirpotle {
         private Instrument CreateInstrument() {
             var envelope = new Envelope(MTime.FromMs(MainEnvelope.Attack).Frames, MTime.FromMs(MainEnvelope.Decay).Frames, MainEnvelope.Sustain, MTime.FromMs(MainEnvelope.Release).Frames);
             var volumeEnvelope = new EnvelopeModulator(envelope, "v");
-            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, new List<IModulator>() { volumeEnvelope });
+
+            // get all modulators
+            var modulatorControls = GetModulators();
+            var modulators = new List<IModulator>();
+            modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
+            modulators.Add(volumeEnvelope);
+            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, modulators);
         }
 
         private void panel2_MouseClick(object sender, MouseEventArgs e) {
             TestPanel.Focus();
+        }
+
+        private void lFOToolStripMenuItem_Click(object sender, EventArgs e) {
+            var modulator = new LFOControl();
+            modulator.Parent = EffectsPanel;
+        }
+
+        private List<IModulatorControl> GetModulators() {
+            var modulators = new List<IModulatorControl>();
+            foreach (Control ctrl in EffectsPanel.Controls) {
+
+                Debug.WriteLine("ctrl fond");
+                if (ctrl is IModulatorControl) {  modulators.Add((IModulatorControl)ctrl); }
+            }
+            return modulators;
         }
     }
 }

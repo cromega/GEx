@@ -51,6 +51,13 @@
     <Compile Include="EnvelopeControl.Designer.cs">
       <DependentUpon>EnvelopeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="IModulatorControl.cs" />
+    <Compile Include="LFOControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LFOControl.Designer.cs">
+      <DependentUpon>LFOControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +71,12 @@
       <DependentUpon>InstrumentEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PatchableAttribute.cs" />
+    <Compile Include="PatchableValueSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PatchableValueSelector.Designer.cs">
+      <DependentUpon>PatchableValueSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Triggerer.cs" />
@@ -76,11 +89,17 @@
     <EmbeddedResource Include="EnvelopeControl.resx">
       <DependentUpon>EnvelopeControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LFOControl.resx">
+      <DependentUpon>LFOControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstrumentEditor.resx">
       <DependentUpon>InstrumentEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PatchableValueSelector.resx">
+      <DependentUpon>PatchableValueSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

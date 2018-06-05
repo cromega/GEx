@@ -36,6 +36,7 @@ namespace Chirpotle {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modlulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lFOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainEnvelope = new Chirpotle.EnvelopeControl();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).BeginInit();
@@ -113,7 +114,7 @@ namespace Chirpotle {
             // TestPanel
             // 
             this.TestPanel.BackColor = System.Drawing.Color.YellowGreen;
-            this.TestPanel.Location = new System.Drawing.Point(38, 487);
+            this.TestPanel.Location = new System.Drawing.Point(38, 543);
             this.TestPanel.Name = "TestPanel";
             this.TestPanel.Size = new System.Drawing.Size(669, 71);
             this.TestPanel.TabIndex = 16;
@@ -133,7 +134,7 @@ namespace Chirpotle {
             this.EffectsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EffectsPanel.Location = new System.Drawing.Point(3, 40);
             this.EffectsPanel.Name = "EffectsPanel";
-            this.EffectsPanel.Size = new System.Drawing.Size(666, 251);
+            this.EffectsPanel.Size = new System.Drawing.Size(666, 307);
             this.EffectsPanel.TabIndex = 17;
             // 
             // groupBox1
@@ -142,7 +143,7 @@ namespace Chirpotle {
             this.groupBox1.Controls.Add(this.menuStrip1);
             this.groupBox1.Location = new System.Drawing.Point(35, 187);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(672, 294);
+            this.groupBox1.Size = new System.Drawing.Size(672, 350);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Patch panel";
@@ -167,9 +168,18 @@ namespace Chirpotle {
             // 
             // modlulatorsToolStripMenuItem
             // 
+            this.modlulatorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lFOToolStripMenuItem});
             this.modlulatorsToolStripMenuItem.Name = "modlulatorsToolStripMenuItem";
             this.modlulatorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.modlulatorsToolStripMenuItem.Text = "Modlulators";
+            // 
+            // lFOToolStripMenuItem
+            // 
+            this.lFOToolStripMenuItem.Name = "lFOToolStripMenuItem";
+            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lFOToolStripMenuItem.Text = "LFO";
+            this.lFOToolStripMenuItem.Click += new System.EventHandler(this.lFOToolStripMenuItem_Click);
             // 
             // MainEnvelope
             // 
@@ -225,5 +235,6 @@ namespace Chirpotle {
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modlulatorsToolStripMenuItem;
         private EnvelopeControl MainEnvelope;
+        private System.Windows.Forms.ToolStripMenuItem lFOToolStripMenuItem;
     }
 }
