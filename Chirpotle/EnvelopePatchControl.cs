@@ -10,13 +10,18 @@ using System.Windows.Forms;
 using Chirpesizer;
 
 namespace Chirpotle {
-    public partial class LFOControl : UserControl, IModulatorControl {
-        public LFOControl() {
+    public partial class EnvelopePatchControl : UserControl, IModulatorControl {
+        public EnvelopePatchControl() {
             InitializeComponent();
         }
 
         public IModulator GetModulator() {
-            return new LFOModulator(waveSelector1.SignalType, (double)FrequencyValue.Value, (double)AmplitudeValue.Value, patchableValueSelector1.PatchTargetId);
+            var envelope = new Envelope(
+                MTime.FromMs(envelopeControl1.Attack).Frames,
+                MTime.FromMs(envelopeControl1.Decay).Frames,
+                envelopeControl1.Sustain,
+                MTime.FromMs(envelopeControl1.Release).Frames);
+            return new EnvelopeModulator(envelope, patchableValueSelector1.PatchTargetId);
         }
 
         private void button1_Click(object sender, EventArgs e) {

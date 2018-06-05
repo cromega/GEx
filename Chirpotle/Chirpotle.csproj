@@ -51,6 +51,12 @@
     <Compile Include="EnvelopeControl.Designer.cs">
       <DependentUpon>EnvelopeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="EnvelopePatchControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnvelopePatchControl.Designer.cs">
+      <DependentUpon>EnvelopePatchControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="IModulatorControl.cs" />
     <Compile Include="LFOControl.cs">
       <SubType>UserControl</SubType>
@@ -88,6 +94,9 @@
     </Compile>
     <EmbeddedResource Include="EnvelopeControl.resx">
       <DependentUpon>EnvelopeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnvelopePatchControl.resx">
+      <DependentUpon>EnvelopePatchControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LFOControl.resx">
       <DependentUpon>LFOControl.cs</DependentUpon>

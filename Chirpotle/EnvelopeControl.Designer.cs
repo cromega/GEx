@@ -96,7 +96,7 @@
             this.ReleaseValue.Size = new System.Drawing.Size(120, 20);
             this.ReleaseValue.TabIndex = 7;
             this.ReleaseValue.Value = new decimal(new int[] {
-            5,
+            20,
             0,
             0,
             0});
@@ -118,7 +118,7 @@
             this.DecayValue.Size = new System.Drawing.Size(120, 20);
             this.DecayValue.TabIndex = 6;
             this.DecayValue.Value = new decimal(new int[] {
-            5,
+            20,
             0,
             0,
             0});
@@ -140,7 +140,7 @@
             this.AttackValue.Size = new System.Drawing.Size(120, 20);
             this.AttackValue.TabIndex = 5;
             this.AttackValue.Value = new decimal(new int[] {
-            5,
+            20,
             0,
             0,
             0});

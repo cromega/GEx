@@ -38,6 +38,7 @@ namespace Chirpotle {
             this.lFOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainEnvelope = new Chirpotle.EnvelopeControl();
             this.waveSelector1 = new Chirpotle.WaveSelector();
+            this.envelopeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -162,15 +163,16 @@ namespace Chirpotle {
             // modlulatorsToolStripMenuItem
             // 
             this.modlulatorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lFOToolStripMenuItem});
+            this.lFOToolStripMenuItem,
+            this.envelopeToolStripMenuItem});
             this.modlulatorsToolStripMenuItem.Name = "modlulatorsToolStripMenuItem";
-            this.modlulatorsToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.modlulatorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.modlulatorsToolStripMenuItem.Text = "Modlulators";
             // 
             // lFOToolStripMenuItem
             // 
             this.lFOToolStripMenuItem.Name = "lFOToolStripMenuItem";
-            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.lFOToolStripMenuItem.Text = "LFO";
             this.lFOToolStripMenuItem.Click += new System.EventHandler(this.lFOToolStripMenuItem_Click);
             // 
@@ -188,6 +190,13 @@ namespace Chirpotle {
             this.waveSelector1.Name = "waveSelector1";
             this.waveSelector1.Size = new System.Drawing.Size(150, 29);
             this.waveSelector1.TabIndex = 10;
+            // 
+            // envelopeToolStripMenuItem
+            // 
+            this.envelopeToolStripMenuItem.Name = "envelopeToolStripMenuItem";
+            this.envelopeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.envelopeToolStripMenuItem.Text = "Envelope";
+            this.envelopeToolStripMenuItem.Click += new System.EventHandler(this.envelopeToolStripMenuItem_Click);
             // 
             // InstrumentEditor
             // 
@@ -237,5 +246,6 @@ namespace Chirpotle {
         private System.Windows.Forms.ToolStripMenuItem modlulatorsToolStripMenuItem;
         private EnvelopeControl MainEnvelope;
         private System.Windows.Forms.ToolStripMenuItem lFOToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem envelopeToolStripMenuItem;
     }
 }

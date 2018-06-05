@@ -114,14 +114,17 @@ namespace Chirpotle {
         private List<IModulatorControl> GetModulators() {
             var modulators = new List<IModulatorControl>();
             foreach (Control ctrl in EffectsPanel.Controls) {
-
-                Debug.WriteLine("ctrl fond");
-                if (ctrl is IModulatorControl) {  modulators.Add((IModulatorControl)ctrl); }
+                if (ctrl is IModulatorControl) { modulators.Add((IModulatorControl)ctrl); }
             }
             return modulators;
         }
 
         private void InstrumentEditor_Load(object sender, EventArgs e) {
+        }
+
+        private void envelopeToolStripMenuItem_Click(object sender, EventArgs e) {
+            var modulator = new EnvelopePatchControl();
+            modulator.Parent = EffectsPanel;
         }
     }
 }
