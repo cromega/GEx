@@ -8,8 +8,8 @@ using Xunit;
 
 namespace Test {
     class HalvingModulator : IModulator {
-        public double Get(int time, bool isActive) {
-            return 0.5;
+        public double Get(double value, int time, bool isActive) {
+            return value * 0.5;
         }
 
         public string GetTarget() { return "test"; }
