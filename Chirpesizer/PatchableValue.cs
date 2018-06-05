@@ -23,7 +23,7 @@ namespace Chirpesizer {
         public double Get(int time, bool isActive) {
             var value = Value;
             Modulators.ForEach(mod => {
-                value *= mod.Get(time, isActive);
+                value = mod.Get(value, time, isActive);
             });
             return value;
         }

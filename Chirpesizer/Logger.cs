@@ -4,6 +4,7 @@ namespace Chirpesizer {
     public static class Logger {
         private static int StartTime;
         private static bool IsOn;
+
         public static void On() {
             IsOn = true;   
             StartTime = Environment.TickCount;

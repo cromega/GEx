@@ -25,6 +25,7 @@ namespace Test {
             Assert.Equal(0.5, instrument.Volume);
             var lfo = (LFOModulator)instrument.Modulators[0];
             Assert.Equal(OscillatorType.Sine, lfo.Oscillator.OscillatorType);
+            Assert.Equal(0.2, lfo.Amplitude);
         }
 
         [Fact]

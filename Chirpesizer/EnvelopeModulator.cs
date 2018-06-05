@@ -14,8 +14,8 @@ namespace Chirpesizer {
             Target = target;
         }
 
-        public double Get(int time, bool isActive) {
-            return Envelope.Next(time, isActive);
+        public double Get(double value, int time, bool isActive) {
+            return value * Envelope.Next(time, isActive);
         }
 
         public string GetTarget() {
