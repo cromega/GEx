@@ -57,7 +57,7 @@ namespace Chirpesizer {
             return table;
         }
 
-        private static double[] SawtoothTable = GenerateTriangleTable(0.95);
+        private static double[] SawtoothTable = GenerateTriangleTable(0.98);
         private static double[] TriangleTable = GenerateTriangleTable(0.5);
         private static double[] GenerateTriangleTable(double pivot) {
             var table = new double[LOOKUP_TABLE_LENGTH];
