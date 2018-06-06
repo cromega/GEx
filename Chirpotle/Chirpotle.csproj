@@ -141,5 +141,15 @@
       <Name>Chirpesizer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Tracker\index.html" />
+    <Content Include="Tracker\jquery-3.3.1.min.js" />
+    <Content Include="Tracker\tracker.css" />
+    <Content Include="Tracker\tracker.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /S /Y $(ProjectDir)Tracker $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

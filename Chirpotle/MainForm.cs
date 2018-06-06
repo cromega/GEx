@@ -20,7 +20,8 @@ namespace Chirpotle {
         private void Form1_Load(object sender, EventArgs e) {
             Sound = new SoundSystem(4410);
             Instruments = new List<Instrument>();
-            
+            webBrowser1.Url = new Uri(String.Format("file:///{0}/index.html", System.IO.Directory.GetCurrentDirectory()));
+            //webBrowser1.Url = new Uri(String.Format("https://useragentapi.com/"));
         }
 
         private void button1_Click(object sender, EventArgs e) {

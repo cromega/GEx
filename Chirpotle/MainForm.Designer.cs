@@ -28,6 +28,7 @@ namespace Chirpotle {
             this.InstrumentSelector = new System.Windows.Forms.ListBox();
             this.EditInstrumentButton = new System.Windows.Forms.Button();
             this.AddInstrumentButton = new System.Windows.Forms.Button();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,14 +82,27 @@ namespace Chirpotle {
             this.AddInstrumentButton.UseVisualStyleBackColor = true;
             this.AddInstrumentButton.Click += new System.EventHandler(this.AddInstrumentButton_Click);
             // 
-            // Form1
+            // webBrowser1
+            // 
+            this.webBrowser1.AllowWebBrowserDrop = false;
+            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            this.webBrowser1.Location = new System.Drawing.Point(12, 187);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(855, 512);
+            this.webBrowser1.TabIndex = 13;
+            this.webBrowser1.Url = new System.Uri("", System.UriKind.Relative);
+            this.webBrowser1.WebBrowserShortcutsEnabled = false;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1342, 791);
+            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
@@ -102,6 +116,7 @@ namespace Chirpotle {
         private System.Windows.Forms.Button EditInstrumentButton;
         private System.Windows.Forms.Button AddInstrumentButton;
         private System.Windows.Forms.ListBox InstrumentSelector;
+        private System.Windows.Forms.WebBrowser webBrowser1;
     }
 }
 
