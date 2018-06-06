@@ -77,17 +77,15 @@ namespace Chirpotle {
         private void InstrumentEditor_KeyUp(object sender, KeyEventArgs e) {
             Pressedkeys.Remove(e.KeyData);
             if (!TestPanel.Focused) { e.Handled = true; return; }
-            if (!KeysToNotes.ContainsKey(e.KeyData)) {
+            if (!ActiveTriggers.ContainsKey(e.KeyData)) {
                 return;
             }
 
-            var trigger = ActiveTriggers[e.KeyData];
-            if (trigger != null) {
-                trigger.Release();
-                ActiveTriggers.Remove(e.KeyData);
-            } else {
-                throw new Exception("wtf");
-            }
+            Trigger trigger;
+            if (!ActiveTriggers.TryGetValue(e.KeyData, out trigger)) { return; }
+
+            trigger.Release();
+            ActiveTriggers.Remove(e.KeyData);
         }
 
         private Instrument CreateInstrument() {
