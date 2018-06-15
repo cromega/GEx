@@ -3,7 +3,7 @@
 	width: 50px;
 	margin-bottom: 2px;
 	border: 1px solid darkgray;
-	text-color: yellow;
+	color: yellow;
 
 }
 
@@ -19,7 +19,7 @@
 	height: 20px;
 	width: 45px;
 	color: yellow;
-	padding-left: 3px;
+	padding-left: 10px;
 }
 
 .label {

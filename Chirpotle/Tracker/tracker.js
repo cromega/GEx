@@ -16,7 +16,8 @@ var loadTracker = function (tracker) {
 var appendTrack = function(tracker) {
 	var column = $(document.createElement("div")).addClass("track_line").appendTo(tracker);
 	$(document.createElement("div")).addClass("label").on("dblclick", function(evt) {
-		var menu = $(document.createElement("select")).css({top: evt.clientY, left: evt.clientX, position: "absolute"}).on("change", function(evt) {
+        var menu = $(document.createElement("select")).css({ top: evt.clientY, left: evt.clientX, position: "absolute" }).
+            on("change", function (evt) {
 			$("select option:selected").each(function() {
 				console.log(this.text());
 				menu.remove();
