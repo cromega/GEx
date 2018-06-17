@@ -15,6 +15,14 @@ namespace Chirpotle {
             InitializeComponent();
         }
 
+        public EnvelopePatchControl(EnvelopeModulator envelope) {
+            InitializeComponent();
+            envelopeControl1.Attack = (int)(envelope.Envelope.Attack / 44.1);
+            envelopeControl1.Decay = (int)(envelope.Envelope.Decay / 44.1);
+            envelopeControl1.Sustain = envelope.Envelope.Sustain;
+            envelopeControl1.Release = (int)(envelope.Envelope.Release / 44.1);
+        }
+
         public IModulator GetModulator() {
             var envelope = new Envelope(
                 MTime.FromMs(envelopeControl1.Attack).Frames,

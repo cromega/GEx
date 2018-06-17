@@ -20,6 +20,44 @@ namespace Chirpotle {
             InitializeComponent();
         }
 
+        public InstrumentEditor(string name, string instrumentData) {
+            Debug.WriteLine(instrumentData);
+            InitializeComponent();
+            var instrument = InstrumentParser.Parse(instrumentData);
+            NameEdit.Text = name;
+            LoadInstrument(instrument);
+        }
+
+        private void LoadInstrument(Instrument instrument) {
+            VolumeValue.Value = (decimal)instrument.Volume;
+            //set main envelope
+            var mainEnvelope = (EnvelopeModulator)instrument.Modulators[0];
+            MainEnvelope.Attack = (int)(mainEnvelope.Envelope.Attack / 44.1);
+            MainEnvelope.Decay = (int)(mainEnvelope.Envelope.Decay / 44.1);
+            MainEnvelope.Sustain = mainEnvelope.Envelope.Sustain;
+            MainEnvelope.Release = (int)(mainEnvelope.Envelope.Release / 44.1);
+
+            instrument.Modulators.Skip(1).ToList().ForEach(mod => {
+                AddModulator(mod);
+            });
+        }
+
+        private void AddModulator(IModulator mod) {
+            switch (mod.GetType().Name) {
+                case "EnvelopeModulator": {
+                        var modulatorControl = new EnvelopePatchControl((EnvelopeModulator)mod);
+                        modulatorControl.Parent = EffectsPanel;
+                        break;
+                    }
+                case "LFOModulator": {
+                        var modulatorControl = new LFOControl((LFOModulator)mod);
+                        modulatorControl.Parent = EffectsPanel;
+                        break;
+                    }
+            }
+
+        }
+
         private void SaveButton_Click(object sender, EventArgs e) {
             if (NameEdit.Text == "") {
                 MessageBox.Show("Specify a name");

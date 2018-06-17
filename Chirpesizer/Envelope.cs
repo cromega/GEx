@@ -48,10 +48,10 @@ namespace Chirpesizer {
             try {
                 var values = data.Split(",".ToCharArray());
                 return new Envelope(
-                    MTime.FromMs(int.Parse(values[0])).Frames,
-                    MTime.FromMs(int.Parse(values[1])).Frames,
+                    int.Parse(values[0]),
+                    int.Parse(values[1]),
                     double.Parse(values[2]),
-                    MTime.FromMs(int.Parse(values[3])).Frames
+                    int.Parse(values[3])
                 );
             } catch (Exception e) {
                 throw new Exception(String.Format("Can't create envelope from {0}", data));

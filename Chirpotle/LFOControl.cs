@@ -15,6 +15,13 @@ namespace Chirpotle {
             InitializeComponent();
         }
 
+        public LFOControl(LFOModulator lfo) {
+            InitializeComponent();
+            waveSelector1.SetSignalType(lfo.Oscillator.OscillatorType);
+            FrequencyValue.Value = (decimal)lfo.Frequency;
+            AmplitudeValue.Value = (decimal)lfo.Amplitude;
+        }
+
         public IModulator GetModulator() {
             return new LFOModulator(waveSelector1.SignalType, (double)FrequencyValue.Value, (double)AmplitudeValue.Value, patchableValueSelector1.PatchTargetId);
         }

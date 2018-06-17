@@ -15,13 +15,13 @@ namespace Chirpotle {
             InitializeComponent();
         }
         private SoundSystem Sound;
-        private List<Instrument> Instruments;
+        private Project Project;
 
         private void Form1_Load(object sender, EventArgs e) {
             Sound = new SoundSystem(4410);
-            Instruments = new List<Instrument>();
             webBrowser1.Url = new Uri(String.Format("file:///{0}/index.html", System.IO.Directory.GetCurrentDirectory()));
             //webBrowser1.Url = new Uri(String.Format("https://useragentapi.com/"));
+            Project = new Project();
         }
 
         private void button1_Click(object sender, EventArgs e) {
@@ -32,7 +32,7 @@ namespace Chirpotle {
                 instrcreator.ShowDialog();
                 if (instrcreator.DialogResult != DialogResult.OK) { return; }
 
-                Instruments.Add(instrcreator.Instrument);
+                Project.Instruments.Add(instrcreator.Instrument);
                 InstrumentSelector.Items.Add(instrcreator.InstrumentName);   
             }
         }
@@ -43,7 +43,13 @@ namespace Chirpotle {
                 return;
             }
 
-            MessageBox.Show("Nothing to see here.");
+            var instrumentData = new InstrumentSerializer(Project.Instruments[InstrumentSelector.SelectedIndex]).Serialize();
+            using (var instrcreator = new InstrumentEditor((string)InstrumentSelector.SelectedItem, instrumentData)) {
+                instrcreator.ShowDialog();
+                if (instrcreator.DialogResult != DialogResult.OK) { return; }
+
+                Project.Instruments[InstrumentSelector.SelectedIndex] = instrcreator.Instrument;
+            }
         }
     }
 }
