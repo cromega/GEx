@@ -20,20 +20,15 @@ namespace Chirpotle {
         }
 
         private OscillatorType GetSignalType() {
-            switch (comboBox1.SelectedItem) {
-                case "Noise": return OscillatorType.Noise;
-                case "Sine": return OscillatorType.Sine;
-                case "Square": return OscillatorType.Square;
-                case "Sawtooth": return OscillatorType.Sawtooth;
-                case "Triangle": return OscillatorType.Triangle;
-                default: return OscillatorType.Sine;
-            }
+            return (OscillatorType)comboBox1.SelectedItem;
+        }
 
-            throw new Exception("wtf");
+        public void SetSignalType(OscillatorType waveType) {
+            comboBox1.SelectedItem = waveType;
         }
 
         private void WaveSelector_Load(object sender, EventArgs e) {
-            foreach (var signalType in new string[] { "Noise", "Sine", "Square", "Sawtooth", "Triangle" }) {
+            foreach (var signalType in Enum.GetValues(typeof(OscillatorType))) {
                 comboBox1.Items.Add(signalType);
             }
             comboBox1.SelectedIndex = 1;
