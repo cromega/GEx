@@ -12,18 +12,23 @@ namespace Chirpotle {
     public partial class PatchableValueSelector : UserControl {
         public PatchableValueSelector() {
             InitializeComponent();
-        }
-
-        public string PatchTargetId;
-
-        private void PatchableValueSelector_Load(object sender, EventArgs e) {
             PatchSelector.Items.Add("Volume");
             PatchSelector.Items.Add("Frequency");
             PatchSelector.SelectedIndex = 0;
             PatchTargetId = "v";
         }
 
-        private void PatchSelector_SelectedValueChanged(object sender, EventArgs e) {
+        public string PatchTargetId;
+
+        public void SetPatchTarget(string id) {
+            switch (id) {
+                case "v":
+                    PatchSelector.SelectedItem = "Volume";
+                    break;
+                case "x":
+                    PatchSelector.SelectedItem = "Frequency";
+                    break;
+            }
         }
 
         private void PatchSelector_SelectedIndexChanged(object sender, EventArgs e) {

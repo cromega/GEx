@@ -21,6 +21,7 @@ namespace Chirpotle {
             envelopeControl1.Decay = (int)(envelope.Envelope.Decay / 44.1);
             envelopeControl1.Sustain = envelope.Envelope.Sustain;
             envelopeControl1.Release = (int)(envelope.Envelope.Release / 44.1);
+            patchableValueSelector1.SetPatchTarget(envelope.GetTarget());
         }
 
         public IModulator GetModulator() {

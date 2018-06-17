@@ -29,6 +29,7 @@ namespace Chirpotle {
         }
 
         private void LoadInstrument(Instrument instrument) {
+            waveSelector1.SetSignalType(instrument.Osc);
             VolumeValue.Value = (decimal)instrument.Volume;
             //set main envelope
             var mainEnvelope = (EnvelopeModulator)instrument.Modulators[0];
@@ -55,7 +56,6 @@ namespace Chirpotle {
                         break;
                     }
             }
-
         }
 
         private void SaveButton_Click(object sender, EventArgs e) {
@@ -135,8 +135,8 @@ namespace Chirpotle {
             // get all modulators
             var modulatorControls = GetModulators();
             var modulators = new List<IModulator>();
-            modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
             modulators.Add(volumeEnvelope);
+            modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
             return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, modulators);
         }
 
@@ -155,9 +155,6 @@ namespace Chirpotle {
                 if (ctrl is IModulatorControl) { modulators.Add((IModulatorControl)ctrl); }
             }
             return modulators;
-        }
-
-        private void InstrumentEditor_Load(object sender, EventArgs e) {
         }
 
         private void envelopeToolStripMenuItem_Click(object sender, EventArgs e) {

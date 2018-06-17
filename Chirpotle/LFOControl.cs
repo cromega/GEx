@@ -20,6 +20,7 @@ namespace Chirpotle {
             waveSelector1.SetSignalType(lfo.Oscillator.OscillatorType);
             FrequencyValue.Value = (decimal)lfo.Frequency;
             AmplitudeValue.Value = (decimal)lfo.Amplitude;
+            patchableValueSelector1.SetPatchTarget(lfo.GetTarget());
         }
 
         public IModulator GetModulator() {

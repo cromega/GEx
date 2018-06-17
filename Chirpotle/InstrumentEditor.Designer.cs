@@ -215,7 +215,6 @@ namespace Chirpotle {
             this.KeyPreview = true;
             this.Name = "InstrumentEditor";
             this.Text = "InstrumentEditor";
-            this.Load += new System.EventHandler(this.InstrumentEditor_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InstrumentEditor_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InstrumentEditor_KeyUp);
             this.panel1.ResumeLayout(false);

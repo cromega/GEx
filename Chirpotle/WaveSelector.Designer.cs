@@ -42,7 +42,6 @@
             this.Controls.Add(this.comboBox1);
             this.Name = "WaveSelector";
             this.Size = new System.Drawing.Size(150, 29);
-            this.Load += new System.EventHandler(this.WaveSelector_Load);
             this.ResumeLayout(false);
 
         }

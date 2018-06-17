@@ -17,6 +17,8 @@ namespace Chirpotle {
 
         public WaveSelector() {
             InitializeComponent();
+            comboBox1.DataSource = Enum.GetValues(typeof(OscillatorType));
+            comboBox1.SelectedItem = OscillatorType.Sine;
         }
 
         private OscillatorType GetSignalType() {
@@ -25,13 +27,6 @@ namespace Chirpotle {
 
         public void SetSignalType(OscillatorType waveType) {
             comboBox1.SelectedItem = waveType;
-        }
-
-        private void WaveSelector_Load(object sender, EventArgs e) {
-            foreach (var signalType in Enum.GetValues(typeof(OscillatorType))) {
-                comboBox1.Items.Add(signalType);
-            }
-            comboBox1.SelectedIndex = 1;
         }
     }
 }

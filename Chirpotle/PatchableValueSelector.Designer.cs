@@ -37,7 +37,6 @@
             this.PatchSelector.Size = new System.Drawing.Size(121, 21);
             this.PatchSelector.TabIndex = 0;
             this.PatchSelector.SelectedIndexChanged += new System.EventHandler(this.PatchSelector_SelectedIndexChanged);
-            this.PatchSelector.SelectedValueChanged += new System.EventHandler(this.PatchSelector_SelectedValueChanged);
             // 
             // groupBox1
             // 
@@ -56,7 +55,6 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "PatchableValueSelector";
             this.Size = new System.Drawing.Size(152, 63);
-            this.Load += new System.EventHandler(this.PatchableValueSelector_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
