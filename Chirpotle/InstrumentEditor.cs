@@ -67,8 +67,10 @@ namespace Chirpotle {
             InstrumentName = NameEdit.Text;
             Instrument = CreateInstrument();
             DialogResult = DialogResult.OK;
+            InstrumentPlayer.Stop();
             Close();
         }
+
 
 
         private Dictionary<Keys, double> KeysToNotes = new Dictionary<Keys, double>() {
