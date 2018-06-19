@@ -54,7 +54,7 @@ namespace Chirpesizer {
                 sample *= short.MaxValue;
                 buffer[i * 2] = sample;
                 buffer[i * 2 + 1] = sample;
-                if (!_IsActive && Age >= MTime.FromMs(Envelope.MAX_TIME).Frames) { _Finished = true; }
+                if (!_IsActive && Age >= Envelope.MAX_TIME) { _Finished = true; }
                 Tick();
             }
             return buffer;
