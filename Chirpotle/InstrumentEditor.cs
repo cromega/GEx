@@ -135,8 +135,8 @@ namespace Chirpotle {
             // get all modulators
             var modulatorControls = GetModulators();
             var modulators = new List<IModulator>();
-            modulators.Add(volumeEnvelope);
             modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
+            modulators.Add(volumeEnvelope);
             return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, modulators);
         }
 
