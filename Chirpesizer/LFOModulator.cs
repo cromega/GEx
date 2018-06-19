@@ -26,7 +26,7 @@ namespace Chirpesizer {
         }
 
         public double Get(double value, int time, bool isActive) {
-            return value + Oscillator.Next(Frequency) * Amplitude;
+            return value * Oscillator.Next(Frequency) * Amplitude;
         }
     }
 }
