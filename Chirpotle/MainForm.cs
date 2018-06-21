@@ -24,6 +24,9 @@ namespace Chirpotle {
             Sequencer.Url = new Uri(String.Format("file:///{0}/index.html", System.IO.Directory.GetCurrentDirectory()));
             Sequencer.ObjectForScripting = this;
             Project = new Project();
+            InstrumentSelector.DataSource = new BindingSource(Project.Instruments, null);
+            InstrumentSelector.DisplayMember = "Name";
+            InstrumentSelector.ValueMember = "InstrumentData";
         }
 
         private void AddInstrumentButton_Click(object sender, EventArgs e) {
@@ -31,8 +34,7 @@ namespace Chirpotle {
                 instrcreator.ShowDialog();
                 if (instrcreator.DialogResult != DialogResult.OK) { return; }
 
-                Project.Instruments.Add(instrcreator.Instrument);
-                InstrumentSelector.Items.Add(instrcreator.InstrumentName);   
+                Project.Instruments.Add(new InstrumentItem(instrcreator.InstrumentName, instrcreator.Instrument));
             }
         }
 
@@ -42,12 +44,13 @@ namespace Chirpotle {
                 return;
             }
 
-            var instrumentData = new InstrumentSerializer(Project.Instruments[InstrumentSelector.SelectedIndex]).Serialize();
-            using (var instrcreator = new InstrumentEditor((string)InstrumentSelector.SelectedItem, instrumentData)) {
+            var instrument = (InstrumentItem)InstrumentSelector.SelectedItem;
+            using (var instrcreator = new InstrumentEditor(instrument.Name, instrument.InstrumentData)) {
                 instrcreator.ShowDialog();
                 if (instrcreator.DialogResult != DialogResult.OK) { return; }
 
-                Project.Instruments[InstrumentSelector.SelectedIndex] = instrcreator.Instrument;
+                Project.Instruments.RemoveAt(InstrumentSelector.SelectedIndex);
+                Project.Instruments.Add(new InstrumentItem(instrcreator.InstrumentName, instrcreator.Instrument));
             }
         }
 
@@ -66,8 +69,8 @@ namespace Chirpotle {
             var track = (string)Sequencer.Document.InvokeScript("getSongData");
             var lines = track.Split("|".ToCharArray()).ToList();
             for (int i=0; i<Project.Instruments.Count(); i++) {
-                var instrumentData = new InstrumentSerializer(Project.Instruments[i]).Serialize();
-                lines.Insert(i, String.Format("i{0}", instrumentData));
+                var instrument = Project.Instruments[i];
+                lines.Insert(i, String.Format("i{0}", instrument.InstrumentData));
             }
 
             var songData = String.Join(Environment.NewLine, lines);
