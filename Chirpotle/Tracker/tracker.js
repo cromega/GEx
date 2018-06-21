@@ -115,6 +115,10 @@ $(document).ready(function () {
             case "u":
                 label.text(notes[evt.key] + octave);
                 break;
+            case "`":
+                var trigger = prompt("Trigger length");
+                updateTrigger(parseInt(trigger));
+                break;
         }
 	});
 });
