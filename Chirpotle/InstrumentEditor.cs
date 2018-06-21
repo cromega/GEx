@@ -32,13 +32,13 @@ namespace Chirpotle {
             waveSelector1.SetSignalType(instrument.Osc);
             VolumeValue.Value = (decimal)instrument.Volume;
             //set main envelope
-            var mainEnvelope = (EnvelopeModulator)instrument.Modulators[0];
+            var mainEnvelope = (EnvelopeModulator)instrument.Modulators.Last();
             MainEnvelope.Attack = (int)(mainEnvelope.Envelope.Attack / 44.1);
             MainEnvelope.Decay = (int)(mainEnvelope.Envelope.Decay / 44.1);
             MainEnvelope.Sustain = mainEnvelope.Envelope.Sustain;
             MainEnvelope.Release = (int)(mainEnvelope.Envelope.Release / 44.1);
 
-            instrument.Modulators.Skip(1).ToList().ForEach(mod => {
+            instrument.Modulators.Take(instrument.Modulators.Count() - 1).ToList().ForEach(mod => {
                 AddModulator(mod);
             });
         }

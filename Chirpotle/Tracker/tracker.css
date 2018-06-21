@@ -45,3 +45,17 @@ body {
 .selected {
 	border: 2px solid orange;
 }
+
+#tracker {
+    margin-right: 20px;
+}
+
+#configuration {
+    float: left;
+    border: 1px solid darkgray;
+    height: 100px;
+    width: 150px;
+    color: lightgray;
+    padding-left: 5px;
+    padding-top: 5px;
+}
