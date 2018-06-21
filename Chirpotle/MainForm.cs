@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chirpesizer;
+using Newtonsoft.Json;
 
 namespace Chirpotle {
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
@@ -85,9 +86,20 @@ namespace Chirpotle {
             audio.Close();
         }
 
+        #region functions exported to tracker
         public void DebugLog(string message) {
             Debug.WriteLine(message);
         }
+
+        public string TrackerGetInstruments() {
+            var instruments = new List<string>();
+            foreach (var instrument in Project.Instruments) {
+                instruments.Add(instrument.Name);
+            }
+
+            return JsonConvert.SerializeObject(instruments, Formatting.None);
+        }
+        #endregion
 
         public static short[] MixBuffers(List<double[]> buffers) {
             var mixedBuffer = new double[4410 * 2];

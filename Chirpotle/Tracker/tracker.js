@@ -45,7 +45,7 @@ var updateTrigger = function (value) {
 
     var newTriggerLength;
     var decimal = value % 1;
-    if (value > 1) {
+    if (value >= 1) {
         newTriggerLength = value
     } else {
         newTriggerLength = Math.floor(triggerLength / 1) + decimal;
@@ -66,7 +66,8 @@ $(document).ready(function () {
 	loadTracker($("#tracker"));
 
 	$("body").on("keydown", function(evt) {
-        console.log(evt.keyCode);
+        //console.log(evt.keyCode);
+        //console.log(evt.key);
         if (evt.keyCode >= 49 && evt.keyCode <= 56) {
             setOctave(evt.keyCode - 48);
             return;
@@ -84,7 +85,6 @@ $(document).ready(function () {
             return;
         }
 
-        //window.external.DebugLog(evt.key.toString());
         switch (evt.key) {
             case ";":
                 step(-1, 0);
@@ -119,6 +119,10 @@ $(document).ready(function () {
                 var trigger = prompt("Trigger length");
                 updateTrigger(parseInt(trigger));
                 break;
+            case "Escape":
+                console.log("esc pressed");
+                $("select.instruments").remove();
+                break;
         }
 	});
 });
@@ -131,20 +135,21 @@ var loadTracker = function (tracker) {
 
 var appendTrack = function(tracker, trackId) {
 	var column = $(document.createElement("div")).addClass("track_line").appendTo(tracker);
-	//$(document.createElement("div")).addClass("label").on("dblclick", function(evt) {
-    //       var menu = $(document.createElement("select")).css({ top: evt.clientY, left: evt.clientX, position: "absolute" }).
-    //           on("change", function (evt) {
-	//		$("select option:selected").each(function() {
-	//			console.log(this.text());
-	//			menu.remove();
-	//		})
-	//	}).appendTo($("body"));
-	//}).appendTo(column);
+    var instrumentSelector = $(document.createElement("div")).addClass("instrument-label");
+    var menu = $(document.createElement("select")).addClass("instruments");
+    menu.on("click", function (evt) {
+        $(menu).find("option").remove();
+        var instruments = getInstruments();
+        for (var i = 0; i < instruments.length; i++) {
+            $("<option>" + instruments[i] + "</option>", { value: i }).appendTo(menu);
+        }
+    });
+    instrumentSelector.append(menu);
+    instrumentSelector.appendTo(column);
 
 	for (var i=0; i < 32; i++) {
 		var node = $(document.createElement("div")).addClass("node").on("click", function(evt) {
 			$(".selected").removeClass("selected");
-            console.log(evt.target);
 			$(evt.target).addClass("selected");
 		}).attr("data-x", trackId).attr("data-y", i).appendTo(column);
         $(document.createElement("div")).addClass("trigger_bar").append(
@@ -172,10 +177,10 @@ var getSongData = function() {
             if (text != "") {
                 var note = text.slice(0, -1);
                 var octave = parseInt(text.slice(-1));
+                var instrumentIndex = $($(".track_line")[trackIndex]).data("instrument-index");
                 var noteidx = noteindexes.indexOf(note) + 1 + octave * 12;
                 var triggerLength = $(node).data("triggerLength");
-                line += "0;" + triggerLength + ";" + noteidx + " ";
-                debugger;
+                line += instrumentIndex + ";" + triggerLength + ";" + noteidx + " ";
             } else {
                 line += "- ";
             }
@@ -183,4 +188,14 @@ var getSongData = function() {
         lines.push(line.trim());
 	}
     return lines.join("|");
+}
+
+var getInstruments = function() {
+    if (window.external.TrackerGetInstruments) {
+        window.external.DebugLog("getting instruments");
+        var instruments = window.external.TrackerGetInstruments();
+        window.external.DebugLog(instruments);
+    } else {
+        return ["asd", "qwe"];
+    }
 }
