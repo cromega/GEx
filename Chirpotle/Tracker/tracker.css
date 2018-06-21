@@ -1,17 +1,20 @@
 ﻿.node {
 	height: 20px;
 	width: 50px;
-	margin-bottom: 2px;
 	border: 1px solid darkgray;
 	color: yellow;
+    box-sizing: border-box;
+    font-size: 80%;
+}
 
+.selected {
+	border: 1px solid orange;
 }
 
 .trigger {
 	height: 20px;
-	width: 5px;
+	width: 3px;
 	background: pink;
-	margin-bottom: 2px;
 	float: left;
     pointer-events: none;
 }
@@ -20,7 +23,7 @@
 	height: 20px;
 	width: 45px;
 	color: yellow;
-	padding-left: 10px;
+	padding-left: 5px;
     pointer-events: none;
 }
 
@@ -36,10 +39,6 @@ body {
 
 .clear {
 	clear: both;
-}
-
-.selected {
-	border: 2px solid orange;
 }
 
 #tracker {

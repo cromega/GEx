@@ -40,7 +40,6 @@ $(document).ready(function () {
 	loadTracker($("#tracker"));
 
 	$("body").on("keydown", function(evt) {
-        console.log(evt.key);
         if (evt.keyCode >= 49 && evt.keyCode <= 56) {
             setOctave(evt.keyCode - 48);
             return;
