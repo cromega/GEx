@@ -24,6 +24,7 @@ namespace Chirpesizer {
 
             var nodeDescriptions = line.Split(" ".ToCharArray());
             foreach(string nodeDescription in nodeDescriptions) {
+                if (nodeDescription == "-") { continue; }
                 nodes.Add(Parse(nodeDescription));
             }
 
