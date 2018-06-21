@@ -14,7 +14,7 @@ namespace Chirpesizer {
             var parts = data.Split(";".ToCharArray());
             var index = int.Parse(parts[0]);
             var length = double.Parse(parts[1]);
-            var frequency = double.Parse(parts[2]);
+            var frequency = GetNoteFrequency(int.Parse(parts[2]));
             return new Node() { InstrumentIndex = index, Length = length, Frequency = frequency };
         }
 
@@ -28,6 +28,10 @@ namespace Chirpesizer {
             }
 
             return nodes.ToArray();
+        }
+
+        private static double GetNoteFrequency(int noteIndex) {
+            return 16.35 * Math.Pow(1.059463094, noteIndex - 1);
         }
     }
 }
