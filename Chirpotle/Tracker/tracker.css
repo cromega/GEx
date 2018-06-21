@@ -1,30 +1,44 @@
 ﻿.node {
 	height: 20px;
 	width: 50px;
-	border: 1px solid darkgray;
 	color: yellow;
+	border: 1px solid darkgray;
     box-sizing: border-box;
     font-size: 80%;
+    position: relative;
 }
 
 .selected {
 	border: 1px solid orange;
 }
 
-.trigger {
+.trigger_bar {
 	height: 20px;
 	width: 3px;
-	background: pink;
 	float: left;
+    pointer-events: none;
+}
+
+.trigger_bar_fill {
+	background: pink;
     pointer-events: none;
 }
 
 .note_label {
 	height: 20px;
-	width: 45px;
 	color: yellow;
-	padding-left: 5px;
     pointer-events: none;
+    float: left;
+    position: absolute;
+    left: 5px;
+}
+
+.trigger_label {
+	height: 20px;
+	color: yellow;
+    pointer-events: none;
+    float: right;
+    padding-right: 3px;
 }
 
 body {

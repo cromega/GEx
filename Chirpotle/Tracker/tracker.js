@@ -36,18 +36,55 @@ var step = function (x, y) {
     $(".node[data-x='" + newx + "'][data-y='" + newy + "']").addClass("selected");
 }
 
+var updateTrigger = function (value) {
+    var triggerNote = $(".selected .trigger_label");
+    var triggerBar = $(".selected .trigger_bar_fill");
+    var triggerLength = $(".selected").data("triggerLength") || 0;
+    //FIXME: calculate sizes properly with border boxes
+    var maxTriggerHeight = $(".node.selected").height() + 2;
+
+    var newTriggerLength;
+    var decimal = value % 1;
+    if (value > 1) {
+        newTriggerLength = value
+    } else {
+        newTriggerLength = Math.floor(triggerLength / 1) + decimal;
+    }
+    $(".selected").data("triggerLength", newTriggerLength);
+    triggerBar.height(maxTriggerHeight * newTriggerLength);
+    triggerNote.text("'" + newTriggerLength);
+}
+
+var deleteTrigger = function () {
+    $(".selected").data("triggerLength", undefined);
+    $(".selected .trigger_bar_fill").height(0);
+    $(".selected .trigger_label").text("");
+    $(".selected .note_label").text("");
+}
+
 $(document).ready(function () {
 	loadTracker($("#tracker"));
 
 	$("body").on("keydown", function(evt) {
+        console.log(evt.keyCode);
         if (evt.keyCode >= 49 && evt.keyCode <= 56) {
             setOctave(evt.keyCode - 48);
             return;
         }
 
+        var selected = $(".selected");
+        if (selected.length == 0) { return; }
+        var label = $(selected).find(".note_label").first();
+        var triggerNote = $(selected).find(".trigger_label");
+
+        if (evt.keyCode >= 96 && evt.keyCode <= 105) {
+            var value = evt.keyCode - 96;
+            if (!evt.altKey) { value /= 10; }
+            updateTrigger(value);
+            return;
+        }
+
         //window.external.DebugLog(evt.key.toString());
-        var label = $(".selected .note_label").first();
-        if (label.length == 0) { return; }
         switch (evt.key) {
             case ";":
                 step(-1, 0);
@@ -62,7 +99,7 @@ $(document).ready(function () {
                 step(0, -1);
                 break;
             case "z":
-                label.text("");
+                deleteTrigger();
                 break;
             case "q":
             case "a":
@@ -106,8 +143,12 @@ var appendTrack = function(tracker, trackId) {
             console.log(evt.target);
 			$(evt.target).addClass("selected");
 		}).attr("data-x", trackId).attr("data-y", i).appendTo(column);
-		$(document.createElement("div")).addClass("trigger").appendTo(node);
+        $(document.createElement("div")).addClass("trigger_bar").append(
+            $(document.createElement("div")).addClass("trigger_bar_fill").height(0)
+        ).appendTo(node);
 		$(document.createElement("div")).addClass("note_label").appendTo(node);
+		$(document.createElement("div")).addClass("trigger_label").appendTo(node);
+		$(document.createElement("div")).addClass("clear").appendTo(node);
 	}
 	$(document.createElement("div")).addClass("clear").appendTo(column);
 }
@@ -115,20 +156,22 @@ var appendTrack = function(tracker, trackId) {
 var getSongData = function() {
 	var lines = [];
 	var tracks = $(".track_line");
+    var noteindexes = Object.keys(notes).map(function (e) {
+        return notes[e];
+    });
 	for (var lineIndex=0; lineIndex<32; lineIndex++) {
 		var line = "";
 		for (var trackIndex=0; trackIndex<8; trackIndex++) {
             var node = $(tracks[trackIndex]).find(".node")[lineIndex];
-            var text = $(node).text();
+            var text = $(node).find(".note_label").text();
 
             if (text != "") {
                 var note = text.slice(0, -1);
                 var octave = parseInt(text.slice(-1));
-                var noteindexes = Object.keys(notes).map(function (e) {
-                    return notes[e];
-                });
                 var noteidx = noteindexes.indexOf(note) + 1 + octave * 12;
-                line += "0;3;" + noteidx + " ";
+                var triggerLength = $(node).data("triggerLength");
+                line += "0;" + triggerLength + ";" + noteidx + " ";
+                debugger;
             } else {
                 line += "- ";
             }
