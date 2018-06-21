@@ -20,7 +20,21 @@ var setOctave = function (oct) {
     $("#octaveLabel").text(octave);
 }
 
+var step = function (x, y) {
+    var selected = $(".selected").first();
+    var maxx = $(".track_line").length;
+    var maxy = $(".track_line").first().find(".node").length;
 
+    var newx = selected.data("x") + x;
+    var newy = selected.data("y") + y;
+    if (newx >= maxx) { newx = 0; }
+    if (newx < 0) { newx = maxx - 1}
+    if (newy >= maxy) { newy = 0; }
+    if (newy < 0) { newy = maxy - 1 }
+
+    $(".selected").removeClass("selected");
+    $(".node[data-x='" + newx + "'][data-y='" + newy + "']").addClass("selected");
+}
 
 $(document).ready(function () {
 	loadTracker($("#tracker"));
@@ -33,20 +47,20 @@ $(document).ready(function () {
         }
 
         //window.external.DebugLog(evt.key.toString());
-        var label = $(".selected.note_label").first();
+        var label = $(".selected .note_label").first();
         if (label.length == 0) { return; }
         switch (evt.key) {
             case ";":
-                stepLeft();
+                step(-1, 0);
                 break;
             case "'":
-                stepDown();
+                step(0, 1);
                 break;
             case "\\":
-                stepRight();
+                step(1, 0);
                 break;
             case "[":
-                stepUp();
+                step(0, -1);
                 break;
             case "z":
                 label.text("");
@@ -77,21 +91,22 @@ var loadTracker = function (tracker) {
 
 var appendTrack = function(tracker, trackId) {
 	var column = $(document.createElement("div")).addClass("track_line").appendTo(tracker);
-	$(document.createElement("div")).addClass("label").on("dblclick", function(evt) {
-        var menu = $(document.createElement("select")).css({ top: evt.clientY, left: evt.clientX, position: "absolute" }).
-            on("change", function (evt) {
-			$("select option:selected").each(function() {
-				console.log(this.text());
-				menu.remove();
-			})
-		}).appendTo($("body"));
-	}).appendTo(column);
+	//$(document.createElement("div")).addClass("label").on("dblclick", function(evt) {
+    //       var menu = $(document.createElement("select")).css({ top: evt.clientY, left: evt.clientX, position: "absolute" }).
+    //           on("change", function (evt) {
+	//		$("select option:selected").each(function() {
+	//			console.log(this.text());
+	//			menu.remove();
+	//		})
+	//	}).appendTo($("body"));
+	//}).appendTo(column);
 
 	for (var i=0; i < 32; i++) {
 		var node = $(document.createElement("div")).addClass("node").on("click", function(evt) {
 			$(".selected").removeClass("selected");
+            console.log(evt.target);
 			$(evt.target).addClass("selected");
-		}).appendTo(column);
+		}).attr("data-x", trackId).attr("data-y", i).appendTo(column);
 		$(document.createElement("div")).addClass("trigger").appendTo(node);
 		$(document.createElement("div")).addClass("note_label").appendTo(node);
 	}

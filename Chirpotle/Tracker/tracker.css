@@ -13,6 +13,7 @@
 	background: pink;
 	margin-bottom: 2px;
 	float: left;
+    pointer-events: none;
 }
 
 .note_label {
@@ -20,12 +21,7 @@
 	width: 45px;
 	color: yellow;
 	padding-left: 10px;
-}
-
-.label {
-	border: 1px solid darkgray;
-	margin-bottom: 10px;
-	height: 10px;
+    pointer-events: none;
 }
 
 body {
