@@ -35,3 +35,19 @@ var appendTrack = function(tracker) {
 	}
 	$(document.createElement("div")).addClass("clear").appendTo(column);
 }
+
+var getSongData = function() {
+	var lines = [];
+	var tracks = $(".track_line");
+	for (var lineIndex=0; lineIndex<32; lineIndex++) {
+		var line = "";
+		for (var trackIndex=0; trackIndex<8; trackIndex++) {
+			$(tracks[trackIndex]).find(".node").each(function(idx, node) {
+				console.log()
+				if (node.text() != "") { line += `$(node.text())`; }
+			})
+		}
+		lines.push(line);
+	}
+	return lines;
+}

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -19,12 +20,8 @@ namespace Chirpotle {
 
         private void Form1_Load(object sender, EventArgs e) {
             Sound = new SoundSystem(4410);
-            webBrowser1.Url = new Uri(String.Format("file:///{0}/index.html", System.IO.Directory.GetCurrentDirectory()));
-            //webBrowser1.Url = new Uri(String.Format("https://useragentapi.com/"));
+            Sequencer.Url = new Uri(String.Format("file:///{0}/index.html", System.IO.Directory.GetCurrentDirectory()));
             Project = new Project();
-        }
-
-        private void button1_Click(object sender, EventArgs e) {
         }
 
         private void AddInstrumentButton_Click(object sender, EventArgs e) {
@@ -50,6 +47,17 @@ namespace Chirpotle {
 
                 Project.Instruments[InstrumentSelector.SelectedIndex] = instrcreator.Instrument;
             }
+        }
+
+        public void SendSongData(string[] songData) {
+            foreach (var line in songData) {
+                Debug.WriteLine(line);
+            }
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e) {
+            var songData = (string)Sequencer.Document.InvokeScript("getSongData");
+            Debug.WriteLine(songData);
         }
     }
 }
