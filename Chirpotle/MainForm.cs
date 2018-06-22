@@ -24,6 +24,7 @@ namespace Chirpotle {
             InstrumentSelector.ValueMember = "InstrumentData";
             Project.Instruments.ListChanged += UpdateTrackerWithInstrumentListChange;
 
+            SongPlayer = new BackgroundWorker();
             SongPlayer.DoWork += PlaySong;
         }
 
