@@ -36,7 +36,14 @@ namespace Chirpotle {
                 case ListChangedType.ItemAdded:
                     AddInstrumentToTracker(Project.Instruments[e.NewIndex]);
                     break;
+                case ListChangedType.ItemDeleted:
+                    RemoveInstrumentFromTracker(Project.Instruments[e.NewIndex]);
+                    break;
             }
+        }
+
+        private void RemoveInstrumentFromTracker(InstrumentItem instrumentItem) {
+            Sequencer.Document.InvokeScript("removeInstrument", new object[] { instrumentItem.Name });
         }
 
         private void AddInstrumentToTracker(InstrumentItem instrumentItem) {

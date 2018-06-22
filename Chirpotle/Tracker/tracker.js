@@ -14,6 +14,9 @@
 };
 
 var octave = 4;
+var Project = {
+	instruments: [],
+};
 
 var setOctave = function (change) {
     if (octave == 1 && change == -1) { return; }
@@ -141,9 +144,9 @@ var loadTracker = function (tracker) {
 	}
 };
 
-var bindInstrumentToTrack = function (index, track) {
-    console.log(index);
-    $(track).data("instrument-index", index);
+var bindInstrumentToTrack = function (name, track) {
+    $(track).attr("data-instrument-index", Project.instruments.indexOf(name));
+    $(track).attr("data-instrument-name", name);
 }
 
 var appendTrack = function(tracker, trackId) {
@@ -153,7 +156,8 @@ var appendTrack = function(tracker, trackId) {
     menu.on("change", function (evt) {
         var option = $(menu).find("option:selected");
         console.log(option);
-        bindInstrumentToTrack($(option).attr("value"), $(option).closest(".track-line"));
+		var instrument = $(option).text();
+        bindInstrumentToTrack(instrument, $(option).closest(".track-line"));
     })
     instrumentSelector.append(menu);
     instrumentSelector.appendTo(column);
@@ -202,6 +206,7 @@ var getSongData = function() {
 }
 
 var addInstrument = function (instrument) {
+	Project.instruments.push(instrument);
     var menus = $("select.instruments");
     $(menus).each(function (idx, menu) {
         $("<option>" + instrument + "</option>").attr("value", $(menus).first().find("option").length - 1).appendTo(menu);
@@ -209,7 +214,19 @@ var addInstrument = function (instrument) {
 
     if ($(menus).first().find("option").length == 1) {
         $(".track-line").each(function (idx, track) {
-            bindInstrumentToTrack(0, track);
+            bindInstrumentToTrack(instrument, track);
         });
     }
+};
+
+var removeInstrument = function(instrument) {
+	Project.instruments.splice(Project.instruments.indexOf(instrument), 1);
+	$("option").filter(function() { return $(this).html() == instrument; }).remove();
+	debugger;
+	$(".track-line").filter(function() { return $(this).data("instrument-name") == instrument; }).find(".node").text("");
+	if (Project.instruments.length > 0) {
+		$(".track-line").each(function(idx, track) {
+			bindInstrumentToTrack(Project.instruments[0], track);
+		});
+	}
 };
