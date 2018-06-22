@@ -15,15 +15,17 @@
 
 var octave = 4;
 
-var setOctave = function (oct) {
-    octave = oct;
+var setOctave = function (change) {
+    if (octave == 1 && change == -1) { return; }
+    if (octave == 8 && change == 1) { return; }
+    octave += change;
     $("#octaveLabel").text(octave);
 }
 
 var step = function (x, y) {
     var selected = $(".selected").first();
-    var maxx = $(".track_line").length;
-    var maxy = $(".track_line").first().find(".node").length;
+    var maxx = $(".track-line").length;
+    var maxy = $(".track-line").first().find(".node").length;
 
     var newx = selected.data("x") + x;
     var newy = selected.data("y") + y;
@@ -37,8 +39,8 @@ var step = function (x, y) {
 }
 
 var updateTrigger = function (value) {
-    var triggerNote = $(".selected .trigger_label");
-    var triggerBar = $(".selected .trigger_bar_fill");
+    var triggerNote = $(".selected .trigger-label");
+    var triggerBar = $(".selected .trigger-bar-fill");
     var triggerLength = $(".selected").data("triggerLength") || 0;
     //FIXME: calculate sizes properly with border boxes
     var maxTriggerHeight = $(".node.selected").height() + 2;
@@ -48,7 +50,8 @@ var updateTrigger = function (value) {
     if (value >= 1) {
         newTriggerLength = value
     } else {
-        newTriggerLength = Math.floor(triggerLength / 1) + decimal;
+        //newTriggerLength = Math.floor(triggerLength / 1) + decimal;
+        newTriggerLength = decimal;
     }
     $(".selected").data("triggerLength", newTriggerLength);
     triggerBar.height(maxTriggerHeight * newTriggerLength);
@@ -57,30 +60,35 @@ var updateTrigger = function (value) {
 
 var deleteTrigger = function () {
     $(".selected").data("triggerLength", undefined);
-    $(".selected .trigger_bar_fill").height(0);
-    $(".selected .trigger_label").text("");
-    $(".selected .note_label").text("");
+    $(".selected .trigger-bar-fill").height(0);
+    $(".selected .trigger-label").text("");
+    $(".selected .note-label").text("");
 }
 
 $(document).ready(function () {
 	loadTracker($("#tracker"));
 
 	$("body").on("keydown", function(evt) {
-        //console.log(evt.keyCode);
-        //console.log(evt.key);
-        if (evt.keyCode >= 49 && evt.keyCode <= 56) {
-            setOctave(evt.keyCode - 48);
-            return;
+        console.log(evt.keyCode);
+        console.log(evt.key);
+
+        switch (evt.key) {
+            case "/":
+                setOctave(1);
+                break;
+            case ".":
+                setOctave(-1);
+                break;
         }
 
         var selected = $(".selected");
         if (selected.length == 0) { return; }
-        var label = $(selected).find(".note_label").first();
-        var triggerNote = $(selected).find(".trigger_label");
+        var label = $(selected).find(".note-label").first();
+        var triggerNote = $(selected).find(".trigger-label");
 
-        if (evt.keyCode >= 96 && evt.keyCode <= 105) {
-            var value = evt.keyCode - 96;
-            if (!evt.altKey) { value /= 10; }
+        if (evt.keyCode >= 48 && evt.keyCode <= 57) {
+            var value = evt.keyCode - 48;
+            if (!evt.shiftKey) { value /= 10; }
             updateTrigger(value);
             return;
         }
@@ -133,17 +141,20 @@ var loadTracker = function (tracker) {
 	}
 };
 
+var bindInstrumentToTrack = function (index, track) {
+    console.log(index);
+    $(track).data("instrument-index", index);
+}
+
 var appendTrack = function(tracker, trackId) {
-	var column = $(document.createElement("div")).addClass("track_line").appendTo(tracker);
+	var column = $(document.createElement("div")).addClass("track-line").appendTo(tracker);
     var instrumentSelector = $(document.createElement("div")).addClass("instrument-label");
     var menu = $(document.createElement("select")).addClass("instruments");
-    menu.on("click", function (evt) {
-        $(menu).find("option").remove();
-        var instruments = getInstruments();
-        for (var i = 0; i < instruments.length; i++) {
-            $("<option>" + instruments[i] + "</option>", { value: i }).appendTo(menu);
-        }
-    });
+    menu.on("change", function (evt) {
+        var option = $(menu).find("option:selected");
+        console.log(option);
+        bindInstrumentToTrack($(option).attr("value"), $(option).closest(".track-line"));
+    })
     instrumentSelector.append(menu);
     instrumentSelector.appendTo(column);
 
@@ -152,11 +163,11 @@ var appendTrack = function(tracker, trackId) {
 			$(".selected").removeClass("selected");
 			$(evt.target).addClass("selected");
 		}).attr("data-x", trackId).attr("data-y", i).appendTo(column);
-        $(document.createElement("div")).addClass("trigger_bar").append(
-            $(document.createElement("div")).addClass("trigger_bar_fill").height(0)
+        $(document.createElement("div")).addClass("trigger-bar").append(
+            $(document.createElement("div")).addClass("trigger-bar-fill").height(0)
         ).appendTo(node);
-		$(document.createElement("div")).addClass("note_label").appendTo(node);
-		$(document.createElement("div")).addClass("trigger_label").appendTo(node);
+		$(document.createElement("div")).addClass("note-label").appendTo(node);
+		$(document.createElement("div")).addClass("trigger-label").appendTo(node);
 		$(document.createElement("div")).addClass("clear").appendTo(node);
 	}
 	$(document.createElement("div")).addClass("clear").appendTo(column);
@@ -164,7 +175,7 @@ var appendTrack = function(tracker, trackId) {
 
 var getSongData = function() {
 	var lines = [];
-	var tracks = $(".track_line");
+	var tracks = $(".track-line");
     var noteindexes = Object.keys(notes).map(function (e) {
         return notes[e];
     });
@@ -172,12 +183,12 @@ var getSongData = function() {
 		var line = "";
 		for (var trackIndex=0; trackIndex<8; trackIndex++) {
             var node = $(tracks[trackIndex]).find(".node")[lineIndex];
-            var text = $(node).find(".note_label").text();
+            var text = $(node).find(".note-label").text();
 
             if (text != "") {
                 var note = text.slice(0, -1);
                 var octave = parseInt(text.slice(-1));
-                var instrumentIndex = $($(".track_line")[trackIndex]).data("instrument-index");
+                var instrumentIndex = $($(".track-line")[trackIndex]).data("instrument-index");
                 var noteidx = noteindexes.indexOf(note) + 1 + octave * 12;
                 var triggerLength = $(node).data("triggerLength");
                 line += instrumentIndex + ";" + triggerLength + ";" + noteidx + " ";
@@ -190,12 +201,15 @@ var getSongData = function() {
     return lines.join("|");
 }
 
-var getInstruments = function() {
-    if (window.external.TrackerGetInstruments) {
-        window.external.DebugLog("getting instruments");
-        var instruments = window.external.TrackerGetInstruments();
-        window.external.DebugLog(instruments);
-    } else {
-        return ["asd", "qwe"];
+var addInstrument = function (instrument) {
+    var menus = $("select.instruments");
+    $(menus).each(function (idx, menu) {
+        $("<option>" + instrument + "</option>").attr("value", $(menus).first().find("option").length - 1).appendTo(menu);
+    })
+
+    if ($(menus).first().find("option").length == 1) {
+        $(".track-line").each(function (idx, track) {
+            bindInstrumentToTrack(0, track);
+        });
     }
-}
+};

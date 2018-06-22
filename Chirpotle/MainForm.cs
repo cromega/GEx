@@ -28,6 +28,19 @@ namespace Chirpotle {
             InstrumentSelector.DataSource = new BindingSource(Project.Instruments, null);
             InstrumentSelector.DisplayMember = "Name";
             InstrumentSelector.ValueMember = "InstrumentData";
+            Project.Instruments.ListChanged += UpdateTrackerWithInstrumentListChange;
+        }
+
+        private void UpdateTrackerWithInstrumentListChange(object sender, ListChangedEventArgs e) {
+            switch (e.ListChangedType) {
+                case ListChangedType.ItemAdded:
+                    AddInstrumentToTracker(Project.Instruments[e.NewIndex]);
+                    break;
+            }
+        }
+
+        private void AddInstrumentToTracker(InstrumentItem instrumentItem) {
+            Sequencer.Document.InvokeScript("addInstrument", new Object[] { instrumentItem.Name });
         }
 
         private void AddInstrumentButton_Click(object sender, EventArgs e) {
@@ -90,15 +103,6 @@ namespace Chirpotle {
         public void DebugLog(string message) {
             Debug.WriteLine(message);
         }
-
-        public string TrackerGetInstruments() {
-            var instruments = new List<string>();
-            foreach (var instrument in Project.Instruments) {
-                instruments.Add(instrument.Name);
-            }
-
-            return JsonConvert.SerializeObject(instruments, Formatting.None);
-        }
         #endregion
 
         public static short[] MixBuffers(List<double[]> buffers) {
@@ -108,6 +112,5 @@ namespace Chirpotle {
             new Converter().Convert(mixedBuffer, outputBuffer);
             return outputBuffer;
         }
-
     }
 }
