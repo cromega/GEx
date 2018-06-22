@@ -13,7 +13,7 @@ namespace Chirpesizer {
 
         public Song(string SongData) {
             var instruments = new List<Instrument>();
-            var lines = SongData.Split(Environment.NewLine.ToCharArray()).Where(line => !line.StartsWith("//") && line != "").ToArray();
+            var lines = SongData.Split(Environment.NewLine.ToCharArray()).Where(line => !line.StartsWith("#") && line != "").ToArray();
             // skip comments
 
             int linesToSkip = 0;
