@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chirpesizer;
-using Newtonsoft.Json;
 
 namespace Chirpotle {
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
@@ -17,11 +12,10 @@ namespace Chirpotle {
         public MainForm() {
             InitializeComponent();
         }
-        private SoundSystem Sound;
         private Project Project;
+        private BackgroundWorker SongPlayer;
 
         private void Form1_Load(object sender, EventArgs e) {
-            Sound = new SoundSystem(4410);
             Sequencer.Url = new Uri(String.Format("file:///{0}/index.html", System.IO.Directory.GetCurrentDirectory()));
             Sequencer.ObjectForScripting = this;
             Project = new Project();
@@ -29,6 +23,31 @@ namespace Chirpotle {
             InstrumentSelector.DisplayMember = "Name";
             InstrumentSelector.ValueMember = "InstrumentData";
             Project.Instruments.ListChanged += UpdateTrackerWithInstrumentListChange;
+
+            SongPlayer.DoWork += PlaySong;
+        }
+
+        private void PlaySong(object sender, DoWorkEventArgs e) {
+            var worker = (BackgroundWorker)sender;
+            SoundSystem audio = null;
+            try {
+                var songData = (string)e.Argument;
+                Debug.WriteLine(songData);
+                audio = new SoundSystem(4410);
+                var song = new Song(songData);
+                do {
+                    if (worker.CancellationPending) {
+                        break;
+                    }
+                    var buffers = song.RenderNext(4410);
+                    var output = MixBuffers(buffers);
+                    audio.Write(output);
+                } while (!song.Ended());
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "WTF", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } finally {
+                if (audio != null) { audio.Close(); }
+            }
         }
 
         private void UpdateTrackerWithInstrumentListChange(object sender, ListChangedEventArgs e) {
@@ -75,12 +94,6 @@ namespace Chirpotle {
             }
         }
 
-        public void SendSongData(string[] songData) {
-            foreach (var line in songData) {
-                Debug.WriteLine(line);
-            }
-        }
-
         private void PlayButton_Click(object sender, EventArgs e) {
             if (Project.Instruments.Count() == 0) {
                 MessageBox.Show("No instruments");
@@ -95,15 +108,7 @@ namespace Chirpotle {
             }
 
             var songData = String.Join(Environment.NewLine, lines);
-            Debug.WriteLine(songData);
-            var audio = new SoundSystem(4410);
-            var song = new Song(songData);
-            do {
-                var buffers = song.RenderNext(4410);
-                var output = MixBuffers(buffers);
-                audio.Write(output);
-            } while (!song.Ended());
-            audio.Close();
+            SongPlayer.RunWorkerAsync(songData);
         }
 
         #region functions exported to tracker
@@ -118,6 +123,16 @@ namespace Chirpotle {
             var outputBuffer = new short[8820];
             new Converter().Convert(mixedBuffer, outputBuffer);
             return outputBuffer;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e) {
+            switch (e.KeyCode) {
+                case Keys.Escape:
+                    if (SongPlayer.IsBusy) {
+                        SongPlayer.CancelAsync();
+                    }
+                    break;
+            }
         }
     }
 }

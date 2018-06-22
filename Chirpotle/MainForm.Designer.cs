@@ -34,9 +34,10 @@ namespace Chirpotle {
             // 
             // PlayButton
             // 
-            this.PlayButton.Location = new System.Drawing.Point(18, 150);
+            this.PlayButton.Location = new System.Drawing.Point(24, 185);
+            this.PlayButton.Margin = new System.Windows.Forms.Padding(4);
             this.PlayButton.Name = "PlayButton";
-            this.PlayButton.Size = new System.Drawing.Size(75, 23);
+            this.PlayButton.Size = new System.Drawing.Size(100, 28);
             this.PlayButton.TabIndex = 10;
             this.PlayButton.Text = "Play";
             this.PlayButton.UseVisualStyleBackColor = true;
@@ -47,9 +48,11 @@ namespace Chirpotle {
             this.groupBox1.Controls.Add(this.InstrumentSelector);
             this.groupBox1.Controls.Add(this.EditInstrumentButton);
             this.groupBox1.Controls.Add(this.AddInstrumentButton);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(16, 15);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(275, 132);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(367, 162);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Instruments";
@@ -57,16 +60,19 @@ namespace Chirpotle {
             // InstrumentSelector
             // 
             this.InstrumentSelector.FormattingEnabled = true;
-            this.InstrumentSelector.Location = new System.Drawing.Point(6, 19);
+            this.InstrumentSelector.ItemHeight = 16;
+            this.InstrumentSelector.Location = new System.Drawing.Point(8, 23);
+            this.InstrumentSelector.Margin = new System.Windows.Forms.Padding(4);
             this.InstrumentSelector.Name = "InstrumentSelector";
-            this.InstrumentSelector.Size = new System.Drawing.Size(120, 95);
+            this.InstrumentSelector.Size = new System.Drawing.Size(159, 116);
             this.InstrumentSelector.TabIndex = 14;
             // 
             // EditInstrumentButton
             // 
-            this.EditInstrumentButton.Location = new System.Drawing.Point(132, 48);
+            this.EditInstrumentButton.Location = new System.Drawing.Point(176, 59);
+            this.EditInstrumentButton.Margin = new System.Windows.Forms.Padding(4);
             this.EditInstrumentButton.Name = "EditInstrumentButton";
-            this.EditInstrumentButton.Size = new System.Drawing.Size(75, 23);
+            this.EditInstrumentButton.Size = new System.Drawing.Size(100, 28);
             this.EditInstrumentButton.TabIndex = 13;
             this.EditInstrumentButton.Text = "Edit";
             this.EditInstrumentButton.UseVisualStyleBackColor = true;
@@ -74,9 +80,10 @@ namespace Chirpotle {
             // 
             // AddInstrumentButton
             // 
-            this.AddInstrumentButton.Location = new System.Drawing.Point(132, 19);
+            this.AddInstrumentButton.Location = new System.Drawing.Point(176, 23);
+            this.AddInstrumentButton.Margin = new System.Windows.Forms.Padding(4);
             this.AddInstrumentButton.Name = "AddInstrumentButton";
-            this.AddInstrumentButton.Size = new System.Drawing.Size(75, 23);
+            this.AddInstrumentButton.Size = new System.Drawing.Size(100, 28);
             this.AddInstrumentButton.TabIndex = 12;
             this.AddInstrumentButton.Text = "Add";
             this.AddInstrumentButton.UseVisualStyleBackColor = true;
@@ -86,25 +93,28 @@ namespace Chirpotle {
             // 
             this.Sequencer.AllowWebBrowserDrop = false;
             this.Sequencer.IsWebBrowserContextMenuEnabled = false;
-            this.Sequencer.Location = new System.Drawing.Point(293, 12);
-            this.Sequencer.MinimumSize = new System.Drawing.Size(20, 20);
+            this.Sequencer.Location = new System.Drawing.Point(391, 15);
+            this.Sequencer.Margin = new System.Windows.Forms.Padding(4);
+            this.Sequencer.MinimumSize = new System.Drawing.Size(27, 25);
             this.Sequencer.Name = "Sequencer";
-            this.Sequencer.Size = new System.Drawing.Size(683, 820);
+            this.Sequencer.Size = new System.Drawing.Size(911, 1009);
             this.Sequencer.TabIndex = 13;
             this.Sequencer.Url = new System.Uri("", System.UriKind.Relative);
             this.Sequencer.WebBrowserShortcutsEnabled = false;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1078, 905);
+            this.ClientSize = new System.Drawing.Size(1437, 1055);
             this.Controls.Add(this.Sequencer);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.PlayButton);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Chirpotle";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
