@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Chirpesizer.Effects;
 using System.Collections.Generic;
 
 namespace Chirpesizer {
@@ -61,23 +60,6 @@ namespace Chirpesizer {
             });
 
             return modulators;
-        }
-
-        private List<IEffect> ParseEffects(IEnumerable<string> effectsData) {
-            var effects = new List<IEffect>();
-            effectsData.ToList().ForEach(effect => {
-                var effectType = effect.Substring(0, 1);
-                switch (effectType) {
-                    case "1": effects.Add(Vibrato.Parse(effect.Substring(1))); break;
-                    case "2": effects.Add(PitchEnvelope.Parse(effect.Substring(1))); break;
-                }
-            });
-
-            if (effects.Any(eff => eff.GetEffectType() == EffectType.Vibrato) && effects.Any(eff => eff.GetEffectType() == EffectType.PitchEnvelope)) {
-                throw new Exception("Can't have vibrato and pitch envelope at the same time");
-            }
-
-            return effects;
         }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Chirpesizer;
-using Chirpesizer.Effects;
 using Xunit;
 
 namespace Test {

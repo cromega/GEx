@@ -1,7 +1,7 @@
 using System;
 
 namespace Chirpesizer {
-    public class Envelope : IEncodable {
+    public class Envelope {
         public const int MAX_TIME = 44100;
 
         public readonly int Attack ;
@@ -38,10 +38,6 @@ namespace Chirpesizer {
             }
             if (double.IsNaN(value) || double.IsInfinity(value)) { throw new Exception("value is NaN, check divisions"); }
             return value;
-        }
-
-        public string Encode() {
-            return String.Format("{0},{1},{2},{3}", Attack, Decay, Sustain, Release);
         }
 
         public static Envelope Decode(string data) {
