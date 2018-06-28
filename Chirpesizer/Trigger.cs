@@ -49,7 +49,8 @@ namespace Chirpesizer {
             var buffer = new double[frames * 2];
             double sample;
             for (int i = 0; i < frames; i++) {
-                sample = Osc.Next(Frequency.Get(Age, IsActive));
+                Osc.SetFrequency(Frequency.Get(Age, IsActive));
+                sample = Osc.Next(Age);
                 sample *= Volume.Get(Age, IsActive);
                 sample *= short.MaxValue;
                 buffer[i * 2] = sample;

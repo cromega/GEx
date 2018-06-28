@@ -12,6 +12,7 @@ namespace Chirpesizer {
 
         public LFOModulator(OscillatorType osc, double frequency, double amplitude, string target) {
             Oscillator = new Oscillator(osc);
+            Oscillator.SetFrequency(frequency);
             Target = target;
             _Frequency = frequency;
             Amplitude = amplitude;
@@ -26,7 +27,7 @@ namespace Chirpesizer {
         }
 
         public double Get(double value, int time, bool isActive) {
-            return value + Oscillator.Next(Frequency) * Amplitude;
+            return value + Oscillator.Next(time) * Amplitude;
         }
     }
 }

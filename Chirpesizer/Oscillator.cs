@@ -2,9 +2,8 @@ using System;
 
 namespace Chirpesizer {
     public class Oscillator {
-        private double PhaseIndex;
         private double Increment;
-        Func<double> Generator;
+        Func<int, double> Generator;
         private Random Rnd;
         public readonly OscillatorType OscillatorType;
 
@@ -18,33 +17,34 @@ namespace Chirpesizer {
                 case OscillatorType.Triangle: Generator = Triangle; break;
             }
             Rnd = new Random();
-            PhaseIndex = 0;
         }
 
-        public double Next(double frequency) {
+        public double Next(int time) {
+            return Generator(time);
+        }
+
+        public void SetFrequency(double frequency) {
             Increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
-            PhaseIndex += Increment;
-            return Generator();
         }
 
-        private double Sine() {
-            return SineTable[(int)Math.Round(PhaseIndex) % SineTable.Length];
+        private double Sine(int time) {
+            return SineTable[(int)Math.Round(Increment * time) % SineTable.Length];
         }
 
-        private double Square() {
-            return Sine() < 0 ? -1 : 1;
+        private double Square(int time) {
+            return Sine(time) < 0 ? -1 : 1;
         }
 
-        private double Noise() {
+        private double Noise(int time) {
             return Rnd.NextDouble() * 2 - 1;
         }
 
-        private double Sawtooth() {
-            return SawtoothTable[(int)Math.Round(PhaseIndex) % SawtoothTable.Length];
+        private double Sawtooth(int time) {
+            return SawtoothTable[(int)Math.Round(Increment * time) % SawtoothTable.Length];
         }
 
-        private double Triangle() {
-            return TriangleTable[(int)Math.Round(PhaseIndex) % TriangleTable.Length];
+        private double Triangle(int time) {
+            return TriangleTable[(int)Math.Round(Increment * time) % TriangleTable.Length];
         }
 
         public const int LOOKUP_TABLE_LENGTH = 1000;
