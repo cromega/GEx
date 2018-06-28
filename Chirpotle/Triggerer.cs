@@ -14,6 +14,7 @@ namespace Chirpotle {
         private SoundSystem Audio;
         private List<Trigger> Triggers;
         private bool LoopStop;
+        int Time;
 
         public Triggerer() {
             Audio = new SoundSystem(2205);
@@ -21,6 +22,7 @@ namespace Chirpotle {
             LoopStop = false;
             var thread = new Thread(new ThreadStart(TriggerLoop));
             thread.Start();
+            Time = 0;
 
         }
 
@@ -38,9 +40,10 @@ namespace Chirpotle {
                 var buffers = new List<double[]>();
                 lock (Lock) {
                     Triggers.ForEach(trig => {
-                        buffers.Add(trig.Render(2205));
+                        buffers.Add(trig.Render(2205, Time));
                     });
                 }
+                Time += 2205;
 
                 double[] mixed = new double[4410];
                 mixer.Mix(mixed, buffers);

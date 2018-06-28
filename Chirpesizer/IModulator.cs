@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace Chirpesizer {
     public interface IModulator {
         string GetTarget();
-        double Get(double value, int time, bool isActive);
+        double Get(double value, int triggerTime, bool isActive, int songTime);
     }
 }

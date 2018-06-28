@@ -10,6 +10,7 @@ namespace Chirpesizer {
         private int trackIndex;
         public readonly int Tempo;
         public List<Trigger> Triggers;
+        int SongTime;
 
         public Song(string SongData) {
             var instruments = new List<Instrument>();
@@ -32,6 +33,7 @@ namespace Chirpesizer {
             TrackLines = lines.Skip(linesToSkip).Where(line => line != "").ToArray();
             trackIndex = 0;
             Triggers = new List<Trigger>();
+            SongTime = 0;
         }
 
         public List<double[]> RenderNext(int frames) {
@@ -53,9 +55,10 @@ namespace Chirpesizer {
 
             // render instruments
             Triggers.ForEach(trigger => {
-                buffers.Add(trigger.Render(4410));
+                buffers.Add(trigger.Render(4410, SongTime));
             });
             Triggers.RemoveAll(trigger => trigger.Finished);
+            SongTime += 4410;
 
             Logger.Log("rendering finished");
             return buffers;

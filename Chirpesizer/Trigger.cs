@@ -45,13 +45,13 @@ namespace Chirpesizer {
             _Age = 0;
         }
 
-        public double[] Render(int frames) {
+        public double[] Render(int frames, int songTime) {
             var buffer = new double[frames * 2];
             double sample;
             for (int i = 0; i < frames; i++) {
-                Osc.SetFrequency(Frequency.Get(Age, IsActive));
-                sample = Osc.Next(Age);
-                sample *= Volume.Get(Age, IsActive);
+                Osc.SetFrequency(Frequency.Get(Age, IsActive, songTime + i));
+                sample = Osc.Next(songTime + i);
+                sample *= Volume.Get(Age, IsActive, songTime + i);
                 sample *= short.MaxValue;
                 buffer[i * 2] = sample;
                 buffer[i * 2 + 1] = sample;

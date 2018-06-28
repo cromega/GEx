@@ -1,33 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 namespace Chirpesizer {
-    public class LFOModulator : IModulator {
+    public class LFO {
         public readonly Oscillator Oscillator;
         private readonly string Target;
-        private double _Frequency;
         public double Frequency {
-            get { return _Frequency; }
+            get { return Oscillator.Frequency; }
         }
         public readonly double Amplitude;
+        private int _Time;
 
-        public LFOModulator(OscillatorType osc, double frequency, double amplitude, string target) {
+        public LFO(OscillatorType osc, double frequency, double amplitude, string target) {
             Oscillator = new Oscillator(osc);
             Oscillator.SetFrequency(frequency);
             Target = target;
-            _Frequency = frequency;
             Amplitude = amplitude;
+            _Time = 0;
+        }
+
+        public void Tick() {
+            _Time++;
         }
 
         public void SetFrequency(double frequency) {
-            _Frequency = frequency;
+            Oscillator.SetFrequency(frequency);
         }
 
         public string GetTarget() {
             return Target;
         }
 
-        public double Get(double value, int time, bool isActive, int songTime) {
-            return value + Oscillator.Next(songTime) * Amplitude;
+        public double Get() {
+            return Oscillator.Next(_Time) * Amplitude;
         }
     }
 }

@@ -20,10 +20,10 @@ namespace Chirpesizer {
             Modulators.Add(modulator);
         }
 
-        public double Get(int time, bool isActive) {
+        public double Get(int time, bool isActive, int songTime) {
             var value = Value;
             Modulators.ForEach(mod => {
-                value = mod.Get(value, time, isActive);
+                value = mod.Get(value, time, isActive, songTime);
             });
             return value;
         }
