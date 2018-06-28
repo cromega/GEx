@@ -1,17 +1,17 @@
-using System;
+﻿using System;
 using System.IO;
+using Chirpesizer;
 
-namespace Chirpesizer {
-    public class Oscillator {
+namespace OscillatorTest {
+    public class StatefulOscillator {
+        private double PhaseIndex;
         private double Increment;
-        Func<int, double> Generator;
+        Func<double> Generator;
         private Random Rnd;
         public readonly OscillatorType OscillatorType;
-        private double Phase;
-        private double _Frequency;
-        private int lastTime;
+        private StreamWriter Logger;
 
-        public Oscillator(OscillatorType type) {
+        public StatefulOscillator(OscillatorType type) {
             OscillatorType = type;
             switch (type) {
                 case OscillatorType.Noise: Generator = Noise; break;
@@ -20,49 +20,43 @@ namespace Chirpesizer {
                 case OscillatorType.Sawtooth: Generator = Sawtooth; break;
                 case OscillatorType.Triangle: Generator = Triangle; break;
             }
-            Phase = 0;
             Rnd = new Random();
+            PhaseIndex = 0;
+            Logger = File.CreateText("oldosclog.txt");
         }
 
-        public double Next() {
-            //if (time != lastTime) {
-            //    Phase += Increment;
-            //    lastTime = time;
-            //}
-            Phase += Increment;
-            return Generator(1);
-        }
-
-        public void SetFrequency(double frequency) {
+        public double Next(double frequency) {
             Increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
-            _Frequency = frequency;
+            PhaseIndex += Increment;
+            return Generator();
         }
 
-        private double Sine(int time) {
-            return SineTable[(int)Math.Round(Phase) % SineTable.Length];
+        private double Sine() {
+            Logger.WriteLine(Math.Round(PhaseIndex) % SineTable.Length);
+            return SineTable[(int)Math.Round(PhaseIndex) % SineTable.Length];
         }
 
-        private double Square(int time) {
-            return Sine(time) < 0 ? -1 : 1;
+        private double Square() {
+            return Sine() < 0 ? -1 : 1;
         }
 
-        private double Noise(int time) {
+        private double Noise() {
             return Rnd.NextDouble() * 2 - 1;
         }
 
-        private double Sawtooth(int time) {
-            return SawtoothTable[(int)Math.Round(Phase) % SawtoothTable.Length];
+        private double Sawtooth() {
+            return SawtoothTable[(int)Math.Round(PhaseIndex) % SawtoothTable.Length];
         }
 
-        private double Triangle(int time) {
-            return TriangleTable[(int)Math.Round(Phase) % TriangleTable.Length];
+        private double Triangle() {
+            return TriangleTable[(int)Math.Round(PhaseIndex) % TriangleTable.Length];
         }
 
         public const int LOOKUP_TABLE_LENGTH = 1000;
         private static double[] SineTable = GenerateSineTable();
         private static double[] GenerateSineTable() {
             var table = new double[LOOKUP_TABLE_LENGTH];
-            for (int i=0; i<table.Length; i++) {
+            for (int i = 0; i < table.Length; i++) {
                 table[i] = Math.Sin((Math.PI * 2 * i / LOOKUP_TABLE_LENGTH));
             }
             return table;
@@ -73,11 +67,11 @@ namespace Chirpesizer {
         private static double[] GenerateTriangleTable(double pivot) {
             var table = new double[LOOKUP_TABLE_LENGTH];
             var peak = LOOKUP_TABLE_LENGTH * pivot;
-            for (int i=0; i<peak; i++) {
+            for (int i = 0; i < peak; i++) {
                 table[i] = i / peak * 2 - 1;
             }
             var remaining = table.Length - peak;
-            for (int i=0; i<remaining; i++) {
+            for (int i = 0; i < remaining; i++) {
                 table[(int)peak + i] = 1 - i / remaining * 2;
             }
 

@@ -54,9 +54,9 @@ namespace Chirpesizer {
             }
 
             // render instruments
-            Triggers.ForEach(trigger => {
-                buffers.Add(trigger.Render(4410, SongTime));
-            });
+            foreach (var instrument in Instruments) {
+                buffers.AddRange(instrument.RenderTriggers(4410, SongTime));
+            }
             Triggers.RemoveAll(trigger => trigger.Finished);
             SongTime += 4410;
 

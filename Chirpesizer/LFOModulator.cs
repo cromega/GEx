@@ -9,6 +9,8 @@ namespace Chirpesizer {
             get { return _Frequency; }
         }
         public readonly double Amplitude;
+        private double[] SampleCache;
+        private int LastPrepared;
 
         public LFOModulator(OscillatorType osc, double frequency, double amplitude, string target) {
             Oscillator = new Oscillator(osc);
@@ -27,7 +29,14 @@ namespace Chirpesizer {
         }
 
         public double Get(double value, int time, bool isActive, int songTime) {
-            return value + Oscillator.Next(songTime) * Amplitude;
+            return SampleCache[songTime - LastPrepared];
+            return value + Oscillator.Next() * Amplitude;
+        }
+
+        public void Prepare(int frames, int songTime) {
+            SampleCache = new double[frames];
+            for (int i = 0; i < frames; i++) { SampleCache[i] = Oscillator.Next() * Amplitude; }
+            LastPrepared = songTime;
         }
     }
 }

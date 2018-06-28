@@ -91,6 +91,7 @@ namespace Chirpotle {
         private Dictionary<Keys, Trigger> ActiveTriggers = new Dictionary<Keys, Trigger>();
         private Triggerer InstrumentPlayer = new Triggerer();
         private HashSet<Keys> Pressedkeys = new HashSet<Keys>();
+        private Instrument InstrumentPlaying;
 
 
         private void InstrumentEditor_KeyDown(object sender, KeyEventArgs e) {
@@ -107,10 +108,16 @@ namespace Chirpotle {
                 return;
             }
 
-            var instru = CreateInstrument();
-            var trigger = instru.Activate(KeysToNotes[e.KeyData] * Math.Pow(2, 4), -1);
+            Instrument instrument;
+            if (ActiveTriggers.Any()) {
+                instrument = InstrumentPlaying;
+            } else {
+                instrument = CreateInstrument();
+                InstrumentPlaying = instrument;
+                InstrumentPlayer.SetInstrument(instrument);
+            }
+            var trigger = instrument.Activate(KeysToNotes[e.KeyData] * Math.Pow(2, 4), -1);
             ActiveTriggers[e.KeyData] = trigger;
-            InstrumentPlayer.Add(trigger);
         }
 
         private void InstrumentEditor_KeyUp(object sender, KeyEventArgs e) {
