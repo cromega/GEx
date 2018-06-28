@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chirpesizer;
-using Chirpesizer.Effects;
 
 namespace Chirpotle {
     public partial class InstrumentEditor : Form {
