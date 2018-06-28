@@ -40,7 +40,7 @@ namespace Chirpesizer {
             return value;
         }
 
-        public static Envelope Decode(string data) {
+        public static Envelope Parse(string data) {
             try {
                 var values = data.Split(",".ToCharArray());
                 return new Envelope(

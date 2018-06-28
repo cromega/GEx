@@ -51,7 +51,7 @@ namespace Chirpesizer {
             modulatorsRaw.ForEach(modulatorData => {
                 var target = modulatorData[1].ToString();
                 switch (modulatorData[0]) {
-                    case 'e': modulators.Add(new EnvelopeModulator(Envelope.Decode(modulatorData.Substring(2)), target)); break;
+                    case 'e': modulators.Add(new EnvelopeModulator(Envelope.Parse(modulatorData.Substring(2)), target)); break;
                     case 'l':
                         var lfoParts = modulatorData.Substring(2).Split(",".ToCharArray());
                         modulators.Add(new LFOModulator((OscillatorType)int.Parse(lfoParts[0]), double.Parse(lfoParts[1]), double.Parse(lfoParts[2]), target));
