@@ -50,13 +50,11 @@ namespace Chirpotle {
         private void AddModulator(IModulator mod) {
             switch (mod.GetType().Name) {
                 case "EnvelopeModulator": {
-                        var modulatorControl = new EnvelopePatchControl((EnvelopeModulator)mod);
-                        modulatorControl.Parent = EffectsPanel;
+                        var modulatorControl = new EnvelopePatchControl((EnvelopeModulator)mod) { Parent = EffectsPanel };
                         break;
                     }
                 case "LFOModulator": {
-                        var modulatorControl = new LFOControl((LFOModulator)mod);
-                        modulatorControl.Parent = EffectsPanel;
+                        var modulatorControl = new LFOControl((LFOModulator)mod) { Parent = EffectsPanel };
                         break;
                     }
             }
