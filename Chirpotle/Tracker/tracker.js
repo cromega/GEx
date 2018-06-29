@@ -14,12 +14,17 @@
 };
 
 var Tracker = {
+    config: {
+        trackLength: 32,
+        trackNum: 8,
+    },
     state: {
-        octave: 4
+        octave: 4,
+        selected: [0,0],
     },
     project: {
-        instruments: []
-    }
+        instruments: [],
+    },
 }
 
 var setOctave = function (change) {
@@ -30,8 +35,8 @@ var setOctave = function (change) {
 
 var step = function (x, y) {
     var selected = $(".selected").first();
-    var maxx = $(".track-line").length;
-    var maxy = $(".track-line").first().find(".node").length;
+    var maxx = Tracker.config.trackNum;
+    var maxy = Tracker.config.trackLength;
 
     var newx = selected.data("x") + x;
     var newy = selected.data("y") + y;
@@ -71,112 +76,46 @@ var deleteTrigger = function () {
 }
 
 $(document).ready(function () {
-	loadTracker($("#tracker"));
+    loadTracker($("#tracker"));
+    
     rivets.bind($("#configuration"), {state: Tracker.state});
 
+    $(".node").on("click", function(evt) {
+        $(".selected").removeClass("selected");
+        $(evt.target).addClass("selected");
+    })
+    $("select.instruments").on("change", function (evt) {
+        var option = $(evt.target).find("option:selected");
+		var instrument = $(option).text();
+        bindInstrumentToTrack(instrument, $(option).closest(".track-line"));
+    })
+
 	$("body").on("keydown", function(evt) {
-        // console.log(evt.keyCode);
-        // console.log(evt.key);
-
-        switch (evt.key) {
-            case "/":
-                setOctave(1);
-                break;
-            case ".":
-                setOctave(-1);
-                break;
-        }
-
-        var selected = $(".selected");
-        if (selected.length == 0) { return; }
-        var label = $(selected).find(".note-label").first();
-
-        if (evt.keyCode >= 48 && evt.keyCode <= 57) {
-            var value = evt.keyCode - 48;
-            if (!evt.shiftKey) { value /= 10; }
-            updateTrigger(value);
-            return;
-        }
-
-        switch (evt.key) {
-            case ";":
-                step(-1, 0);
-                break;
-            case "'":
-                step(0, 1);
-                break;
-            case "\\":
-                step(1, 0);
-                break;
-            case "[":
-                step(0, -1);
-                break;
-            case "z":
-                deleteTrigger();
-                break;
-            case "q":
-            case "a":
-            case "w":
-            case "s":
-            case "e":
-            case "r":
-            case "f":
-            case "t":
-            case "g":
-            case "y":
-            case "h":
-            case "u":
-                label.text(notes[evt.key] + octave);
-                break;
-            case "`":
-                var trigger = prompt("Trigger length");
-                updateTrigger(parseInt(trigger));
-                break;
-            case "Escape":
-                console.log("esc pressed");
-                $("select.instruments").remove();
-                break;
-        }
+        handleKeyPress(evt);
 	});
 });
 
 var loadTracker = function (tracker) {
-	for (var i = 0; i < 8; i++) {
+	for (var i = 0; i < Tracker.config.trackNum; i++) {
 		appendTrack(tracker, i);
 	}
 };
 
+var appendTrack = function(tracker, trackId) {
+    var template = $(document.getElementById("template:track")).html();
+    var track = $(template).appendTo(tracker);
+
+	for (var i=0; i < Tracker.config.trackLength; i++) {
+       var template = $(document.getElementById("template:node")).html();
+       var node = $(template);
+       $(node).attr("data-x", trackId).attr("data-y", i).appendTo(track);
+	}
+	$(document.createElement("div")).addClass("clear").appendTo(track);
+}
+
 var bindInstrumentToTrack = function (name, track) {
     $(track).attr("data-instrument-index", Tracker.project.instruments.indexOf(name));
     $(track).attr("data-instrument-name", name);
-}
-
-var appendTrack = function(tracker, trackId) {
-	var column = $(document.createElement("div")).addClass("track-line").appendTo(tracker);
-    var instrumentSelector = $(document.createElement("div")).addClass("instrument-label");
-    var menu = $(document.createElement("select")).addClass("instruments");
-    menu.on("change", function (evt) {
-        var option = $(menu).find("option:selected");
-        console.log(option);
-		var instrument = $(option).text();
-        bindInstrumentToTrack(instrument, $(option).closest(".track-line"));
-    })
-    instrumentSelector.append(menu);
-    instrumentSelector.appendTo(column);
-
-	for (var i=0; i < 32; i++) {
-		var node = $(document.createElement("div")).addClass("node").on("click", function(evt) {
-			$(".selected").removeClass("selected");
-			$(evt.target).addClass("selected");
-		}).attr("data-x", trackId).attr("data-y", i).appendTo(column);
-        $(document.createElement("div")).addClass("trigger-bar").append(
-            $(document.createElement("div")).addClass("trigger-bar-fill").height(0)
-        ).appendTo(node);
-		$(document.createElement("div")).addClass("note-label").appendTo(node);
-		$(document.createElement("div")).addClass("trigger-label").appendTo(node);
-		$(document.createElement("div")).addClass("clear").appendTo(node);
-	}
-	$(document.createElement("div")).addClass("clear").appendTo(column);
 }
 
 var getSongData = function() {
@@ -207,6 +146,72 @@ var getSongData = function() {
     return lines.join("|");
 }
 
+var handleKeyPress = function(evt) {
+    // console.log(evt.keyCode);
+    // console.log(evt.key);
+
+    switch (evt.key) {
+        case "/":
+            setOctave(1);
+            break;
+        case ".":
+            setOctave(-1);
+            break;
+    }
+
+    var selected = $(".selected");
+    if (selected.length == 0) { return; }
+    var label = $(selected).find(".note-label").first();
+
+    if (evt.keyCode >= 48 && evt.keyCode <= 57) {
+        var value = evt.keyCode - 48;
+        if (!evt.shiftKey) { value /= 10; }
+        updateTrigger(value);
+        return;
+    }
+
+    switch (evt.key) {
+        case ";":
+            step(-1, 0);
+            break;
+        case "'":
+            step(0, 1);
+            break;
+        case "\\":
+            step(1, 0);
+            break;
+        case "[":
+            step(0, -1);
+            break;
+        case "z":
+            deleteTrigger();
+            break;
+        case "q":
+        case "a":
+        case "w":
+        case "s":
+        case "e":
+        case "r":
+        case "f":
+        case "t":
+        case "g":
+        case "y":
+        case "h":
+        case "u":
+            label.text(notes[evt.key] + octave);
+            break;
+        case "`":
+            var trigger = prompt("Trigger length");
+            updateTrigger(parseInt(trigger));
+            break;
+        case "Escape":
+            console.log("esc pressed");
+            $("select.instruments").remove();
+            break;
+    }
+}
+
+//functions for external call
 var addInstrument = function (instrument) {
 	Tracker.project.instruments.push(instrument);
     var menus = $("select.instruments");
