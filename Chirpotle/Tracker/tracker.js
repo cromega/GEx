@@ -13,16 +13,19 @@
     "u": "b",
 };
 
-var octave = 4;
-var Project = {
-	instruments: [],
-};
+var Tracker = {
+    state: {
+        octave: 4
+    },
+    project: {
+        instruments: []
+    }
+}
 
 var setOctave = function (change) {
-    if (octave == 1 && change == -1) { return; }
-    if (octave == 8 && change == 1) { return; }
-    octave += change;
-    $("#octaveLabel").text(octave);
+    newOctave = Tracker.state.octave + change;
+    if (newOctave < 1 || newOctave > 8) { return; }
+    Tracker.state.octave = newOctave;
 }
 
 var step = function (x, y) {
@@ -44,7 +47,6 @@ var step = function (x, y) {
 var updateTrigger = function (value) {
     var triggerNote = $(".selected .trigger-label");
     var triggerBar = $(".selected .trigger-bar-fill");
-    var triggerLength = $(".selected").data("triggerLength") || 0;
     //FIXME: calculate sizes properly with border boxes
     var maxTriggerHeight = $(".node.selected").height() + 2;
 
@@ -70,10 +72,11 @@ var deleteTrigger = function () {
 
 $(document).ready(function () {
 	loadTracker($("#tracker"));
+    rivets.bind($("#configuration"), {state: Tracker.state});
 
 	$("body").on("keydown", function(evt) {
-        console.log(evt.keyCode);
-        console.log(evt.key);
+        // console.log(evt.keyCode);
+        // console.log(evt.key);
 
         switch (evt.key) {
             case "/":
@@ -87,7 +90,6 @@ $(document).ready(function () {
         var selected = $(".selected");
         if (selected.length == 0) { return; }
         var label = $(selected).find(".note-label").first();
-        var triggerNote = $(selected).find(".trigger-label");
 
         if (evt.keyCode >= 48 && evt.keyCode <= 57) {
             var value = evt.keyCode - 48;
@@ -145,7 +147,7 @@ var loadTracker = function (tracker) {
 };
 
 var bindInstrumentToTrack = function (name, track) {
-    $(track).attr("data-instrument-index", Project.instruments.indexOf(name));
+    $(track).attr("data-instrument-index", Tracker.project.instruments.indexOf(name));
     $(track).attr("data-instrument-name", name);
 }
 
@@ -206,7 +208,7 @@ var getSongData = function() {
 }
 
 var addInstrument = function (instrument) {
-	Project.instruments.push(instrument);
+	Tracker.project.instruments.push(instrument);
     var menus = $("select.instruments");
     $(menus).each(function (idx, menu) {
         $("<option>" + instrument + "</option>").attr("value", $(menus).first().find("option").length - 1).appendTo(menu);
@@ -220,7 +222,7 @@ var addInstrument = function (instrument) {
 };
 
 var removeInstrument = function(instrument) {
-	Project.instruments.splice(Project.instruments.indexOf(instrument), 1);
+	Tracker.project.instruments.splice(Project.instruments.indexOf(instrument), 1);
 	$("option").filter(function() { return $(this).html() == instrument; }).remove();
 	debugger;
 	$(".track-line").filter(function() { return $(this).data("instrument-name") == instrument; }).find(".node").text("");
