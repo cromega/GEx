@@ -30,7 +30,6 @@ namespace Chirpesizer {
 
         public double Get(double value, int time, bool isActive, int songTime) {
             return SampleCache[songTime - LastPrepared];
-            return value + Oscillator.Next() * Amplitude;
         }
 
         public void Prepare(int frames, int songTime) {
