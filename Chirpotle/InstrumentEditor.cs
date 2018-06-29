@@ -14,9 +14,12 @@ namespace Chirpotle {
     public partial class InstrumentEditor : Form {
         public Instrument Instrument;
         public string InstrumentName;
+        private Triggerer InstrumentPlayer;
 
         public InstrumentEditor() {
             InitializeComponent();
+            InstrumentPlayer = new Triggerer();
+            InstrumentPlayer.Start();
         }
 
         public InstrumentEditor(string name, string instrumentData) {
@@ -25,6 +28,8 @@ namespace Chirpotle {
             var instrument = InstrumentParser.Parse(instrumentData);
             NameEdit.Text = name;
             LoadInstrument(instrument);
+            InstrumentPlayer = new Triggerer();
+            InstrumentPlayer.Start();
         }
 
         private void LoadInstrument(Instrument instrument) {
@@ -89,7 +94,6 @@ namespace Chirpotle {
         };
 
         private Dictionary<Keys, Trigger> ActiveTriggers = new Dictionary<Keys, Trigger>();
-        private Triggerer InstrumentPlayer = new Triggerer();
         private HashSet<Keys> Pressedkeys = new HashSet<Keys>();
         private Instrument InstrumentPlaying;
 

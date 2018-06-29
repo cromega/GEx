@@ -9,7 +9,7 @@ using Chirpesizer;
 
 namespace Chirpotle {
     class Triggerer {
-        private static readonly object Lock = new object();
+        private object Lock = new object();
 
         private SoundSystem Audio;
         private bool LoopStop;
@@ -21,15 +21,17 @@ namespace Chirpotle {
             Audio = new SoundSystem(2205);
             LoopStop = false;
             Time = 0;
+        }
+
+        public void Start() {
             thread = new Thread(new ThreadStart(TriggerLoop));
             thread.Start();
         }
 
         public void SetInstrument(Instrument instrument) {
-            thread.Abort();
-            Instrument = instrument;
-            thread = new Thread(new ThreadStart(TriggerLoop));
-            thread.Start();
+            lock (Lock) {
+                Instrument = instrument;
+            }
         }
 
         public void TriggerLoop() {
