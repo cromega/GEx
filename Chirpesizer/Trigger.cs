@@ -60,7 +60,7 @@ namespace Chirpesizer {
                 sample *= short.MaxValue;
                 buffer[i * 2] = sample;
                 buffer[i * 2 + 1] = sample;
-                if (!_IsActive && Age >= Envelope.MAX_TIME) { _Finished = true; }
+                if (!_IsActive && Age >= 5000 * 44.1) { _Finished = true; }
                 Tick();
             }
 
