@@ -13,7 +13,7 @@ namespace Test {
             Assert.Equal(OscillatorType.Sine, instrument.Osc);
             Assert.Equal(0.5, instrument.Volume);
             var envelope = (EnvelopeModulator)instrument.Modulators[0];
-            Assert.Equal(441, envelope.Envelope.Attack); // value converted from ms to frames
+            Assert.Equal(10, envelope.Envelope.Attack);
         }
 
         [Fact]
