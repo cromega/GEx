@@ -67,9 +67,7 @@
     <Compile Include="TestInstrument.cs" />
     <Compile Include="TestIntrumentParser.cs" />
     <Compile Include="TestNode.cs" />
-    <Compile Include="TestPatchableValue.cs" />
     <Compile Include="TestTrigger.cs" />
-    <Compile Include="TestValueParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
