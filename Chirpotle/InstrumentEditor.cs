@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chirpesizer;
+using Chirpesizer.Effects;
 
 namespace Chirpotle {
     public partial class InstrumentEditor : Form {
@@ -145,7 +146,12 @@ namespace Chirpotle {
             var modulators = new List<IModulator>();
             modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
             modulators.Add(volumeEnvelope);
-            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, modulators);
+
+            var effects = new List<string>();
+            var effectControls = GetEffects();
+            effectControls.ForEach(effect => effects.Add(new EffectSerializer().Serialize(effect.GetEffect())));
+
+            return new Instrument(waveSelector1.SignalType, (double)VolumeValue.Value, modulators, effects.ToArray());
         }
 
         private void panel2_MouseClick(object sender, MouseEventArgs e) {
@@ -165,9 +171,22 @@ namespace Chirpotle {
             return modulators;
         }
 
+        private List<IEffectControl> GetEffects() {
+            var effects = new List<IEffectControl>();
+            foreach (Control ctrl in EffectsPanel.Controls) {
+                if (ctrl is IEffectControl) { effects.Add((IEffectControl)ctrl); }
+            }
+            return effects;
+        }
+
         private void envelopeToolStripMenuItem_Click(object sender, EventArgs e) {
             var modulator = new EnvelopePatchControl();
             modulator.Parent = EffectsPanel;
+        }
+
+        private void echoToolStripMenuItem_Click(object sender, EventArgs e) {
+            var echo = new EchoEffect();
+            echo.Parent = EffectsPanel;
         }
     }
 }

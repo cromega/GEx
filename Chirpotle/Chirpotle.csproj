@@ -48,6 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EchoEffect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EchoEffect.Designer.cs">
+      <DependentUpon>EchoEffect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EffectSerializer.cs" />
+    <Compile Include="IEffectControl.cs" />
     <Compile Include="EnvelopeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -98,6 +106,9 @@
     <Compile Include="WaveSelector.Designer.cs">
       <DependentUpon>WaveSelector.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EchoEffect.resx">
+      <DependentUpon>EchoEffect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EnvelopeControl.resx">
       <DependentUpon>EnvelopeControl.cs</DependentUpon>
     </EmbeddedResource>

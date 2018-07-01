@@ -36,9 +36,11 @@ namespace Chirpotle {
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modlulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lFOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.envelopeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainEnvelope = new Chirpotle.EnvelopeControl();
             this.waveSelector1 = new Chirpotle.WaveSelector();
-            this.envelopeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.effectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.echoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -155,7 +157,8 @@ namespace Chirpotle {
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.modlulatorsToolStripMenuItem});
+            this.modlulatorsToolStripMenuItem,
+            this.effectsToolStripMenuItem});
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.addToolStripMenuItem.Text = "Add";
@@ -172,16 +175,27 @@ namespace Chirpotle {
             // lFOToolStripMenuItem
             // 
             this.lFOToolStripMenuItem.Name = "lFOToolStripMenuItem";
-            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lFOToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.lFOToolStripMenuItem.Text = "LFO";
             this.lFOToolStripMenuItem.Click += new System.EventHandler(this.lFOToolStripMenuItem_Click);
             // 
+            // envelopeToolStripMenuItem
+            // 
+            this.envelopeToolStripMenuItem.Name = "envelopeToolStripMenuItem";
+            this.envelopeToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.envelopeToolStripMenuItem.Text = "Envelope";
+            this.envelopeToolStripMenuItem.Click += new System.EventHandler(this.envelopeToolStripMenuItem_Click);
+            // 
             // MainEnvelope
             // 
+            this.MainEnvelope.Attack = 20;
             this.MainEnvelope.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MainEnvelope.Decay = 20;
             this.MainEnvelope.Location = new System.Drawing.Point(234, 12);
             this.MainEnvelope.Name = "MainEnvelope";
+            this.MainEnvelope.Release = 20;
             this.MainEnvelope.Size = new System.Drawing.Size(189, 147);
+            this.MainEnvelope.Sustain = 0.5D;
             this.MainEnvelope.TabIndex = 19;
             // 
             // waveSelector1
@@ -191,12 +205,20 @@ namespace Chirpotle {
             this.waveSelector1.Size = new System.Drawing.Size(150, 29);
             this.waveSelector1.TabIndex = 10;
             // 
-            // envelopeToolStripMenuItem
+            // effectsToolStripMenuItem
             // 
-            this.envelopeToolStripMenuItem.Name = "envelopeToolStripMenuItem";
-            this.envelopeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.envelopeToolStripMenuItem.Text = "Envelope";
-            this.envelopeToolStripMenuItem.Click += new System.EventHandler(this.envelopeToolStripMenuItem_Click);
+            this.effectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.echoToolStripMenuItem});
+            this.effectsToolStripMenuItem.Name = "effectsToolStripMenuItem";
+            this.effectsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.effectsToolStripMenuItem.Text = "Effects";
+            // 
+            // echoToolStripMenuItem
+            // 
+            this.echoToolStripMenuItem.Name = "echoToolStripMenuItem";
+            this.echoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.echoToolStripMenuItem.Text = "Echo";
+            this.echoToolStripMenuItem.Click += new System.EventHandler(this.echoToolStripMenuItem_Click);
             // 
             // InstrumentEditor
             // 
@@ -246,5 +268,7 @@ namespace Chirpotle {
         private EnvelopeControl MainEnvelope;
         private System.Windows.Forms.ToolStripMenuItem lFOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem envelopeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem effectsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem echoToolStripMenuItem;
     }
 }
