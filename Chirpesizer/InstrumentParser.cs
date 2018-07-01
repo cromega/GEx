@@ -23,14 +23,19 @@ namespace Chirpesizer {
             var osc = GetOscillatorType();
             var volume = GetVolume();
             var modulators = GetModulators();
+            var effects = GetEffects();
 
             //modulators.ForEach(modulator => {
             //    PatchableValues.FindAll(value => value.Id == modulator.GetTarget()).ForEach(value => value.AddModulator(modulator));
             //});
 
-            return new Instrument(osc, volume, modulators);
+            return new Instrument(osc, volume, modulators, effects);
 
             //throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));
+        }
+
+        private string[] GetEffects() {
+            return InstrumentParts.Where(part => part.StartsWith("e")).Select(part => part.Substring(1)).ToArray();
         }
 
         private OscillatorType GetOscillatorType() {

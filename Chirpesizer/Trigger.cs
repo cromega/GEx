@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
+using Chirpesizer.Effects;
 
 namespace Chirpesizer {
     public class Trigger {
         public readonly Oscillator Osc;
         public readonly PatchableValue Frequency;
         public readonly PatchableValue Volume;
+
+        private List<IEffect> Effects;
 
         private int _TTL;
         public int TTL { get { return _TTL; } }
@@ -21,7 +25,7 @@ namespace Chirpesizer {
             get { return _Finished; }
         }
 
-        public Trigger(Oscillator osc, PatchableValue frequency, int length, PatchableValue volume) {
+        public Trigger(Oscillator osc, PatchableValue frequency, int length, PatchableValue volume, List<IEffect> effects) {
             Osc = osc;
             Frequency = frequency;
             _TTL = length;
@@ -29,6 +33,7 @@ namespace Chirpesizer {
             _IsActive = true;
             Volume = volume;
             _Finished = false;
+            Effects = effects;
         }
 
         public void Tick() {
@@ -58,6 +63,10 @@ namespace Chirpesizer {
                 if (!_IsActive && Age >= Envelope.MAX_TIME) { _Finished = true; }
                 Tick();
             }
+
+            Effects.ForEach(effect => {
+                effect.Apply(buffer);
+            });
             return buffer;
         }
     }

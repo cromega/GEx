@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Chirpesizer;
+using Chirpesizer.Effects;
 using Xunit;
 
 namespace Test {
@@ -7,7 +9,7 @@ namespace Test {
 
         [Fact]
         public void WhenActive() {
-            var t = new Trigger(new Oscillator(OscillatorType.Noise), new PatchableValue(440, "x"), 10, new PatchableValue(0.5, "v"));
+            var t = new Trigger(new Oscillator(OscillatorType.Noise), new PatchableValue(440, "x"), 10, new PatchableValue(0.5, "v"), new List<IEffect>());
             t.Tick();
             Assert.Equal(1, t.Age);
             Assert.Equal(9, t.TTL);
@@ -15,7 +17,7 @@ namespace Test {
 
         [Fact]
         public void WhenEnds() {
-            var t = new Trigger(new Oscillator(OscillatorType.Noise), new PatchableValue(440, "x"), 2, new PatchableValue(0.5, "v"));
+            var t = new Trigger(new Oscillator(OscillatorType.Noise), new PatchableValue(440, "x"), 2, new PatchableValue(0.5, "v"), new List<IEffect>());
             t.Tick();
             Assert.Equal(1, t.Age);
             Assert.Equal(1, t.TTL);

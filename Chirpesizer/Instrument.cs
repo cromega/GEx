@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chirpesizer.Effects;
 
 
 namespace Chirpesizer {
@@ -8,18 +9,20 @@ namespace Chirpesizer {
         public readonly OscillatorType Osc;
         public readonly double Volume;
         public readonly List<IModulator> Modulators;
+        public readonly string[] Effects;
         private List<Trigger> ActiveTriggers;
 
-        public Instrument(OscillatorType osc, double volume, List<IModulator>modulators) {
+        public Instrument(OscillatorType osc, double volume, List<IModulator>modulators, string[] effects) {
             Osc = osc;
             Volume = volume;
             Modulators = modulators;
             ActiveTriggers = new List<Trigger>();
+            Effects = effects;
         }
 
         public Trigger Activate(double frequency, int length) {
             var osc = new Oscillator(Osc);
-            var trig = new Trigger(osc, GetFrequency(frequency), length, GetVolume());
+            var trig = new Trigger(osc, GetFrequency(frequency), length, GetVolume(), GetEffects());
             ActiveTriggers.Add(trig);
             return trig;
         }
@@ -54,6 +57,10 @@ namespace Chirpesizer {
 
         private void PrepareSegment(int frames, int songTime) {
             Modulators.Where(mod => mod.GetType().Name == "LFOModulator").ToList().ForEach(lfo => ((LFOModulator)lfo).Prepare(frames, songTime));
+        }
+
+        public List<IEffect> GetEffects() {
+            return new EffectParser().GetEffects(Effects);
         }
     }
 }

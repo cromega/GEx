@@ -49,6 +49,9 @@
   <ItemGroup>
     <Compile Include="BufferRing.cs" />
     <Compile Include="ChirpBuffer.cs" />
+    <Compile Include="EffectParser.cs" />
+    <Compile Include="Effects\IEffect.cs" />
+    <Compile Include="Effects\Reverb.cs" />
     <Compile Include="Envelope.cs" />
     <Compile Include="EnvelopeModulator.cs" />
     <Compile Include="IModulator.cs" />

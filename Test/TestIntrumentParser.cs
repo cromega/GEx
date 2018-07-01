@@ -36,6 +36,13 @@ namespace Test {
             Assert.Equal(2, instrument.Modulators.Count);
         }
 
+        [Fact]
+        public void TestParseWithReverbEffect() {
+            var instrumentData = "1;pv0.2;er22050,0.4";
+            var instrument = InstrumentParser.Parse(instrumentData);
+            Assert.Equal("r22050,0.4", instrument.Effects[0]);
+        }
+
         //[Fact]
         //public void TestParseInstrumentWithVolumeEnvelope() {
         //    var instrumentData = "1;0.5;10,20,0.5,30";

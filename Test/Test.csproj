@@ -67,6 +67,7 @@
     <Compile Include="TestInstrument.cs" />
     <Compile Include="TestIntrumentParser.cs" />
     <Compile Include="TestNode.cs" />
+    <Compile Include="TestReverb.cs" />
     <Compile Include="TestTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
