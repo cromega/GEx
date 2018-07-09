@@ -9,14 +9,8 @@ namespace Chirpesizer {
         }
 
         private List<string> InstrumentParts;
-        //private List<PatchableValue> PatchableValues;
         private InstrumentParser(string data) {
-            InstrumentParts = new List<string>();
-            //PatchableValues = new List<PatchableValue>();
-
-            data.Split(";".ToCharArray()).ToList().ForEach(part => {
-                InstrumentParts.Add(part);
-            });
+            InstrumentParts = data.Split(";".ToCharArray()).ToList();
         }
 
         private Instrument CreateInstrument() {
@@ -25,13 +19,7 @@ namespace Chirpesizer {
             var modulators = GetModulators();
             var effects = GetEffects();
 
-            //modulators.ForEach(modulator => {
-            //    PatchableValues.FindAll(value => value.Id == modulator.GetTarget()).ForEach(value => value.AddModulator(modulator));
-            //});
-
             return new Instrument(osc, volume, modulators, effects);
-
-            //throw new Exception(String.Format("Can't create instrument from \"{0}\"", InstrumentData));
         }
 
         private string[] GetEffects() {
@@ -39,7 +27,7 @@ namespace Chirpesizer {
         }
 
         private OscillatorType GetOscillatorType() {
-            return (OscillatorType)int.Parse(InstrumentParts.First());
+            return (OscillatorType)int.Parse(InstrumentParts[0]);
         }
 
         private double GetVolume() {
@@ -52,8 +40,8 @@ namespace Chirpesizer {
         private List<IModulator> GetModulators() {
             //mea10,20,0.5,30
             var modulators = new List<IModulator>();
-            var modulatorsRaw = InstrumentParts.FindAll(part => part.StartsWith("m")).Select(part => part.Substring(1)).ToList();
-            modulatorsRaw.ForEach(modulatorData => {
+
+            InstrumentParts.FindAll(part => part.StartsWith("m")).Select(part => part.Substring(1)).ToList().ForEach(modulatorData => {
                 var target = modulatorData[1].ToString();
                 switch (modulatorData[0]) {
                     case 'e': modulators.Add(new EnvelopeModulator(Envelope.Parse(modulatorData.Substring(2)), target)); break;
