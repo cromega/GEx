@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Chirpesizer.Effects {
     public interface IEffect {
-        void Apply(double[] input);
+        double[] Apply(double[] input);
     }
 }

@@ -64,10 +64,11 @@ namespace Chirpesizer {
                 Tick();
             }
 
+            var output = (double[])buffer.Clone();
             Effects.ForEach(effect => {
-                effect.Apply(buffer);
+                output = effect.Apply(output);
             });
-            return buffer;
+            return output;
         }
     }
 }
