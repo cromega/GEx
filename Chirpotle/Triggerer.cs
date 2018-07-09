@@ -45,8 +45,8 @@ namespace Chirpotle {
                 lock (Lock) {
                     try {
                         if (Instrument != null) { buffers.AddRange(Instrument.RenderTriggers(2205, Time)); }
-                    } catch {
-                        Debug.WriteLine("wtf happened");
+                    } catch (Exception ex) {
+                        Debug.WriteLine(String.Format("Error while rendering trigger: {0}", ex.Message));
                         continue;
                     }
                 }
