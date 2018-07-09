@@ -12,7 +12,7 @@ namespace Chirpotle {
             switch (effect.GetType().Name) {
                 case "Reverb":
                     var reverb = (Reverb)effect;
-                    output.AppendFormat("r{0},{1}", reverb.Delay * 44.1, reverb.Dampen);
+                    output.AppendFormat("r{0},{1}", Math.Round(reverb.Delay * 44.1), reverb.Decay);
                     break;
             }
 
