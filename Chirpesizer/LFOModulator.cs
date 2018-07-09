@@ -29,7 +29,7 @@ namespace Chirpesizer {
         }
 
         public double Get(double value, int time, bool isActive, int songTime) {
-            return SampleCache[songTime - LastPrepared];
+            return value + SampleCache[songTime - LastPrepared];
         }
 
         public void Prepare(int frames, int songTime) {
