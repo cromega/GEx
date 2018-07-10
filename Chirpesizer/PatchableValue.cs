@@ -27,5 +27,13 @@ namespace Chirpesizer {
             });
             return value;
         }
+
+        public int FadeoutTime() {
+            var releaseTimes = Modulators.Where(mod => mod.GetType().Name == "EnvelopeModulator").
+                Select(mod => ((EnvelopeModulator)mod).Envelope.Release);
+
+            if (releaseTimes.Any()) { return releaseTimes.Max(); }
+            return 0;
+        }
     }
 }

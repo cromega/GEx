@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Chirpesizer.Effects;
+using System.Linq;
 
 namespace Chirpesizer {
     public class Trigger {
@@ -25,6 +26,8 @@ namespace Chirpesizer {
             get { return _Finished; }
         }
 
+        private int TimeAfterRelease;
+
         public Trigger(Oscillator osc, PatchableValue frequency, int length, PatchableValue volume, List<IEffect> effects) {
             Osc = osc;
             Frequency = frequency;
@@ -34,6 +37,7 @@ namespace Chirpesizer {
             Volume = volume;
             _Finished = false;
             Effects = effects;
+            TimeAfterRelease = GetTimeAfterRelease();
         }
 
         public void Tick() {
@@ -60,7 +64,7 @@ namespace Chirpesizer {
                 sample *= short.MaxValue;
                 buffer[i * 2] = sample;
                 buffer[i * 2 + 1] = sample;
-                if (!_IsActive && Age >= 5000 * 44.1) { _Finished = true; }
+                if (!_IsActive && Age >= TimeAfterRelease * 44.1) { _Finished = true; }
                 Tick();
             }
 
@@ -69,6 +73,11 @@ namespace Chirpesizer {
                 output = effect.Apply(output);
             });
             return output;
+        }
+
+        public int GetTimeAfterRelease() {
+            if (Effects.Any(e => e.GetType().Name == "Reverb")) { return 5000; }
+            return Volume.FadeoutTime();
         }
     }
 }

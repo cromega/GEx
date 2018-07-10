@@ -145,7 +145,7 @@ namespace Chirpotle {
             var modulatorControls = GetModulators();
             var modulators = new List<IModulator>();
             modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
-            modulators.Add(volumeEnvelope);
+            //modulators.Add(volumeEnvelope);
 
             var effects = new List<string>();
             var effectControls = GetEffects();
