@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Chirpesizer;
+using Chirpesizer.Effects;
 
 namespace Chirpotle {
     public class InstrumentSerializer {
@@ -18,6 +19,10 @@ namespace Chirpotle {
             output.AppendFormat("pv{0};", Instrument.Volume);
             foreach (IModulator mod in Instrument.Modulators) {
                 output.AppendFormat("{0};", FormatModulator(mod));                
+            }
+
+            foreach (string effect in Instrument.Effects) {
+                output.AppendFormat("e{0};", effect);
             }
 
             return output.ToString().TrimEnd(";".ToCharArray());
