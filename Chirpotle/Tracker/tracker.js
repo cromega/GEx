@@ -133,7 +133,7 @@ var getSongData = function() {
             if (text != "") {
                 var note = text.slice(0, -1);
                 var octave = parseInt(text.slice(-1));
-                var instrumentIndex = $($(".track-line")[trackIndex]).data("instrument-index");
+                var instrumentIndex = $($(".track-line")[trackIndex]).attr("data-instrument-index");
                 var noteidx = noteindexes.indexOf(note) + 1 + octave * 12;
                 var triggerLength = $(node).data("triggerLength");
                 line += instrumentIndex + ";" + triggerLength + ";" + noteidx + " ";
@@ -229,7 +229,6 @@ var addInstrument = function (instrument) {
 var removeInstrument = function(instrument) {
 	Tracker.project.instruments.splice(Project.instruments.indexOf(instrument), 1);
 	$("option").filter(function() { return $(this).html() == instrument; }).remove();
-	debugger;
 	$(".track-line").filter(function() { return $(this).data("instrument-name") == instrument; }).find(".node").text("");
 	if (Project.instruments.length > 0) {
 		$(".track-line").each(function(idx, track) {
