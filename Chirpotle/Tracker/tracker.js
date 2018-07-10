@@ -198,7 +198,7 @@ var handleKeyPress = function(evt) {
         case "y":
         case "h":
         case "u":
-            label.text(notes[evt.key] + octave);
+            label.text(notes[evt.key] + Tracker.state.octave);
             break;
         case "`":
             var trigger = prompt("Trigger length");
