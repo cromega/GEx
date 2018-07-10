@@ -37,14 +37,16 @@ namespace Chirpotle {
             this.modlulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lFOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.envelopeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MainEnvelope = new Chirpotle.EnvelopeControl();
-            this.waveSelector1 = new Chirpotle.WaveSelector();
             this.effectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.echoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.waveSelector1 = new Chirpotle.WaveSelector();
+            this.OctaveValue = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeValue)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.OctaveValue)).BeginInit();
             this.SuspendLayout();
             // 
             // SaveButton
@@ -186,25 +188,6 @@ namespace Chirpotle {
             this.envelopeToolStripMenuItem.Text = "Envelope";
             this.envelopeToolStripMenuItem.Click += new System.EventHandler(this.envelopeToolStripMenuItem_Click);
             // 
-            // MainEnvelope
-            // 
-            this.MainEnvelope.Attack = 20;
-            this.MainEnvelope.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainEnvelope.Decay = 20;
-            this.MainEnvelope.Location = new System.Drawing.Point(234, 12);
-            this.MainEnvelope.Name = "MainEnvelope";
-            this.MainEnvelope.Release = 20;
-            this.MainEnvelope.Size = new System.Drawing.Size(189, 147);
-            this.MainEnvelope.Sustain = 0.5D;
-            this.MainEnvelope.TabIndex = 19;
-            // 
-            // waveSelector1
-            // 
-            this.waveSelector1.Location = new System.Drawing.Point(28, 42);
-            this.waveSelector1.Name = "waveSelector1";
-            this.waveSelector1.Size = new System.Drawing.Size(150, 29);
-            this.waveSelector1.TabIndex = 10;
-            // 
             // effectsToolStripMenuItem
             // 
             this.effectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -216,9 +199,47 @@ namespace Chirpotle {
             // echoToolStripMenuItem
             // 
             this.echoToolStripMenuItem.Name = "echoToolStripMenuItem";
-            this.echoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.echoToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.echoToolStripMenuItem.Text = "Echo";
             this.echoToolStripMenuItem.Click += new System.EventHandler(this.echoToolStripMenuItem_Click);
+            // 
+            // waveSelector1
+            // 
+            this.waveSelector1.Location = new System.Drawing.Point(28, 42);
+            this.waveSelector1.Name = "waveSelector1";
+            this.waveSelector1.Size = new System.Drawing.Size(150, 29);
+            this.waveSelector1.TabIndex = 10;
+            // 
+            // OctaveValue
+            // 
+            this.OctaveValue.Location = new System.Drawing.Point(73, 136);
+            this.OctaveValue.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.OctaveValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.OctaveValue.Name = "OctaveValue";
+            this.OctaveValue.Size = new System.Drawing.Size(120, 20);
+            this.OctaveValue.TabIndex = 19;
+            this.OctaveValue.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(25, 138);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(42, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Octave";
             // 
             // InstrumentEditor
             // 
@@ -226,7 +247,8 @@ namespace Chirpotle {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1059, 740);
             this.ControlBox = false;
-            this.Controls.Add(this.MainEnvelope);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.OctaveValue);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.TestPanel);
             this.Controls.Add(this.label2);
@@ -246,6 +268,7 @@ namespace Chirpotle {
             this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.OctaveValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,10 +288,11 @@ namespace Chirpotle {
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modlulatorsToolStripMenuItem;
-        private EnvelopeControl MainEnvelope;
         private System.Windows.Forms.ToolStripMenuItem lFOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem envelopeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem effectsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem echoToolStripMenuItem;
+        private System.Windows.Forms.NumericUpDown OctaveValue;
+        private System.Windows.Forms.Label label3;
     }
 }

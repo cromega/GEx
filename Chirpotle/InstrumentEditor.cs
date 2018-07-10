@@ -36,12 +36,6 @@ namespace Chirpotle {
         private void LoadInstrument(Instrument instrument) {
             waveSelector1.SetSignalType(instrument.Osc);
             VolumeValue.Value = (decimal)instrument.Volume;
-            //set main envelope
-            var mainEnvelope = (EnvelopeModulator)instrument.Modulators.Last();
-            MainEnvelope.Attack = (int)(mainEnvelope.Envelope.Attack / 44.1);
-            MainEnvelope.Decay = (int)(mainEnvelope.Envelope.Decay / 44.1);
-            MainEnvelope.Sustain = mainEnvelope.Envelope.Sustain;
-            MainEnvelope.Release = (int)(mainEnvelope.Envelope.Release / 44.1);
 
             instrument.Modulators.Take(instrument.Modulators.Count() - 1).ToList().ForEach(mod => {
                 AddModulator(mod);
@@ -119,7 +113,7 @@ namespace Chirpotle {
                 InstrumentPlaying = instrument;
                 InstrumentPlayer.SetInstrument(instrument);
             }
-            var trigger = instrument.Activate(KeysToNotes[e.KeyData] * Math.Pow(2, 4), -1);
+            var trigger = instrument.Activate(KeysToNotes[e.KeyData] * Math.Pow(2, (int)OctaveValue.Value), -1);
             ActiveTriggers[e.KeyData] = trigger;
         }
 
@@ -138,14 +132,10 @@ namespace Chirpotle {
         }
 
         private Instrument CreateInstrument() {
-            var envelope = new Envelope(MTime.FromMs(MainEnvelope.Attack).Frames, MTime.FromMs(MainEnvelope.Decay).Frames, MainEnvelope.Sustain, MTime.FromMs(MainEnvelope.Release).Frames);
-            var volumeEnvelope = new EnvelopeModulator(envelope, "v");
-
             // get all modulators
             var modulatorControls = GetModulators();
             var modulators = new List<IModulator>();
             modulatorControls.ForEach(modctrl => modulators.Add(modctrl.GetModulator()));
-            //modulators.Add(volumeEnvelope);
 
             var effects = new List<string>();
             var effectControls = GetEffects();
