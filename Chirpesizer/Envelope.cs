@@ -49,7 +49,7 @@ namespace Chirpesizer {
                     double.Parse(values[2]),
                     int.Parse(values[3])
                 );
-            } catch (Exception e) {
+            } catch {
                 throw new Exception(String.Format("Can't create envelope from {0}", data));
             }
         }
