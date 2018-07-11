@@ -8,6 +8,10 @@ using System.Collections.Generic;
 namespace playsong {
     class Program {
         static void Main(string[] args) {
+            var graph = new GraphExperiment.SoundSystem(4410);
+            graph.Close();
+            return;
+
             Logger.On();
 
             var audioOutput = new SoundSystem(4410);

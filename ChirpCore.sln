@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestChirpotle", "TestChirpo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscillatorTest", "OscillatorTest\OscillatorTest.csproj", "{5C29013A-DB66-4943-81FF-D49C78CD4329}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphExperiment", "GraphExperiment\GraphExperiment.csproj", "{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,18 @@ Global
 		{5C29013A-DB66-4943-81FF-D49C78CD4329}.Release|x64.Build.0 = Release|Any CPU
 		{5C29013A-DB66-4943-81FF-D49C78CD4329}.Release|x86.ActiveCfg = Release|Any CPU
 		{5C29013A-DB66-4943-81FF-D49C78CD4329}.Release|x86.Build.0 = Release|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Debug|x64.Build.0 = Debug|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Release|x64.ActiveCfg = Release|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Release|x64.Build.0 = Release|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
