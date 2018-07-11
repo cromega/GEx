@@ -4,12 +4,10 @@ using System.IO;
 namespace Chirpesizer {
     public class Oscillator {
         private double Increment;
-        Func<int, double> Generator;
+        Func<double> Generator;
         private Random Rnd;
         public readonly OscillatorType OscillatorType;
         private double Phase;
-        private double _Frequency;
-        private int lastTime;
 
         public Oscillator(OscillatorType type) {
             OscillatorType = type;
@@ -25,36 +23,31 @@ namespace Chirpesizer {
         }
 
         public double Next() {
-            //if (time != lastTime) {
-            //    Phase += Increment;
-            //    lastTime = time;
-            //}
             Phase += Increment;
-            return Generator(1);
+            return Generator();
         }
 
         public void SetFrequency(double frequency) {
             Increment = LOOKUP_TABLE_LENGTH * frequency / 44100;
-            _Frequency = frequency;
         }
 
-        private double Sine(int time) {
+        private double Sine() {
             return SineTable[(int)Math.Round(Phase) % SineTable.Length];
         }
 
-        private double Square(int time) {
-            return Sine(time) < 0 ? -1 : 1;
+        private double Square() {
+            return Sine() < 0 ? -1 : 1;
         }
 
-        private double Noise(int time) {
+        private double Noise() {
             return Rnd.NextDouble() * 2 - 1;
         }
 
-        private double Sawtooth(int time) {
+        private double Sawtooth() {
             return SawtoothTable[(int)Math.Round(Phase) % SawtoothTable.Length];
         }
 
-        private double Triangle(int time) {
+        private double Triangle() {
             return TriangleTable[(int)Math.Round(Phase) % TriangleTable.Length];
         }
 
