@@ -9,18 +9,20 @@ using System.Threading;
 namespace playsong {
     class Program {
         static void Main(string[] args) {
-            var buffer = new short[88200];
+            int frames = 4410;
+            var buffer = new short[frames * 2];
             var rnd = new Random();
-            for (int i=0; i<buffer.Length / 2; i++) {
-                var sample = rnd.NextDouble() * 2 - 1;
-                sample *= 10000;
-                buffer[i*2] = (short)sample;
-                buffer[i*2+1] = (short)sample;
+            double sample;
+            for (int i=0; i<buffer.Length; i+=2) {
+                sample = rnd.NextDouble() * 2 - 1;
+                sample *= 1000;
+                buffer[i] = (short)sample;
+                buffer[i+1] = (short)sample;
             }
-            var graph = new GraphExperiment.SoundSystem(44100);
-            graph.Write(buffer);
-            Thread.Sleep(1000);
-            graph.Close();
+            var audio = new GraphExperiment.SoundSystem(frames);
+            audio.Write(buffer);
+            Thread.Sleep(2000);
+            audio.Close();
             Console.ReadKey();
             return;
 

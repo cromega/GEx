@@ -44,8 +44,8 @@ namespace GraphExperiment {
                 dwBufferLength = (uint)length;
                 dwBytesRecorded = 0;
                 dwUser = IntPtr.Zero;
-                dwFlags = WHDR_BEGINLOOP;
-                dwLoops = 1;
+                dwFlags = 0;
+                dwLoops = 0;
                 lpNext = IntPtr.Zero;
                 reserved = IntPtr.Zero;
             }
@@ -56,11 +56,11 @@ namespace GraphExperiment {
         private const int WOM_OPEN = 955;
         private const int WOM_CLOSE = 956;
         private const int WOM_DONE = 957;
-        private const int WHDR_BEGINLOOP = 4;
         private const int WAVE_FORMAT_PCM = 1;
+        private const uint WAVE_MAPPER = 4294967295;
 
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern uint waveOutOpen(ref IntPtr hWaveOut, int uDeviceID, ref WaveFormatEx lpFormat, waveOutHandle dwCallback, IntPtr dwInstance, uint dwFlags);
+        private static extern uint waveOutOpen(ref IntPtr hWaveOut, uint uDeviceID, ref WaveFormatEx lpFormat, waveOutHandle dwCallback, IntPtr dwInstance, uint dwFlags);
 
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern uint waveOutClose(IntPtr hwo);
@@ -86,7 +86,7 @@ namespace GraphExperiment {
             ChunkSize = frames;
 
             var wf = new WaveFormatEx(44100, 16, 2);
-            var ret = waveOutOpen(ref Handle, -1, ref wf, waveOutHandler, IntPtr.Zero, CALLBACK_FUNCTION);
+            var ret = waveOutOpen(ref Handle, WAVE_MAPPER, ref wf, waveOutHandler, IntPtr.Zero, CALLBACK_FUNCTION);
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to open audio device: {0}", ret));
             }
@@ -121,6 +121,7 @@ namespace GraphExperiment {
         }
 
         private void waveOutHandler(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2) {
+            Console.WriteLine("Message: {0}", message);
             switch (message) {
                 case WOM_OPEN:
                     Console.WriteLine("Audio Device opened.");

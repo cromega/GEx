@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace GraphExperiment {
     class Buffer {
-        public short[] Memory;
-        public IntPtr Pointer;
+        public readonly short[] Memory;
+        public readonly IntPtr Pointer;
         public int LengthInBytes {
             get { return Memory.Length * sizeof(short); }
         }
