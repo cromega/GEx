@@ -4,12 +4,24 @@ using System.IO;
 using Chirpesizer;
 using NAudio;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace playsong {
     class Program {
         static void Main(string[] args) {
-            var graph = new GraphExperiment.SoundSystem(4410);
+            var buffer = new short[88200];
+            var rnd = new Random();
+            for (int i=0; i<buffer.Length / 2; i++) {
+                var sample = rnd.NextDouble() * 2 - 1;
+                sample *= 10000;
+                buffer[i*2] = (short)sample;
+                buffer[i*2+1] = (short)sample;
+            }
+            var graph = new GraphExperiment.SoundSystem(44100);
+            graph.Write(buffer);
+            Thread.Sleep(1000);
             graph.Close();
+            Console.ReadKey();
             return;
 
             Logger.On();
