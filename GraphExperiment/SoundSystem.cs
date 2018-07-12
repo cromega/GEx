@@ -38,17 +38,6 @@ namespace GraphExperiment {
             public uint dwLoops;
             public IntPtr lpNext;
             public IntPtr reserved;
-
-            public WaveHeader(IntPtr buffer, int length) {
-                lpData = buffer;
-                dwBufferLength = (uint)length;
-                dwBytesRecorded = 0;
-                dwUser = IntPtr.Zero;
-                dwFlags = 0;
-                dwLoops = 0;
-                lpNext = IntPtr.Zero;
-                reserved = IntPtr.Zero;
-            }
         }
 
         private const int CALLBACK_FUNCTION = 0x30000;
@@ -66,48 +55,48 @@ namespace GraphExperiment {
         private static extern uint waveOutClose(IntPtr hwo);
 
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern uint waveOutPrepareHeader(IntPtr hWaveOut, ref WaveHeader pwh, uint uSize);
+        private static extern uint waveOutPrepareHeader(IntPtr hWaveOut, IntPtr pwh, uint uSize);
 
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern uint waveOutUnprepareHeader(IntPtr hWaveOut, IntPtr pwh, uint uSize);
 
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern uint waveOutWrite(IntPtr hwo, ref WaveHeader pwh, uint cbwh);
+        private static extern uint waveOutWrite(IntPtr hwo, IntPtr pwh, uint cbwh);
 
         private delegate void waveOutHandle(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2);
         #endregion
 
         private IntPtr Handle;
-        private int ChunkSize;
-        private BlockingCollection<Buffer> Buffers;
+        private BlockingCollection<IntPtr> BufferQueue;
 
 
         public SoundSystem(int frames) {
-            ChunkSize = frames;
-
             var wf = new WaveFormatEx(44100, 16, 2);
-            var ret = waveOutOpen(ref Handle, WAVE_MAPPER, ref wf, waveOutHandler, IntPtr.Zero, CALLBACK_FUNCTION);
+            var ret = waveOutOpen(ref Handle, WAVE_MAPPER, ref wf, WaveOutHandler, IntPtr.Zero, CALLBACK_FUNCTION);
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to open audio device: {0}", ret));
             }
 
-            Buffers = new BlockingCollection<Buffer>(new ConcurrentQueue<Buffer>()) {
-                { new Buffer(frames) },
-                { new Buffer(frames) },
+            BufferQueue = new BlockingCollection<IntPtr>(new ConcurrentQueue<IntPtr>()) {
+                GCHandle.Alloc(new short[frames * 2], GCHandleType.Pinned).AddrOfPinnedObject(),
+                GCHandle.Alloc(new short[frames * 2], GCHandleType.Pinned).AddrOfPinnedObject()
             };
         }
 
-        public void Write(short[] buffer) {
-            var output = Buffers.Take();
-            Array.Copy(buffer, output.Memory, buffer.Length);
-            var hdr = new WaveHeader(output.Pointer, output.LengthInBytes);
+        public void Write(short[] data) {
+            var buffer = BufferQueue.Take();
+            Logger.Log("prepping buffer {0}", buffer);
+            Marshal.Copy(data, 0, buffer, data.Length);
+            var whdr = new WaveHeader { lpData = buffer, dwBufferLength = (uint)data.Length * sizeof(short) };
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(whdr));
+            Marshal.StructureToPtr(whdr, ptr, fDeleteOld: false);
 
-            var ret = waveOutPrepareHeader(Handle, ref hdr, 32);
+            var ret = waveOutPrepareHeader(Handle, ptr, (uint)Marshal.SizeOf<WaveHeader>());
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to prepare header: {0}", ret));
             }
 
-            ret = waveOutWrite(Handle, ref hdr, 32);
+            ret = waveOutWrite(Handle, ptr, (uint)Marshal.SizeOf<WaveHeader>());
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to write audio buffer: {0}", ret));
             }
@@ -120,18 +109,20 @@ namespace GraphExperiment {
             }
         }
 
-        private void waveOutHandler(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2) {
-            Console.WriteLine("Message: {0}", message);
+        private void WaveOutHandler(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2) {
             switch (message) {
                 case WOM_OPEN:
-                    Console.WriteLine("Audio Device opened.");
+                    Logger.Log("Audio Device opened.");
                     break;
                 case WOM_DONE:
-                    Console.WriteLine("playback done");
+                    var whdr = Marshal.PtrToStructure<WaveHeader>(param1);
+                    Logger.Log("playback done on {0}", whdr.lpData);
+                    BufferQueue.Add(whdr.lpData);
                     waveOutUnprepareHeader(Handle, param1, 32);
+                    Marshal.FreeHGlobal(param1);
                     break;
                 case WOM_CLOSE:
-                    Console.WriteLine("Audio device closed.");
+                    Logger.Log("Audio device closed.");
                     break;
             }
         }
