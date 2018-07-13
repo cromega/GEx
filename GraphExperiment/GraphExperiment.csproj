@@ -43,6 +43,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundSystem.cs" />
+    <Compile Include="Source.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chirpesizer\Chirpesizer.csproj">

@@ -3,8 +3,11 @@ using System.Runtime.InteropServices;
 using System.IO;
 using Chirpesizer;
 using NAudio;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Collections.Concurrent;
+using GraphExperiment;
 
 namespace playsong {
     class Program {
@@ -25,19 +28,27 @@ namespace playsong {
             GraphExperiment.Logger.On();
             int frames = 4410;
             var audio = new GraphExperiment.SoundSystem(frames);
-            for (int i=0; i<10; i++) {
-                var buffer = GetRandomBuffer(frames);
+            var channel = new BlockingCollection<double>(frames);
+            var source = new Source(channel);
+            source.Frequency = 440;
+            source.Trigger();
+            for (int i=0; i<5; i++) {
+                var buffer = new short[frames];
+                for (int j=0; j<frames; j++) {
+                    var value = channel.Take();
+                    buffer[j] = (short)(value * 10000);
+                }
                 audio.Write(buffer);
+                source.Frequency += 50;
             }
-
-            Thread.Sleep(2000);
+            Thread.Sleep(300);
             audio.Close();
             Console.ReadKey();
             return;
 
-            Logger.On();
+            Chirpesizer.Logger.On();
 
-            var audioOutput = new SoundSystem(4410);
+            var audioOutput = new Chirpesizer.SoundSystem(4410);
             var song = new Song(File.ReadAllText("song.txt"));
 
             var ww = new NAudio.Wave.WaveFileWriter("song.wav", new NAudio.Wave.WaveFormat(44100, 2));
