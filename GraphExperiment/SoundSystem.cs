@@ -77,9 +77,9 @@ namespace GraphExperiment {
                 throw new Exception(String.Format("failed to open audio device: {0}", ret));
             }
 
-            BufferQueue = new BlockingCollection<IntPtr>(new ConcurrentQueue<IntPtr>()) {
-                GCHandle.Alloc(new short[frames * 2], GCHandleType.Pinned).AddrOfPinnedObject(),
-                GCHandle.Alloc(new short[frames * 2], GCHandleType.Pinned).AddrOfPinnedObject()
+            BufferQueue = new BlockingCollection<IntPtr>() {
+                Marshal.AllocHGlobal(frames * 2 * sizeof(short)),
+                Marshal.AllocHGlobal(frames * 2 * sizeof(short)),
             };
         }
 
