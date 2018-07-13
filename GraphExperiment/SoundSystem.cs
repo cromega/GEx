@@ -66,13 +66,13 @@ namespace GraphExperiment {
         private delegate void waveOutHandle(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2);
         #endregion
 
-        private IntPtr Handle;
+        private IntPtr DeviceHandle;
         private BlockingCollection<IntPtr> BufferQueue;
 
 
         public SoundSystem(int frames) {
             var wf = new WaveFormatEx(44100, 16, 2);
-            var ret = waveOutOpen(ref Handle, WAVE_MAPPER, ref wf, WaveOutHandler, IntPtr.Zero, CALLBACK_FUNCTION);
+            var ret = waveOutOpen(ref DeviceHandle, WAVE_MAPPER, ref wf, WaveOutHandler, IntPtr.Zero, CALLBACK_FUNCTION);
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to open audio device: {0}", ret));
             }
@@ -88,22 +88,22 @@ namespace GraphExperiment {
             Logger.Log("prepping buffer {0}", buffer);
             Marshal.Copy(data, 0, buffer, data.Length);
             var whdr = new WaveHeader { lpData = buffer, dwBufferLength = (uint)data.Length * sizeof(short) };
-            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(whdr));
-            Marshal.StructureToPtr(whdr, ptr, fDeleteOld: false);
+            var whdrptr = Marshal.AllocHGlobal(Marshal.SizeOf(whdr));
+            Marshal.StructureToPtr(whdr, whdrptr, fDeleteOld: false);
 
-            var ret = waveOutPrepareHeader(Handle, ptr, (uint)Marshal.SizeOf<WaveHeader>());
+            var ret = waveOutPrepareHeader(DeviceHandle, whdrptr, (uint)Marshal.SizeOf<WaveHeader>());
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to prepare header: {0}", ret));
             }
 
-            ret = waveOutWrite(Handle, ptr, (uint)Marshal.SizeOf<WaveHeader>());
+            ret = waveOutWrite(DeviceHandle, whdrptr, (uint)Marshal.SizeOf<WaveHeader>());
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to write audio buffer: {0}", ret));
             }
         }
 
         public void Close() {
-            var ret = waveOutClose(Handle);
+            var ret = waveOutClose(DeviceHandle);
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to close audio device: {0}", ret));
             }
@@ -118,7 +118,7 @@ namespace GraphExperiment {
                     var whdr = Marshal.PtrToStructure<WaveHeader>(param1);
                     Logger.Log("playback done on {0}", whdr.lpData);
                     BufferQueue.Add(whdr.lpData);
-                    waveOutUnprepareHeader(Handle, param1, 32);
+                    waveOutUnprepareHeader(DeviceHandle, param1, 32);
                     Marshal.FreeHGlobal(param1);
                     break;
                 case WOM_CLOSE:
