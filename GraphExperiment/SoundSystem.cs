@@ -91,12 +91,12 @@ namespace GraphExperiment {
             var whdrptr = Marshal.AllocHGlobal(Marshal.SizeOf(whdr));
             Marshal.StructureToPtr(whdr, whdrptr, fDeleteOld: false);
 
-            var ret = waveOutPrepareHeader(DeviceHandle, whdrptr, (uint)Marshal.SizeOf<WaveHeader>());
+            var ret = waveOutPrepareHeader(DeviceHandle, whdrptr, (uint)Marshal.SizeOf(whdr));
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to prepare header: {0}", ret));
             }
 
-            ret = waveOutWrite(DeviceHandle, whdrptr, (uint)Marshal.SizeOf<WaveHeader>());
+            ret = waveOutWrite(DeviceHandle, whdrptr, (uint)Marshal.SizeOf(whdr));
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to write audio buffer: {0}", ret));
             }
@@ -118,7 +118,7 @@ namespace GraphExperiment {
                     var whdr = Marshal.PtrToStructure<WaveHeader>(param1);
                     Logger.Log("playback done on {0}", whdr.lpData);
                     BufferQueue.Add(whdr.lpData);
-                    waveOutUnprepareHeader(DeviceHandle, param1, 32);
+                    waveOutUnprepareHeader(DeviceHandle, param1, (uint)Marshal.SizeOf(whdr));
                     Marshal.FreeHGlobal(param1);
                     break;
                 case WOM_CLOSE:
