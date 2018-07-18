@@ -18,10 +18,39 @@ namespace GexUI {
     /// Interaction logic for AudioNode.xaml
     /// </summary>
     partial class AudioNode : UserControl {
+        private Nullable<Point> dragStartPosition;
+
         public AudioNode(string name, List<NodeParameter> nodeParams) {
             InitializeComponent();
             Border.Header = name;
             AddControls(nodeParams);
+            DeleteButton.MouseLeftButtonDown += DeleteButton_MouseLeftButtonDown;
+            MouseLeftButtonDown += MouseLeftButtonDownHandler;
+            MouseLeftButtonUp += node_MouseLeftButtonUp;
+            MouseMove += node_MouseMove;
+        }
+
+        private void MouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {
+            var node = sender as UIElement;
+            dragStartPosition = e.GetPosition(node);
+            node.CaptureMouse();
+        }
+
+        private void node_MouseMove(object sender, MouseEventArgs e) {
+            if (dragStartPosition != null && e.LeftButton == MouseButtonState.Pressed) {
+                var node = sender as UIElement;
+                var newPos = e.GetPosition(Parent as UIElement);
+                Canvas.SetLeft(node, newPos.X - dragStartPosition.Value.X);
+                Canvas.SetTop(node, newPos.Y - dragStartPosition.Value.Y);
+            }
+        }
+
+        private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            var node = sender as UIElement;
+            dragStartPosition = null;
+            node.ReleaseMouseCapture();
+        }
+
         }
 
         private void AddControls(List<NodeParameter> nodeParams) {

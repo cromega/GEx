@@ -36,27 +36,6 @@ namespace GexUI {
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
         }
 
-        private void node_MouseMove(object sender, MouseEventArgs e) {
-            if (nodeDragStart != null && e.LeftButton == MouseButtonState.Pressed) {
-                var node = sender as UIElement;
-                var newPos = e.GetPosition(PatchEditor);
-                Canvas.SetLeft(node, newPos.X - nodeDragStart.Value.X - node.RenderSize.Width);
-                Canvas.SetTop(node, newPos.Y - nodeDragStart.Value.Y - node.RenderSize.Height);
-            }
-        }
-
-        private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
-            var node = sender as UIElement;
-            nodeDragStart = null;
-            node.ReleaseMouseCapture();
-        }
-
-        private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            var node = sender as UIElement;
-            nodeDragStart = e.GetPosition(node);
-            node.CaptureMouse();
-        }
-
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
             var transforms = (TransformGroup)PatchEditor.LayoutTransform;
             var scaler = (ScaleTransform)transforms.Children.First(transform => transform is ScaleTransform);
@@ -81,10 +60,6 @@ namespace GexUI {
             }
 
             var node = new AudioNode((string)list.SelectedItem, nodeParams);
-            node.Margin = new Thickness(100, 100, 0, 0);
-            node.MouseLeftButtonDown += node_MouseLeftButtonDown;
-            node.MouseLeftButtonUp += node_MouseLeftButtonUp;
-            node.MouseMove += node_MouseMove;
             PatchEditor.Children.Add(node);
         }
 
