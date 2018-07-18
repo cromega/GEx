@@ -5,11 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GexUI"
              mc:Ignorable="d"
-             Width="100" Height="150">
-    <DockPanel Width="100" Height="150">
-        <GroupBox HorizontalAlignment="Left" Width="100" Height="150" Background="DarkGray" Name="Border" FontSize="14">
-            <StackPanel Name="Container">
-            </StackPanel>
+             Width="120" Height="150">
+    <DockPanel Width="120" Height="150">
+        <GroupBox Width="120" Height="150" Background="DarkGray" Name="Border" FontSize="14">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Height="10" Width="120">
+                    <Button Height="8" Width="8" Background="Red" HorizontalAlignment="Right" />
+                    <Button Height="8" Width="8" Background="Green" HorizontalAlignment="left" />
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Bottom" Width="120" Name="Container" />
+            </DockPanel>
         </GroupBox>
     </DockPanel>
 </UserControl>
