@@ -26,7 +26,7 @@ namespace GexUI {
     }
 
     public partial class MainWindow : Window {
-        private double zoomFactor = 1.05;
+        private static double ZOOM_FACTOR = 1.1;
 
         public MainWindow() {
             InitializeComponent();
@@ -40,11 +40,11 @@ namespace GexUI {
             var scaler = (ScaleTransform)transforms.Children.First(transform => transform is ScaleTransform);
 
             if (e.Delta > 0) {
-                scaler.ScaleX *= zoomFactor;
-                scaler.ScaleY *= zoomFactor;
+                scaler.ScaleX *= ZOOM_FACTOR;
+                scaler.ScaleY *= ZOOM_FACTOR;
             } else {
-                scaler.ScaleX /= zoomFactor;
-                scaler.ScaleY /= zoomFactor;
+                scaler.ScaleX /= ZOOM_FACTOR;
+                scaler.ScaleY /= ZOOM_FACTOR;
             }
         }
 
