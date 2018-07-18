@@ -7,12 +7,13 @@
              mc:Ignorable="d"
              Width="120" Height="150">
     <DockPanel Width="120" Height="150">
-        <GroupBox Width="120" Height="150" Background="DarkGray" Name="Border" FontSize="14">
+        <GroupBox MinHeight="150" Background="DarkGray" Name="Border" FontSize="14" Header="Dummy Text">
             <DockPanel>
-                <StackPanel DockPanel.Dock="Top" Height="10" Width="120">
-                    <Button Height="8" Width="8" Background="Red" HorizontalAlignment="Right" />
-                    <Button Height="8" Width="8" Background="Green" HorizontalAlignment="left" />
-                </StackPanel>
+                <WrapPanel DockPanel.Dock="Top" Height="10" HorizontalAlignment="Right">
+                    <Rectangle Width="10" Height="10" Name="StatusLight" />
+                    <Separator Width="3"/>
+                    <Rectangle Width="10" Height="10" Fill="Black" Name="DeleteButton"/>
+                </WrapPanel>
                 <StackPanel DockPanel.Dock="Bottom" Width="120" Name="Container" />
             </DockPanel>
         </GroupBox>

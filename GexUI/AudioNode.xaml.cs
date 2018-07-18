@@ -51,6 +51,9 @@ namespace GexUI {
             node.ReleaseMouseCapture();
         }
 
+        private void DeleteButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            (Parent as Panel).Children.Remove(this);
+
         }
 
         private void AddControls(List<NodeParameter> nodeParams) {
