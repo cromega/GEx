@@ -12,10 +12,12 @@ namespace GraphExperiment {
         Square = 2,
     }
 
+    [AudioNode]
     public class Generator : AudioNode {
         private bool Released;
         public double Frequency;
-        private SignalType SignalType;
+        [AudioNodeParameter]
+        public SignalType SignalType;
 
         //public Source(BlockingCollection<Sample> output, SignalType st) {
         //    Output = output;

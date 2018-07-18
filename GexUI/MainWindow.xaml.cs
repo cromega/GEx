@@ -50,15 +50,15 @@ namespace GexUI {
 
         private void InstrumentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e) {
             var list = (ListBox)sender;
+            var controlName = (string)list.SelectedItem;
+
             var nodeParams = new List<NodeParameter>();
 
-            foreach (var type in GetAudioControls()) {
-                type.GetMembers().Where(m => m.GetCustomAttributes(typeof(AudioNodeParameterAttribute)).Count() > 0).ToList().ForEach(p => {
-                    nodeParams.Add(new NodeParameter { Name = p.Name, ParameterType = typeof(int), Patchable = false });
-                });
-            }
+            Type.GetType(String.Format("GraphExperiment.{0},GraphExperiment", controlName)).GetMembers().Where(m => m.GetCustomAttributes(typeof(AudioNodeParameterAttribute)).Count() > 0).ToList().ForEach(p => {
+                nodeParams.Add(new NodeParameter { Name = p.Name, ParameterType = typeof(int), Patchable = false });
+            });
 
-            var node = new AudioNode((string)list.SelectedItem, nodeParams);
+            var node = new AudioNode(controlName);
             PatchEditor.Children.Add(node);
         }
 
