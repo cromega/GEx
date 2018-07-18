@@ -17,10 +17,24 @@ namespace GexUI {
     /// <summary>
     /// Interaction logic for AudioNode.xaml
     /// </summary>
-    public partial class AudioNode : UserControl {
-        public AudioNode(string name) {
+    partial class AudioNode : UserControl {
+        public AudioNode(string name, List<NodeParameter> nodeParams) {
             InitializeComponent();
-            Container.Header = name;
+            Border.Header = name;
+            AddControls(nodeParams);
+        }
+
+        private void AddControls(List<NodeParameter> nodeParams) {
+            foreach (var node in nodeParams) {
+                AddParam(node);
+            }
+        }
+
+        private void AddParam(NodeParameter node) {
+            var box = new GroupBox() { Header = node.Name };
+            var input = new TextBox();
+            box.Content = input;
+            Container.Children.Add(box);
         }
     }
 }

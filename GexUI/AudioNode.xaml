@@ -7,6 +7,9 @@
              mc:Ignorable="d"
              Width="100" Height="150">
     <DockPanel Width="100" Height="150">
-        <GroupBox HorizontalAlignment="Left" Width="100" Height="150" Background="DarkGray" Name="Container" FontSize="14"/>
+        <GroupBox HorizontalAlignment="Left" Width="100" Height="150" Background="DarkGray" Name="Border" FontSize="14">
+            <StackPanel Name="Container">
+            </StackPanel>
+        </GroupBox>
     </DockPanel>
 </UserControl>
