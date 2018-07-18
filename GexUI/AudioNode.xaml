@@ -6,16 +6,15 @@
              xmlns:local="clr-namespace:GexUI"
              mc:Ignorable="d"
              Width="120" Height="150">
-    <DockPanel Width="120" Height="150">
-        <GroupBox MinHeight="150" Background="DarkGray" Name="Border" FontSize="14" Header="Dummy Text">
-            <DockPanel>
-                <WrapPanel DockPanel.Dock="Top" Height="10" HorizontalAlignment="Right">
-                    <Rectangle Width="10" Height="10" Name="StatusLight" />
-                    <Separator Width="3"/>
-                    <Rectangle Width="10" Height="10" Fill="Black" Name="DeleteButton"/>
-                </WrapPanel>
-                <StackPanel DockPanel.Dock="Bottom" Width="120" Name="Container" />
-            </DockPanel>
-        </GroupBox>
+    <DockPanel Width="120" Height="150" Background="DarkGray">
+        <WrapPanel DockPanel.Dock="Top" Height="15" HorizontalAlignment="Right" Background="Transparent">
+            <TextBlock Text="ANYAD" Name="Title"/>
+            <Separator Width="3"/>
+            <Rectangle Width="10" Height="10" Name="StatusLight" Fill="LightGreen" />
+            <Separator Width="3"/>
+            <Rectangle Width="10" Height="10" Fill="Black" Name="DeleteButton"/>
+            <Separator Width="3"/>
+        </WrapPanel>
+        <StackPanel Width="120" Name="Container" />
     </DockPanel>
 </UserControl>

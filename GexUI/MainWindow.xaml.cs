@@ -26,7 +26,6 @@ namespace GexUI {
     }
 
     public partial class MainWindow : Window {
-        private Nullable<Point> nodeDragStart;
         private double zoomFactor = 1.05;
 
         public MainWindow() {

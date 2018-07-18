@@ -22,7 +22,7 @@ namespace GexUI {
 
         public AudioNode(string name, List<NodeParameter> nodeParams) {
             InitializeComponent();
-            Border.Header = name;
+            Title.Text = name;
             AddControls(nodeParams);
             DeleteButton.MouseLeftButtonDown += DeleteButton_MouseLeftButtonDown;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;
