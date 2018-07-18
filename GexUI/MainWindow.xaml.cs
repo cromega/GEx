@@ -20,17 +20,35 @@ namespace GexUI {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        private Nullable<Point> dragStart;
+
         public MainWindow() {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.LayoutTransform = new ScaleTransform();
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
-            PatchEditor.MouseLeftButtonDown += PatchEditor_MouseLeftButtonDown;
         }
 
-        private void PatchEditor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            (sender as Canvas).Focus();
+        private void node_MouseMove(object sender, MouseEventArgs e) {
+            if (dragStart != null && e.LeftButton == MouseButtonState.Pressed) {
+                var node = sender as UIElement;
+                var newPos = e.GetPosition(PatchEditor);
+                Canvas.SetLeft(node, newPos.X - dragStart.Value.X - node.RenderSize.Width);
+                Canvas.SetTop(node, newPos.Y - dragStart.Value.Y - node.RenderSize.Height);
+            }
+        }
+
+        private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            var node = sender as UIElement;
+            dragStart = null;
+            node.ReleaseMouseCapture();
+        }
+
+        private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            var node = sender as UIElement;
+            dragStart = e.GetPosition(node);
+            node.CaptureMouse();
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
@@ -49,7 +67,10 @@ namespace GexUI {
             var list = (ListBox)sender;
             var node = new AudioNode((string)list.SelectedItem);
             node.Margin = new Thickness(100, 100, 0, 0);
-            MainContainer.Children.Add(node);
+            node.MouseLeftButtonDown += node_MouseLeftButtonDown;
+            node.MouseLeftButtonUp += node_MouseLeftButtonUp;
+            node.MouseMove += node_MouseMove;
+            PatchEditor.Children.Add(node);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
