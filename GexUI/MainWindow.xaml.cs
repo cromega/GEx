@@ -20,46 +20,47 @@ namespace GexUI {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private Nullable<Point> dragStart;
+        private Nullable<Point> nodeDragStart;
+        private double zoomFactor = 1.05;
 
         public MainWindow() {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
-            PatchEditor.LayoutTransform = new ScaleTransform();
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
         }
 
         private void node_MouseMove(object sender, MouseEventArgs e) {
-            if (dragStart != null && e.LeftButton == MouseButtonState.Pressed) {
+            if (nodeDragStart != null && e.LeftButton == MouseButtonState.Pressed) {
                 var node = sender as UIElement;
                 var newPos = e.GetPosition(PatchEditor);
-                Canvas.SetLeft(node, newPos.X - dragStart.Value.X - node.RenderSize.Width);
-                Canvas.SetTop(node, newPos.Y - dragStart.Value.Y - node.RenderSize.Height);
+                Canvas.SetLeft(node, newPos.X - nodeDragStart.Value.X - node.RenderSize.Width);
+                Canvas.SetTop(node, newPos.Y - nodeDragStart.Value.Y - node.RenderSize.Height);
             }
         }
 
         private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
             var node = sender as UIElement;
-            dragStart = null;
+            nodeDragStart = null;
             node.ReleaseMouseCapture();
         }
 
         private void node_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             var node = sender as UIElement;
-            dragStart = e.GetPosition(node);
+            nodeDragStart = e.GetPosition(node);
             node.CaptureMouse();
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
-            var st = PatchEditor.LayoutTransform as ScaleTransform;
+            var transforms = (TransformGroup)PatchEditor.LayoutTransform;
+            var scaler = (ScaleTransform)transforms.Children.First(transform => transform is ScaleTransform);
 
             if (e.Delta > 0) {
-                st.ScaleX *= 1.1;
-                st.ScaleY *= 1.1;
+                scaler.ScaleX *= zoomFactor;
+                scaler.ScaleY *= zoomFactor;
             } else {
-                st.ScaleX /= 1.1;
-                st.ScaleY /= 1.1;
+                scaler.ScaleX /= zoomFactor;
+                scaler.ScaleY /= zoomFactor;
             }
         }
 
