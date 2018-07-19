@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes.cs" />
     <Compile Include="AudioNode.cs" />
     <Compile Include="ControlTest.cs" />
     <Compile Include="Envelope.cs" />
