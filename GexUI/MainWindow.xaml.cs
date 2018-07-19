@@ -52,12 +52,6 @@ namespace GexUI {
             var list = (ListBox)sender;
             var controlName = (string)list.SelectedItem;
 
-            var nodeParams = new List<NodeParameter>();
-
-            Type.GetType(String.Format("GraphExperiment.{0},GraphExperiment", controlName)).GetMembers().Where(m => m.GetCustomAttributes(typeof(AudioNodeParameterAttribute)).Count() > 0).ToList().ForEach(p => {
-                nodeParams.Add(new NodeParameter { Name = p.Name, ParameterType = typeof(int), Patchable = false });
-            });
-
             var node = new AudioNode(controlName);
             PatchEditor.Children.Add(node);
         }
