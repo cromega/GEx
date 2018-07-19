@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace GraphExperiment {
     public enum SignalType : int {
-        Noise = 0,
-        Sine = 1,
-        Square = 2,
+        Sine = 0,
+        Square = 1,
+        Noise = 2,
     }
 
     [AudioNode]

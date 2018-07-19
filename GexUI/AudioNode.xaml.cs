@@ -58,49 +58,26 @@ namespace GexUI {
         }
 
         private void AddControls(string className) {
-            var container = new GroupBox() { Header = className };
-            /*
-             * namespace MySpace.Common.IO.JSON.Utilities
-{
-    internal static class ReflectionUtils
-    {
-
-        /// <summary>
-        /// Gets the member's underlying type.
-        /// </summary>
-        /// <param name="member">The member.</param>
-        /// <returns>The underlying type of the member.</returns>
-        public static Type GetMemberUnderlyingType(MemberInfo member)
-        {
-            switch (member.MemberType)
-            {
-                case MemberTypes.Field:
-                    return ((FieldInfo)member).FieldType;
-                case MemberTypes.Property:
-                    return ((PropertyInfo)member).PropertyType;
-                case MemberTypes.Event:
-                    return ((EventInfo)member).EventHandlerType;
-                default:
-                    throw new ArgumentException("MemberInfo must be if type FieldInfo, PropertyInfo or EventInfo", "member");
-            }
-        }
-    }
-}
-*/
-
             var members = Type.GetType(String.Format("GraphExperiment.{0},GraphExperiment", className), throwOnError: true).GetMembers();
             foreach (var member in members) {
                 if (member.GetCustomAttributes(typeof(AudioNodeParameterAttribute), false).Length == 0) { continue; }
-                if (member.GetType().Name == "ASD") {
-                    var ctrl = new ComboBox();
-                    //foreach (var enumValue in Enum.GetValues(nodeParam.GetType())) {
-                    //    ctrl.Items.Add(enumValue);
-                    //}
-
-                    container.Content = ctrl;
-                }
+                AddControlForNodeMember(member);
             }
-            Container.Children.Add(container);
+        }
+
+        private void AddControlForNodeMember(MemberInfo member) {
+            var nodeParamContainer = new GroupBox() { Header = member.Name };
+
+            var memberType = member.GetMemberUnderlyingType();
+            if (memberType.IsEnum) {
+                var ctrl = new ComboBox();
+                foreach (var enumValue in Enum.GetValues(memberType)) {
+                    ctrl.Items.Add(enumValue);
+                }
+                ctrl.SelectedIndex = 0;
+                nodeParamContainer.Content = ctrl;
+                Container.Children.Add(nodeParamContainer);
+            }
         }
     }
 }
