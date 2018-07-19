@@ -8,8 +8,12 @@ namespace GraphExperiment {
     public abstract class AudioNode {
         //public static Dictionary<int, AudioNode> Nodes = new Dictionary<int, AudioNode>();
         public readonly int Id;
-        private Wire Connection;
-        public readonly Wire Input;
+        public Wire Connection;
+        public Wire Input;
+
+        public AudioNode(int id) {
+
+        }
 
         public AudioNode(int id, Wire connection) {
             Connection = connection;
@@ -22,6 +26,7 @@ namespace GraphExperiment {
         }
 
         public Packet Read() {
+            var packet = Input.Take();
             return Input.Take();
         }
     }

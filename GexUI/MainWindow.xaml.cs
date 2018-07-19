@@ -27,12 +27,28 @@ namespace GexUI {
 
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
+        private SoundSystem Audio;
+        private Generator Generator;
 
         public MainWindow() {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
+            PatchEditor.KeyDown += PatchEditor_KeyDown;
+            PatchEditor.Focus();
+
+            Audio = new SoundSystem(2205);
+            var machine = new Machine(Audio);
+            Generator = new Generator(1, SignalType.Sine);
+            machine.First(Generator);
+            machine.Last(Generator);
+            machine.Run();
+        }
+
+        private void PatchEditor_KeyDown(object sender, KeyEventArgs e) {
+            Generator.Start(440);
+
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {

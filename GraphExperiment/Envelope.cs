@@ -2,11 +2,16 @@ using System;
 using System.Threading.Tasks;
 
 namespace GraphExperiment {
+    [AudioNode]
     public class Envelope : AudioNode {
-        public readonly int Attack ;
-        public readonly int Decay;
-        public readonly double Sustain;
-        public readonly int Release;
+        [AudioNodeParameter]
+        public int Attack ;
+        [AudioNodeParameter]
+        public int Decay;
+        [AudioNodeParameter]
+        public double Sustain;
+        [AudioNodeParameter]
+        public int Release;
 
         public Envelope(int id, int attack, int decay, double sustain, int release, Wire connection) : base(id, connection) {
             Attack = attack;
@@ -46,7 +51,7 @@ namespace GraphExperiment {
             } else {
                 value = Sustain;
             }
-            Send(new Packet(Control.Signal, sample * value));
+            Send(new Packet("", Control.Signal, sample * value));
         }
 
         private void HandleRelease(Sample sample) {
@@ -55,11 +60,11 @@ namespace GraphExperiment {
             for (; ;) {
                 if (time < Release) {
                     phase = 1 - Math.Abs(time) / (double)Release;
-                    Send(new Packet(Control.Signal, sample * (phase * Sustain)));
+                    Send(new Packet("", Control.Signal, sample * (phase * Sustain)));
                     time++;
                 } else break;
             }
-            Send(new Packet(Control.End, new Sample(0)));
+            Send(new Packet("", Control.End, new Sample(0)));
         }
     }
 }

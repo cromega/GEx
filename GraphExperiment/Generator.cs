@@ -14,34 +14,64 @@ namespace GraphExperiment {
 
     [AudioNode]
     public class Generator : AudioNode {
+        class Trigger {
+            public string ID;
+            public double Frequency;
+            public int Time;
+            public bool Triggered;
+
+            public Trigger(double frequency) {
+                ID = Guid.NewGuid().ToString();
+                Frequency = frequency;
+                Triggered = true;
+                Time = 0;
+            }
+        }
+
         private bool Released;
         public double Frequency;
         [AudioNodeParameter]
         public SignalType SignalType;
         private Random Rnd;
+        private List<Trigger> Triggers;
+        private object Lock = new object();
 
-        public Generator(int id, SignalType signalType, Wire connection) : base(id, connection) {
+        public Generator(int id, SignalType signalType) : base(id) {
+            Triggers = new List<Trigger>();
             SignalType = signalType;
             Rnd = new Random();
-        }
 
-        public void Trigger() {
-            var t = 0;
             Task.Run(() => {
-                for (; !Released; t++) {
-                    switch (SignalType) {
-                        case SignalType.Sine: Send(new Packet(Control.Signal, new Sample(Sine(t)))); break;
-                        case SignalType.Square: Send(new Packet(Control.Signal, new Sample(Sine(t) > 0 ? 1 : -1))); break;
-                        case SignalType.Noise: Send(new Packet(Control.Signal, new Sample(Noise()))); break;
+                for (; ; ) {
+                    lock (Lock) {
+                        Triggers.ForEach(trigger => {
+                            switch (SignalType) {
+                                case SignalType.Sine: Send(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(Sine(trigger.Time++)))); break;
+                                case SignalType.Square: Send(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(Sine(trigger.Time++) > 0 ? 1 : -1))); break;
+                                case SignalType.Noise: Send(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(Noise()))); break;
+                            }
+                        });
                     }
                 }
-
-                Send(new Packet(Control.End, new Sample(0)));
             });
         }
 
-        public void Release() {
-            Released = true;
+        public string Start(double frequency) {
+            var trigger = new Trigger(frequency);
+            Triggers.Add(trigger);
+            return trigger.ID;
+        }
+
+        public void Release(string triggerID) {
+            lock(Lock) {
+                Triggers.First(trigger => trigger.ID == triggerID).Triggered = false;
+            }
+        }
+
+        public void Remove(string triggerID) {
+            lock(Lock) {
+                Triggers.RemoveAll(trigger => trigger.ID == triggerID);
+            }
         }
 
         private double Sine(int t) {

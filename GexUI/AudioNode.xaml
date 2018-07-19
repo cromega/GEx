@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:GexUI"
              mc:Ignorable="d"
              Width="120" Height="160">
-    <DockPanel Width="120" Height="160">
-        <DockPanel Height="10" DockPanel.Dock="Top">
+    <StackPanel Width="120" Height="160">
+        <DockPanel Height="10">
             <Ellipse Height="10" Width="10" Fill="Yellow" />
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="15" Background="DarkGray">
@@ -15,6 +15,9 @@
             <Rectangle DockPanel.Dock="Right" Width="10" Height="10" Fill="Black" Name="DeleteButton"/>
             <Rectangle DockPanel.Dock="Right" Width="10" Height="10" Fill="Green" />
         </DockPanel>
-        <StackPanel Name="Container" Background="DarkGray" />
-    </DockPanel>
+        <StackPanel Name="Container" MinHeight="135" Background="DarkGray" />
+        <DockPanel Height="10" DockPanel.Dock="Bottom">
+            <Ellipse Height="10" Width="10" Fill="Yellow" />
+        </DockPanel>
+    </StackPanel>
 </UserControl>

@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <DockPanel Name="MainContainer">
         <ListBox Name="NodeList" MinWidth="100" />
-        <Canvas Name="PatchEditor" Background="LightGray">
+        <Canvas Name="PatchEditor" Background="LightGray" Focusable="True">
             <Canvas.LayoutTransform>
                 <TransformGroup>
                     <ScaleTransform />

@@ -11,10 +11,12 @@ namespace GraphExperiment {
     }
 
     public class Packet {
+        public string TriggerID;
         public Sample Sample;
         public Control Control;
 
-        public Packet(Control control, Sample sample) {
+        public Packet(string triggerId, Control control, Sample sample) {
+            TriggerID = triggerId;
             Control = control;
             Sample = sample;
         }
