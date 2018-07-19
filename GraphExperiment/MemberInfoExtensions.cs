@@ -26,5 +26,9 @@ namespace GraphExperiment {
                     throw new ArgumentException("MemberInfo must be if type FieldInfo, PropertyInfo or EventInfo", "member");
             }
         }
+
+        public static bool HasAttribute(this MemberInfo member, Type attributeType) {
+            return member.GetCustomAttributes(attributeType, inherit: false).Length > 0;
+        }
     }
 }

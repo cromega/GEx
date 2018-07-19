@@ -60,8 +60,9 @@ namespace GexUI {
         private void AddControls(string className) {
             var members = Type.GetType(String.Format("GraphExperiment.{0},GraphExperiment", className), throwOnError: true).GetMembers();
             foreach (var member in members) {
-                if (member.GetCustomAttributes(typeof(AudioNodeParameterAttribute), false).Length == 0) { continue; }
-                AddControlForNodeMember(member);
+                if (member.HasAttribute(typeof(AudioNodeParameterAttribute))) {
+                    AddControlForNodeMember(member);
+                }
             }
         }
 
