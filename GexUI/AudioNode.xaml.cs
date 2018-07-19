@@ -79,6 +79,9 @@ namespace GexUI {
                 ctrl.SelectedIndex = 0;
                 nodeControlContainer.Content = ctrl;
                 Container.Children.Add(nodeControlContainer);
+            } else if (memberType == typeof(double) || memberType == typeof(int)) {
+                nodeControlContainer.Content = new TextBox();
+                Container.Children.Add(nodeControlContainer);
             }
         }
     }
