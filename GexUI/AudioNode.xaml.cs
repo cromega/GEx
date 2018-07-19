@@ -25,11 +25,12 @@ namespace GexUI {
         public AudioNode(string className) {
             InitializeComponent();
             Title.Text = className;
-            AddControls(className);
             DeleteButton.MouseLeftButtonDown += DeleteButton_MouseLeftButtonDown;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;
             MouseLeftButtonUp += node_MouseLeftButtonUp;
             MouseMove += node_MouseMove;
+
+            AddDynamicControls(className);
         }
 
         private void MouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {
@@ -57,7 +58,7 @@ namespace GexUI {
             (Parent as Panel).Children.Remove(this);
         }
 
-        private void AddControls(string className) {
+        private void AddDynamicControls(string className) {
             var members = Type.GetType(String.Format("GraphExperiment.{0},GraphExperiment", className), throwOnError: true).GetMembers();
             foreach (var member in members) {
                 if (member.HasAttribute(typeof(AudioNodeParameterAttribute))) {
@@ -67,7 +68,7 @@ namespace GexUI {
         }
 
         private void AddControlForNodeMember(MemberInfo member) {
-            var nodeParamContainer = new GroupBox() { Header = member.Name };
+            var nodeControlContainer = new GroupBox() { Header = member.Name };
 
             var memberType = member.GetMemberUnderlyingType();
             if (memberType.IsEnum) {
@@ -76,8 +77,8 @@ namespace GexUI {
                     ctrl.Items.Add(enumValue);
                 }
                 ctrl.SelectedIndex = 0;
-                nodeParamContainer.Content = ctrl;
-                Container.Children.Add(nodeParamContainer);
+                nodeControlContainer.Content = ctrl;
+                Container.Children.Add(nodeControlContainer);
             }
         }
     }
