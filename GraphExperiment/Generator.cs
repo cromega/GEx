@@ -18,15 +18,11 @@ namespace GraphExperiment {
         public double Frequency;
         [AudioNodeParameter]
         public SignalType SignalType;
-
-        //public Source(BlockingCollection<Sample> output, SignalType st) {
-        //    Output = output;
-        //    Released = false;
-        //    SignalType = st;
-        //}
+        private Random Rnd;
 
         public Generator(int id, SignalType signalType, Wire connection) : base(id, connection) {
             SignalType = signalType;
+            Rnd = new Random();
         }
 
         public void Trigger() {
@@ -36,6 +32,7 @@ namespace GraphExperiment {
                     switch (SignalType) {
                         case SignalType.Sine: Send(new Packet(Control.Signal, new Sample(Sine(t)))); break;
                         case SignalType.Square: Send(new Packet(Control.Signal, new Sample(Sine(t) > 0 ? 1 : -1))); break;
+                        case SignalType.Noise: Send(new Packet(Control.Signal, new Sample(Noise()))); break;
                     }
                 }
 
@@ -49,6 +46,10 @@ namespace GraphExperiment {
 
         private double Sine(int t) {
             return Math.Sin(Frequency * Math.PI * 2 * t / 44100);
+        }
+
+        private double Noise() {
+            return Rnd.NextDouble() * 2 - 1;
         }
     }
 }
