@@ -58,7 +58,9 @@ namespace GraphExperiment {
 
         public string Start(double frequency) {
             var trigger = new Trigger(frequency);
-            Triggers.Add(trigger);
+            lock (Lock) {
+                Triggers.Add(trigger);
+            }
             return trigger.ID;
         }
 
