@@ -14,11 +14,13 @@ namespace GraphExperiment {
         public string TriggerID;
         public Sample Sample;
         public Control Control;
+        public int Time;
 
-        public Packet(string triggerId, Control control, Sample sample) {
+        public Packet(string triggerId, Control control, Sample sample, int time) {
             TriggerID = triggerId;
             Control = control;
             Sample = sample;
+            Time = time;
         }
     }
 }

@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphExperiment {
-    public class Machine {
+    public class Instrument {
         private Generator Generator;
         private SoundSystem Output;
         private Wire Connection;
+        public volatile bool IsActive;
 
-        public Machine(SoundSystem output) {
+        public Instrument(SoundSystem output) {
             Output = output;
             Connection = new Wire(2205);
+            IsActive = false;
         }
 
         public void First(Generator node) {
@@ -28,9 +30,9 @@ namespace GraphExperiment {
             Task.Run(() => {
                 for (; ; ) {
                     for (int i = 0; i < 4410; i += 2) {
-                        var sample = Connection.Take();
-                        buffer[i] = (short)(sample.Sample * 5000).L;
-                        buffer[i + 1] = (short)(sample.Sample * 5000).R;
+                        var sample = Connection.Take().Sample * 5000;
+                        buffer[i] = (short)sample.L;
+                        buffer[i + 1] = (short)sample.R;
                     }
                     Output.Write(buffer);
                 }
@@ -39,6 +41,10 @@ namespace GraphExperiment {
 
         public string Trigger(double frequency) {
             return Generator.Start(frequency);
+        }
+
+        public void Release(string triggerId) {
+            Generator.Remove(triggerId);
         }
     }
 }

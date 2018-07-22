@@ -45,7 +45,7 @@
     <Compile Include="ControlTest.cs" />
     <Compile Include="Envelope.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Machine.cs" />
+    <Compile Include="Instrument.cs" />
     <Compile Include="MemberInfoExtensions.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,24 +32,21 @@ namespace GexUI {
         private Generator Generator;
 
         public MainWindow() {
+            Logger.On();
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
-            PatchEditor.KeyDown += PatchEditor_KeyDown;
             PatchEditor.Focus();
 
             Audio = new SoundSystem(2205);
-            var machine = new Machine(Audio);
+            var instrument = new Instrument(Audio);
             Generator = new Generator(1, SignalType.Sine);
-            machine.First(Generator);
-            machine.Last(Generator);
-            machine.Run();
-        }
-
-        private void PatchEditor_KeyDown(object sender, KeyEventArgs e) {
-            Generator.Start(440);
-
+            var envelope = new Envelope(2, 4410, 882, 0.5, 882);
+            Generator.Connection = envelope.Input;
+            instrument.First(Generator);
+            instrument.Last(envelope);
+            instrument.Run();
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
@@ -76,6 +74,13 @@ namespace GexUI {
             foreach (Type type in GetAudioControls()) {
                NodeList.Items.Add(type.Name);
             }
+
+            var trigger = Generator.Start(440);
+            var stopper = new Thread(new ThreadStart(() => {
+                Thread.Sleep(2000);
+                Generator.Remove(trigger);
+            }));
+            stopper.Start();
         }
 
         private IEnumerable<Type> GetAudioControls() {
