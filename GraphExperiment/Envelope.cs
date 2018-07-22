@@ -13,7 +13,7 @@ namespace GraphExperiment {
         [AudioNodeParameter]
         public int Release;
 
-        public Envelope(int id, int attack, int decay, double sustain, int release, Wire connection) : base(id, connection) {
+        public Envelope(int id, int attack, int decay, double sustain, int release) : base(id) {
             Attack = attack;
             Decay = decay;
             Sustain = sustain;
@@ -23,24 +23,27 @@ namespace GraphExperiment {
         }
 
         private void Run() {
-            var time = 0;
-            Sample previousSample;
             for (; ; ) {
                 var packet = Read();
                 switch (packet.Control) {
                     case Control.Signal:
-                        HandleSignal(packet.Sample, time++);
-                        previousSample = packet.Sample;
+                        packet.Sample *= HandleSignal(packet.Sample, packet.Time);
                         break;
                     case Control.End:
-                        HandleRelease(packet.Sample);
-                        time = 0;
+                        if (!IsSaved("ReleasedFor")) {
+                            Save("ReleasedFor", 0);
+                        }
+                        var time = Fetch<int>("ReleasedFor");
+                        packet.Sample *= HandleRelease(packet.Sample, time);
+                        Save("ReleasedFor", ++time);
                         break;
                 }
+                packet.Control = IsSaved("ReleasedFor") ? Control.End : Control.Signal;
+                Send(packet);
             }
         }
 
-        private void HandleSignal(Sample sample, int time) {
+        private double HandleSignal(Sample sample, int time) {
             double value = sample.L;
             double phase;
             if (time < Attack) {
@@ -51,20 +54,15 @@ namespace GraphExperiment {
             } else {
                 value = Sustain;
             }
-            Send(new Packet("", Control.Signal, sample * value));
+            return value;
         }
 
-        private void HandleRelease(Sample sample) {
-            var time = 0;
+        private double HandleRelease(Sample sample, int time) {
             double phase;
-            for (; ;) {
-                if (time < Release) {
-                    phase = 1 - Math.Abs(time) / (double)Release;
-                    Send(new Packet("", Control.Signal, sample * (phase * Sustain)));
-                    time++;
-                } else break;
-            }
-            Send(new Packet("", Control.End, new Sample(0)));
+            if (time < Release) {
+                phase = 1 - Math.Abs(time) / (double)Release;
+                return phase * Sustain;
+            } else return 0;
         }
     }
 }
