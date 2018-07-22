@@ -28,7 +28,6 @@ namespace GraphExperiment {
             }
         }
 
-        private bool Released;
         public double Frequency;
         [AudioNodeParameter]
         public SignalType SignalType;
@@ -45,11 +44,15 @@ namespace GraphExperiment {
                 for (; ; ) {
                     lock (Lock) {
                         Triggers.ForEach(trigger => {
+                            double sample = 0;
                             switch (SignalType) {
-                                case SignalType.Sine: Send(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(Sine(trigger.Time++)))); break;
-                                case SignalType.Square: Send(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(Sine(trigger.Time++) > 0 ? 1 : -1))); break;
-                                case SignalType.Noise: Send(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(Noise()))); break;
+                                case SignalType.Sine: sample = Sine(trigger.Frequency, trigger.Time); break;
+                                case SignalType.Square: sample = Square(trigger.Frequency, trigger.Time); break;
+                                case SignalType.Noise: sample = Noise(); break;
                             }
+                            var packet = new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time);
+                            trigger.Time++;
+                            Send(packet);
                         });
                     }
                 }
@@ -76,8 +79,12 @@ namespace GraphExperiment {
             }
         }
 
-        private double Sine(int t) {
-            return Math.Sin(Frequency * Math.PI * 2 * t / 44100);
+        private double Sine(double frequency, int t) {
+            return Math.Sin(frequency * Math.PI * 2 * t / 44100);
+        }
+
+        private double Square(double frequency, int t) {
+            return Sine(frequency, t) > 0 ? 1 : -1;
         }
 
         private double Noise() {
