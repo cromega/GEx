@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphExperiment {
+namespace GexUI {
     public static class MemberInfoExtensions {
         /// <summary>
         /// Gets the member's underlying type.
