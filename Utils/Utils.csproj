@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}</ProjectGuid>
+    <ProjectGuid>{9DE6C80E-2BF9-4042-8518-6997A6986B0E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GraphExperiment</RootNamespace>
-    <AssemblyName>GraphExperiment</AssemblyName>
+    <RootNamespace>Utils</RootNamespace>
+    <AssemblyName>Utils</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,28 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes.cs" />
-    <Compile Include="AudioNode.cs" />
-    <Compile Include="ControlTest.cs" />
-    <Compile Include="Envelope.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="Instrument.cs" />
-    <Compile Include="Packet.cs" />
+    <Compile Include="WavWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sample.cs" />
-    <Compile Include="SoundSystem.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="Wire.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chirpesizer\Chirpesizer.csproj">
-      <Project>{c56c3a68-ab8c-4cc6-8e21-709cd63379bc}</Project>
-      <Name>Chirpesizer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
-      <Project>{9de6c80e-2bf9-4042-8518-6997a6986b0e}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

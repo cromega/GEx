@@ -18,11 +18,11 @@ namespace GraphExperiment {
             L = value;
             R = value;
         }
-        public static Sample operator+ (Sample sample, double value) {
+        public static Sample operator + (Sample sample, double value) {
             return new Sample { L = sample.L + value, R = sample.R + value };
         }
 
-        public static Sample operator *(Sample sample, double value) {
+        public static Sample operator * (Sample sample, double value) {
             return new Sample { L = sample.L * value, R = sample.R * value };
         }
     }
