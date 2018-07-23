@@ -17,30 +17,41 @@ namespace GraphExperiment {
         public AudioNode(int id) {
             Input = new Wire(4410);
             Memory = new Dictionary<string, Hashtable>();
+            Run();
         }
 
         public AudioNode(int id, Wire connection) {
             Connection = connection;
             Input = new Wire(4410);
             //Nodes.Add(Id, this);
+            Run();
         }
 
         public void Send(Packet packet) {
             Connection.Add(packet);
         }
 
+        protected virtual void Run() {
+            Task.Run(() => {
+                for (; ; ) {
+                    var packet = Read();
+                    Send(Update(packet));
+                }
+            });
+        }
+
         public Packet Read() {
+            if (Input == null) { return null; }
+
             var packet = Input.Take();
             if (!Memory.ContainsKey(packet.TriggerID)) {
                 Memory[packet.TriggerID] = new Hashtable();
             }
             State = Memory[packet.TriggerID];
             return packet;
-
-            //Send(Update(packet));
         }
 
-        //protected abstract Packet Update(Packet packet);
+        protected abstract Packet Update(Packet packet);
 
         protected T Fetch<T>(string key) {
             return (T)(State[key]);
@@ -53,10 +64,6 @@ namespace GraphExperiment {
 
         protected void Save(string key, object value) {
             State[key] = value;
-        }
-
-        protected bool IsSaved(string key) {
-            return State.ContainsKey(key);
         }
     }
 }

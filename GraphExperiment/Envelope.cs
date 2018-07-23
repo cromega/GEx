@@ -18,26 +18,21 @@ namespace GraphExperiment {
             Decay = decay;
             Sustain = sustain;
             Release = release;
-
-            Task.Run(() => Run());
         }
 
-        private void Run() {
-            for (; ; ) {
-                var packet = Read();
-                switch (packet.Control) {
-                    case Control.Signal:
-                        packet.Sample *= HandleSignal(packet.Sample, packet.Time);
-                        break;
-                    case Control.End:
-                        var time = Fetch<int>("ReleasedFor", 0);
-                        packet.Sample *= HandleRelease(packet.Sample, time);
-                        Save("ReleasedFor", ++time);
-                        break;
-                }
-                packet.Control = Fetch<int>("ReleasedFor", 0) > Release ? Control.End : Control.Signal;
-                Send(packet);
+        protected override Packet Update(Packet packet) {
+            switch (packet.Control) {
+                case Control.Signal:
+                    packet.Sample *= HandleSignal(packet.Sample, packet.Time);
+                    break;
+                case Control.End:
+                    var time = Fetch<int>("ReleasedFor", 0);
+                    packet.Sample *= HandleRelease(packet.Sample, time);
+                    Save("ReleasedFor", ++time);
+                    break;
             }
+            packet.Control = Fetch<int>("ReleasedFor", 0) > Release ? Control.End : Control.Signal;
+            return packet;
         }
 
         private double HandleSignal(Sample sample, int time) {

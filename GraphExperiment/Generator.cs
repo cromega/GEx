@@ -39,7 +39,9 @@ namespace GraphExperiment {
             Triggers = new List<Trigger>();
             SignalType = signalType;
             Rnd = new Random();
+        }
 
+        protected override void Run() {
             Task.Run(() => {
                 for (; ; ) {
                     lock (Lock) {
@@ -57,6 +59,10 @@ namespace GraphExperiment {
                     }
                 }
             });
+        }
+
+        protected override Packet Update(Packet packet) {
+            return null;
         }
 
         public string Start(double frequency) {
