@@ -46,6 +46,11 @@ namespace GraphExperiment {
             return (T)(State[key]);
         }
 
+        protected T Fetch<T>(string key, object defaultValue) {
+            var savedValue = State[key] ?? defaultValue;
+            return (T)savedValue;
+        }
+
         protected void Save(string key, object value) {
             State[key] = value;
         }

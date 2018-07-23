@@ -42,7 +42,7 @@ namespace GexUI {
             Audio = new SoundSystem(2205);
             var instrument = new Instrument(Audio);
             Generator = new Generator(1, SignalType.Sine);
-            var envelope = new Envelope(2, 4410, 882, 0.5, 882);
+            var envelope = new Envelope(2, 44100, 0, 1.0, 44100);
             Generator.Connection = envelope.Input;
             instrument.First(Generator);
             instrument.Last(envelope);
@@ -77,8 +77,8 @@ namespace GexUI {
 
             var trigger = Generator.Start(440);
             var stopper = new Thread(new ThreadStart(() => {
-                Thread.Sleep(2000);
-                Generator.Remove(trigger);
+                Thread.Sleep(1000);
+                Generator.Release(trigger);
             }));
             stopper.Start();
         }

@@ -26,17 +26,22 @@ namespace GraphExperiment {
         }
 
         public void Run() {
-            var buffer = new short[4410];
-            Task.Run(() => {
-                for (; ; ) {
-                    for (int i = 0; i < 4410; i += 2) {
-                        var sample = Connection.Take().Sample * 5000;
-                        buffer[i] = (short)sample.L;
-                        buffer[i + 1] = (short)sample.R;
+                var buffer = new short[4410];
+                Task.Run(() => {
+                    for (; ; ) {
+                        for (int i = 0; i < 4410; i += 2) {
+                            var packet = Connection.Take();
+                            packet.Sample *= 20000;
+                            buffer[i] = (short)(packet.Sample.L);
+                            buffer[i + 1] = (short)(packet.Sample.R);
+                            if (packet.Control == Control.End) {
+                                Generator.Remove(packet.TriggerID);
+                                break;
+                            }
+                        }
+                        Output.Write(buffer);
                     }
-                    Output.Write(buffer);
-                }
-            });
+                });
         }
 
         public string Trigger(double frequency) {

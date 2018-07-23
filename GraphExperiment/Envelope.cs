@@ -30,15 +30,12 @@ namespace GraphExperiment {
                         packet.Sample *= HandleSignal(packet.Sample, packet.Time);
                         break;
                     case Control.End:
-                        if (!IsSaved("ReleasedFor")) {
-                            Save("ReleasedFor", 0);
-                        }
-                        var time = Fetch<int>("ReleasedFor");
+                        var time = Fetch<int>("ReleasedFor", 0);
                         packet.Sample *= HandleRelease(packet.Sample, time);
                         Save("ReleasedFor", ++time);
                         break;
                 }
-                packet.Control = IsSaved("ReleasedFor") ? Control.End : Control.Signal;
+                packet.Control = Fetch<int>("ReleasedFor", 0) > Release ? Control.End : Control.Signal;
                 Send(packet);
             }
         }
@@ -60,7 +57,7 @@ namespace GraphExperiment {
         private double HandleRelease(Sample sample, int time) {
             double phase;
             if (time < Release) {
-                phase = 1 - Math.Abs(time) / (double)Release;
+                phase = 1 - time / (double)Release;
                 return phase * Sustain;
             } else return 0;
         }
