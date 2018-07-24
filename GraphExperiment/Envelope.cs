@@ -36,25 +36,19 @@ namespace GraphExperiment {
         }
 
         private double HandleSignal(Sample sample, int time) {
-            double value = sample.L;
-            double phase;
             if (time < Attack) {
-                value = time / (double)Attack;
+                return time / (double)Attack;
             } else if (time < Attack + Decay) {
-                phase = (time - Attack) / (double)Decay;
-                value = 1.0 - phase * (1 - Sustain);
+                var phase = (time - Attack) / (double)Decay;
+                return 1.0 - phase * (1 - Sustain);
             } else {
-                value = Sustain;
+                return Sustain;
             }
-            return value;
         }
 
         private double HandleRelease(Sample sample, int time) {
-            double phase;
-            if (time < Release) {
-                phase = 1 - time / (double)Release;
-                return phase * Sustain;
-            } else return 0;
+            var phase = 1.0 - time / (double)Release;
+            return phase * Sustain;
         }
     }
 }
