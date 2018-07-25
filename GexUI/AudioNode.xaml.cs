@@ -25,12 +25,16 @@ namespace GexUI {
         public AudioNode(string className) {
             InitializeComponent();
             Title.Text = className;
-            DeleteButton.MouseLeftButtonDown += DeleteButton_MouseLeftButtonDown;
+            DeleteButton.Click += DeleteButton_Click;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;
             MouseLeftButtonUp += node_MouseLeftButtonUp;
             MouseMove += node_MouseMove;
 
             AddDynamicControls(className);
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e) {
+            (Parent as Panel).Children.Remove(this);
         }
 
         private void MouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {
@@ -52,10 +56,6 @@ namespace GexUI {
             var node = sender as UIElement;
             dragStartPosition = null;
             node.ReleaseMouseCapture();
-        }
-
-        private void DeleteButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            (Parent as Panel).Children.Remove(this);
         }
 
         private void AddDynamicControls(string className) {

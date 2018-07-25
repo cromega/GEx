@@ -5,19 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GexUI"
              mc:Ignorable="d"
-             Width="120" Height="160">
-    <StackPanel Width="120" Height="160">
-        <DockPanel Height="10">
-            <Ellipse Height="10" Width="10" Fill="Yellow" />
-        </DockPanel>
-        <DockPanel DockPanel.Dock="Top" Height="15" Background="DarkGray">
-            <TextBlock Text="ANYAD" DockPanel.Dock="Left" Name="Title" FontSize="10"/>
-            <Rectangle DockPanel.Dock="Right" Width="10" Height="10" Fill="Black" Name="DeleteButton"/>
+             Width="120">
+    <StackPanel MinHeight="160" Background="Transparent">
+        <WrapPanel Height="15" Background="Transparent" HorizontalAlignment="Right">
+            <Ellipse Height="10" Width="10" Fill="Yellow"  Margin="0 0 45 0" />
+            <Button Content="X" Padding="0 -2" Name="DeleteButton"/>
+        </WrapPanel>
+        <DockPanel Background="DarkGray">
             <Rectangle DockPanel.Dock="Right" Width="10" Height="10" Fill="Green" />
+            <TextBlock Text="ANYAD" DockPanel.Dock="Left" Name="Title" FontSize="10"/>
         </DockPanel>
-        <StackPanel Name="Container" MinHeight="135" Background="DarkGray" />
-        <DockPanel Height="10" DockPanel.Dock="Bottom">
+        <StackPanel Background="DarkGray" MinHeight="150" Name="Container" />
+        <Grid Height="15" Background="Transparent" HorizontalAlignment="Center">
             <Ellipse Height="10" Width="10" Fill="Yellow" />
-        </DockPanel>
+        </Grid>
     </StackPanel>
 </UserControl>
