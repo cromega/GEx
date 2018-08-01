@@ -75,12 +75,12 @@ namespace GexUI {
                NodeList.Items.Add(type.Name);
             }
 
-            var trigger = Generator.Start(440);
-            var stopper = new Thread(new ThreadStart(() => {
-                Thread.Sleep(1000);
-                Generator.Release(trigger);
-            }));
-            stopper.Start();
+            //var trigger = Generator.Start(440);
+            //var stopper = new Thread(new ThreadStart(() => {
+            //    Thread.Sleep(1000);
+            //    Generator.Release(trigger);
+            //}));
+            //stopper.Start();
         }
 
         private IEnumerable<Type> GetAudioControls() {

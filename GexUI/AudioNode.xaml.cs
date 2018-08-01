@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using GraphExperiment;
 using System.Reflection;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace GexUI {
     /// <summary>
@@ -25,12 +17,29 @@ namespace GexUI {
         public AudioNode(string className) {
             InitializeComponent();
             Title.Text = className;
+
             DeleteButton.Click += DeleteButton_Click;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;
             MouseLeftButtonUp += node_MouseLeftButtonUp;
             MouseMove += node_MouseMove;
+            OutputAnchor.MouseDown += OutputAnchor_MouseDown;
+            Node.Drop += Node_Drop;
 
             AddDynamicControls(className);
+        }
+
+        private void Node_Drop(object sender, DragEventArgs e) {
+            var canvas = (Parent as Canvas);
+            var line = new Line();
+            var output = e.Data.GetData("stuff") as Ellipse;
+            Console.WriteLine("stuff dropped");
+            (sender as UIElement).ReleaseMouseCapture();
+            dragStartPosition = null;
+        }
+
+        private void OutputAnchor_MouseDown(object sender, MouseButtonEventArgs e) {
+            var anchor = (DependencyObject)sender;
+            DragDrop.DoDragDrop(anchor, new DataObject("stuff", anchor), DragDropEffects.Move);
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e) {
