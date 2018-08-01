@@ -12,8 +12,19 @@ namespace GexUI {
     /// <summary>
     /// Interaction logic for AudioNode.xaml
     /// </summary>
+    public class NodeConnectedEventArgs : EventArgs {
+        public AudioNode Source;
+        public AudioNode Target;
+
+        public NodeConnectedEventArgs(AudioNode source, AudioNode target) {
+            source = Source;
+            target = Target;
+        }
+    }
+
     partial class AudioNode : UserControl {
         private Nullable<Point> dragStartPosition;
+        public event EventHandler<NodeConnectedEventArgs> NodeConnected;
         public event EventHandler ControlRemoved;
 
 
@@ -34,15 +45,21 @@ namespace GexUI {
         private void Node_Drop(object sender, DragEventArgs e) {
             var canvas = (Parent as Canvas);
             var line = new Line();
-            var output = e.Data.GetData("stuff") as Ellipse;
+            var target = e.Data.GetData("stuff") as AudioNode;
+            if (target == null) {
+                return;
+            }
+
             Console.WriteLine("stuff dropped");
-            (sender as UIElement).ReleaseMouseCapture();
+            var nodeConnected = NodeConnected;
+            var args = new NodeConnectedEventArgs(this, target);
+            NodeConnected(this, args);
             dragStartPosition = null;
         }
 
         private void OutputAnchor_MouseDown(object sender, MouseButtonEventArgs e) {
             var anchor = (DependencyObject)sender;
-            DragDrop.DoDragDrop(anchor, new DataObject("stuff", anchor), DragDropEffects.Move);
+            DragDrop.DoDragDrop(anchor, new DataObject("stuff", this), DragDropEffects.Link);
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e) {

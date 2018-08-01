@@ -50,8 +50,13 @@ namespace GexUI {
             var controlName = (string)list.SelectedItem;
 
             var node = new AudioNode(controlName);
+            node.NodeConnected += Node_NodeConnected;
             node.ControlRemoved += Node_ControlRemoved;
             PatchEditor.Children.Add(node);
+        }
+
+        private void Node_NodeConnected(object sender, NodeConnectedEventArgs e) {
+            Console.WriteLine("node connected");
         }
 
         private void Node_ControlRemoved(object sender, EventArgs e) {
