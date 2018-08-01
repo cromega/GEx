@@ -28,8 +28,6 @@ namespace GexUI {
 
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
-        private SoundSystem Audio;
-        private Generator Generator;
 
         public MainWindow() {
             Logger.On();
@@ -37,16 +35,6 @@ namespace GexUI {
             Loaded += MainWindow_Loaded;
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
-            PatchEditor.Focus();
-
-            Audio = new SoundSystem(2205);
-            var instrument = new Instrument(Audio);
-            Generator = new Generator(1, SignalType.Sine);
-            var envelope = new Envelope(2, 44100, 0, 1.0, 44100);
-            Generator.Connection = envelope.Input;
-            instrument.First(Generator);
-            instrument.Last(envelope);
-            instrument.Run();
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
@@ -74,13 +62,6 @@ namespace GexUI {
             foreach (Type type in GetAudioControls()) {
                NodeList.Items.Add(type.Name);
             }
-
-            //var trigger = Generator.Start(440);
-            //var stopper = new Thread(new ThreadStart(() => {
-            //    Thread.Sleep(1000);
-            //    Generator.Release(trigger);
-            //}));
-            //stopper.Start();
         }
 
         private IEnumerable<Type> GetAudioControls() {
