@@ -14,6 +14,8 @@ namespace GexUI {
     /// </summary>
     partial class AudioNode : UserControl {
         private Nullable<Point> dragStartPosition;
+        public event EventHandler ControlRemoved;
+
 
         public AudioNode(string className) {
             InitializeComponent();
@@ -44,7 +46,8 @@ namespace GexUI {
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e) {
-            (Parent as Panel).Children.Remove(this);
+            EventHandler removedEvent = ControlRemoved;
+            removedEvent(this, EventArgs.Empty);
         }
 
         private void MouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {

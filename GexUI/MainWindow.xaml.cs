@@ -56,7 +56,12 @@ namespace GexUI {
             var controlName = (string)list.SelectedItem;
 
             var node = new AudioNode(controlName);
+            node.ControlRemoved += Node_ControlRemoved;
             PatchEditor.Children.Add(node);
+        }
+
+        private void Node_ControlRemoved(object sender, EventArgs e) {
+            PatchEditor.Children.Remove(sender as UIElement);
         }
 
         private void AddAudioControls() {
