@@ -32,9 +32,10 @@ namespace GexUI {
         public MainWindow() {
             Logger.On();
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
+
+            AddAudioControls();
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
@@ -58,7 +59,7 @@ namespace GexUI {
             PatchEditor.Children.Add(node);
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
+        private void AddAudioControls() {
             foreach (Type type in GetAudioControls()) {
                NodeList.Items.Add(type.Name);
             }

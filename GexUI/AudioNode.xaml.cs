@@ -5,6 +5,7 @@ using System.Windows.Input;
 using GraphExperiment;
 using System.Reflection;
 using System.Windows.Shapes;
+using System.Linq;
 using System.Windows.Media;
 
 namespace GexUI {
@@ -68,15 +69,17 @@ namespace GexUI {
         }
 
         private void AddDynamicControls(string className) {
-            var members = Type.GetType(String.Format("GraphExperiment.{0},GraphExperiment", className), throwOnError: true).GetMembers();
+            string fullClassName = String.Format("GraphExperiment.{0},GraphExperiment", className);
+            var members = from m in Type.GetType(fullClassName, throwOnError: true).GetMembers()
+                          where m.HasAttribute(typeof(AudioNodeParameterAttribute))
+                          select m;
+
             foreach (var member in members) {
-                if (member.HasAttribute(typeof(AudioNodeParameterAttribute))) {
-                    AddControlForNodeMember(member);
-                }
+                AddDynamicControl(member);
             }
         }
 
-        private void AddControlForNodeMember(MemberInfo member) {
+        private void AddDynamicControl(MemberInfo member) {
             var nodeControlContainer = new GroupBox() { Header = member.Name };
 
             var memberType = member.GetMemberUnderlyingType();
@@ -87,11 +90,11 @@ namespace GexUI {
                 }
                 ctrl.SelectedIndex = 0;
                 nodeControlContainer.Content = ctrl;
-                Container.Children.Add(nodeControlContainer);
             } else if (memberType == typeof(double) || memberType == typeof(int)) {
                 nodeControlContainer.Content = new TextBox();
-                Container.Children.Add(nodeControlContainer);
             }
+
+            Container.Children.Add(nodeControlContainer);
         }
     }
 }
