@@ -20,12 +20,6 @@ namespace GexUI {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public class NodeParameter {
-        public string Name;
-        public bool Patchable;
-        public Type ParameterType;
-    }
-
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
 
