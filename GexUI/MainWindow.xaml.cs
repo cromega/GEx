@@ -24,7 +24,7 @@ namespace GexUI {
 
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
-        private List<Connection> Connections = new List<Connection>();
+        private ObservableCollection<Connection> Connections = new ObservableCollection<Connection>();
 
         public MainWindow() {
             Logger.On();
@@ -33,7 +33,23 @@ namespace GexUI {
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
             PatchEditor.MouseMove += PatchEditor_MouseMove;
 
+            Connections.CollectionChanged += Connections_CollectionChanged;
+
             AddAudioControls();
+        }
+
+        private void Connections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            switch (e.Action) {
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    var newWire = Connections[e.NewStartingIndex];
+                    PatchEditor.Children.Add(newWire.Wire);
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    foreach (var connection in e.OldItems) {
+                        PatchEditor.Children.Remove((connection as Connection).Wire);
+                    }
+                    break;
+            }
         }
 
         private void PatchEditor_MouseMove(object sender, MouseEventArgs e) {
@@ -41,9 +57,9 @@ namespace GexUI {
         }
 
         private void UpdateConnections() {
-            Connections.ForEach(connection => {
+            foreach (var connection in Connections) {
                 connection.Update();
-            });
+            }
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
@@ -73,13 +89,9 @@ namespace GexUI {
             var node = sender as AudioNode;
             PatchEditor.Children.Remove(node);
 
-            Connections.Where(connection => {
-                return connection.Source == node || connection.Target == node;
-            }).ToList().ForEach(connection => PatchEditor.Children.Remove(connection.Wire));
-
-            Connections.RemoveAll(connection => {
-                return connection.Source == node || connection.Target == node;
-            });
+            foreach (var connection in Connections.ToList()) {
+                if (connection.Source == node || connection.Target == node) { Connections.Remove(connection);  };
+            }
         }
 
         private void Node_NodeConnected(object sender, NodeConnectedEventArgs e) {
@@ -88,7 +100,6 @@ namespace GexUI {
 
             var connection = new Connection(source, target);
             Connections.Add(connection);
-            PatchEditor.Children.Add(connection.Wire);
         }
 
         private void AddAudioControls() {
