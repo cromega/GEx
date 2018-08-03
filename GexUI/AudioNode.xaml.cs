@@ -44,8 +44,6 @@ namespace GexUI {
         }
 
         private void Node_Drop(object sender, DragEventArgs e) {
-            var canvas = (Parent as Canvas);
-            var line = new Line();
             var target = e.Data.GetData("stuff") as AudioNode;
             if (target == null) {
                 return;
@@ -54,7 +52,6 @@ namespace GexUI {
             var nodeConnected = NodeConnected;
             var args = new NodeConnectedEventArgs(target);
             NodeConnected(this, args);
-            dragStartPosition = null;
         }
 
         private void OutputAnchor_MouseDown(object sender, MouseButtonEventArgs e) {
@@ -68,9 +65,12 @@ namespace GexUI {
         }
 
         private void MouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {
+            var point = e.GetPosition(this);
+            // on drag drop a mouse button down is triggered with weird coordinates, ignore it
+            if (point.X < 0 || point.Y < 0) { return; }
             var node = sender as UIElement;
             dragStartPosition = e.GetPosition(node);
-            node.CaptureMouse();
+            CaptureMouse();
         }
 
         private void Node_MouseMove(object sender, MouseEventArgs e) {
@@ -82,9 +82,8 @@ namespace GexUI {
         }
 
         private void Node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
-            var node = sender as UIElement;
             dragStartPosition = null;
-            node.ReleaseMouseCapture();
+            ReleaseMouseCapture();
         }
 
         private void AddDynamicControls(string className) {
