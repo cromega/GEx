@@ -51,7 +51,6 @@ namespace GexUI {
                 return;
             }
 
-            Console.WriteLine("stuff dropped");
             var nodeConnected = NodeConnected;
             var args = new NodeConnectedEventArgs(target);
             NodeConnected(this, args);
