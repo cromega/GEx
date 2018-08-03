@@ -13,12 +13,10 @@ namespace GexUI {
     /// Interaction logic for AudioNode.xaml
     /// </summary>
     public class NodeConnectedEventArgs : EventArgs {
-        public AudioNode Source;
         public AudioNode Target;
 
-        public NodeConnectedEventArgs(AudioNode source, AudioNode target) {
-            source = Source;
-            target = Target;
+        public NodeConnectedEventArgs(AudioNode target) {
+            Target = target;
         }
     }
 
@@ -39,6 +37,9 @@ namespace GexUI {
             OutputAnchor.MouseDown += OutputAnchor_MouseDown;
             Node.Drop += Node_Drop;
 
+            Canvas.SetLeft(this, 0);
+            Canvas.SetTop(this, 0);
+
             AddDynamicControls(className);
         }
 
@@ -52,7 +53,7 @@ namespace GexUI {
 
             Console.WriteLine("stuff dropped");
             var nodeConnected = NodeConnected;
-            var args = new NodeConnectedEventArgs(this, target);
+            var args = new NodeConnectedEventArgs(target);
             NodeConnected(this, args);
             dragStartPosition = null;
         }
@@ -75,10 +76,9 @@ namespace GexUI {
 
         private void Node_MouseMove(object sender, MouseEventArgs e) {
             if (dragStartPosition != null && e.LeftButton == MouseButtonState.Pressed) {
-                var node = sender as UIElement;
                 var newPos = e.GetPosition(Parent as UIElement);
-                Canvas.SetLeft(node, newPos.X - dragStartPosition.Value.X);
-                Canvas.SetTop(node, newPos.Y - dragStartPosition.Value.Y);
+                Canvas.SetLeft(this, newPos.X - dragStartPosition.Value.X);
+                Canvas.SetTop(this, newPos.Y - dragStartPosition.Value.Y);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,16 +21,29 @@ namespace GexUI {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
+        private List<Connection> Connections = new List<Connection>();
 
         public MainWindow() {
             Logger.On();
             InitializeComponent();
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
+            PatchEditor.MouseMove += PatchEditor_MouseMove;
 
             AddAudioControls();
+        }
+
+        private void PatchEditor_MouseMove(object sender, MouseEventArgs e) {
+            UpdateConnections();
+        }
+
+        private void UpdateConnections() {
+            Connections.ForEach(connection => {
+                connection.Update();
+            });
         }
 
         private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
@@ -55,12 +69,26 @@ namespace GexUI {
             PatchEditor.Children.Add(node);
         }
 
-        private void Node_NodeConnected(object sender, NodeConnectedEventArgs e) {
-            Console.WriteLine("node connected");
+        private void Node_ControlRemoved(object sender, EventArgs e) {
+            var node = sender as AudioNode;
+            PatchEditor.Children.Remove(node);
+
+            Connections.Where(connection => {
+                return connection.Source == node || connection.Target == node;
+            }).ToList().ForEach(connection => PatchEditor.Children.Remove(connection.Wire));
+
+            Connections.RemoveAll(connection => {
+                return connection.Source == node || connection.Target == node;
+            });
         }
 
-        private void Node_ControlRemoved(object sender, EventArgs e) {
-            PatchEditor.Children.Remove(sender as UIElement);
+        private void Node_NodeConnected(object sender, NodeConnectedEventArgs e) {
+            var source = sender as AudioNode;
+            var target = e.Target;
+
+            var connection = new Connection(source, target);
+            Connections.Add(connection);
+            PatchEditor.Children.Add(connection.Wire);
         }
 
         private void AddAudioControls() {

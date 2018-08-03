@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Connection.cs" />
     <Page Include="AudioNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

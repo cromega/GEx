@@ -1,0 +1,29 @@
+﻿using System;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using System.Windows.Controls;
+
+namespace GexUI {
+    public class Connection {
+        public AudioNode Source;
+        public AudioNode Target;
+        public Line Wire;
+
+        public Connection(AudioNode source, AudioNode target) {
+            Source = source;
+            Target = target;
+            Wire = new Line() {
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeThickness = 1,
+            };
+            Update();
+        }
+
+        public void Update() {
+            Wire.X1 = Canvas.GetLeft(Source);
+            Wire.Y1 = Canvas.GetTop(Source);
+            Wire.X2 = Canvas.GetLeft(Target);
+            Wire.Y2 = Canvas.GetTop(Target);
+        }
+    }
+}
