@@ -14,7 +14,7 @@ namespace GexUI {
             Target = target;
             Wire = new Line() {
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 1,
+                StrokeThickness = 3,
             };
             Update();
         }

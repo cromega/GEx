@@ -32,10 +32,23 @@ namespace GexUI {
             NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
             PatchEditor.MouseWheel += PatchEditor_MouseWheel;
             PatchEditor.MouseMove += PatchEditor_MouseMove;
+            PatchEditor.MouseRightButtonDown += PatchEditor_MouseRightButtonDown;
 
             Connections.CollectionChanged += Connections_CollectionChanged;
 
             AddAudioControls();
+        }
+
+        private void PatchEditor_MouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+            var point = e.GetPosition(PatchEditor);
+
+            foreach (var connection in Connections.ToList()) {
+                var line = connection.Wire;
+                var distance = Math.Abs((line.X2 - line.X1) * (line.Y1 - point.Y) - (line.X1 - point.X) * (line.Y2 - line.Y1)) / Math.Sqrt(Math.Pow(line.X2 - line.X1, 2) + Math.Pow(line.Y2 - line.Y1, 2));
+                if (distance < 10) {
+                    Connections.Remove(connection);
+                }
+            }
         }
 
         private void Connections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
