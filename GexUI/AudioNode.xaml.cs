@@ -34,8 +34,8 @@ namespace GexUI {
 
             DeleteButton.Click += DeleteButton_Click;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;
-            MouseLeftButtonUp += node_MouseLeftButtonUp;
-            MouseMove += node_MouseMove;
+            MouseLeftButtonUp += Node_MouseLeftButtonUp;
+            MouseMove += Node_MouseMove;
             OutputAnchor.MouseDown += OutputAnchor_MouseDown;
             Node.Drop += Node_Drop;
 
@@ -73,7 +73,7 @@ namespace GexUI {
             node.CaptureMouse();
         }
 
-        private void node_MouseMove(object sender, MouseEventArgs e) {
+        private void Node_MouseMove(object sender, MouseEventArgs e) {
             if (dragStartPosition != null && e.LeftButton == MouseButtonState.Pressed) {
                 var node = sender as UIElement;
                 var newPos = e.GetPosition(Parent as UIElement);
@@ -82,7 +82,7 @@ namespace GexUI {
             }
         }
 
-        private void node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+        private void Node_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
             var node = sender as UIElement;
             dragStartPosition = null;
             node.ReleaseMouseCapture();
