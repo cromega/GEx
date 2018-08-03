@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.Specialized;
 using GraphExperiment;
 
 namespace GexUI {
@@ -24,7 +25,7 @@ namespace GexUI {
 
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
-        private ObservableCollection<Connection> Connections = new ObservableCollection<Connection>();
+        private ObservableCollection<Connection> Connections;
 
         public MainWindow() {
             Logger.On();
@@ -34,6 +35,7 @@ namespace GexUI {
             PatchEditor.MouseMove += PatchEditor_MouseMove;
             PatchEditor.MouseRightButtonDown += PatchEditor_MouseRightButtonDown;
 
+            Connections = new ObservableCollection<Connection>();
             Connections.CollectionChanged += Connections_CollectionChanged;
 
             AddAudioControls();
@@ -51,15 +53,15 @@ namespace GexUI {
             }
         }
 
-        private void Connections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+        private void Connections_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             switch (e.Action) {
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Add:
                     var newWire = Connections[e.NewStartingIndex];
                     PatchEditor.Children.Add(newWire.Wire);
                     break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    foreach (var connection in e.OldItems) {
-                        PatchEditor.Children.Remove((connection as Connection).Wire);
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (Connection connection in e.OldItems) {
+                        PatchEditor.Children.Remove(connection.Wire);
                     }
                     break;
             }
