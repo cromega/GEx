@@ -26,6 +26,7 @@ namespace GexUI {
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
         private ObservableCollection<Connection> Connections;
+        private NodeIdGenerator IdGenerator;
 
         public MainWindow() {
             Logger.On();
@@ -38,17 +39,22 @@ namespace GexUI {
             Connections = new ObservableCollection<Connection>();
             Connections.CollectionChanged += Connections_CollectionChanged;
 
+            IdGenerator = new NodeIdGenerator();
             AddAudioControls();
         }
 
         private void PatchEditor_MouseRightButtonDown(object sender, MouseButtonEventArgs e) {
             var point = e.GetPosition(PatchEditor);
+            DeleteConnectionCloseToClick(point);
+        }
 
+        private void DeleteConnectionCloseToClick(Point point) {
             foreach (var connection in Connections.ToList()) {
                 var line = connection.Wire;
                 var distance = Math.Abs((line.X2 - line.X1) * (line.Y1 - point.Y) - (line.X1 - point.X) * (line.Y2 - line.Y1)) / Math.Sqrt(Math.Pow(line.X2 - line.X1, 2) + Math.Pow(line.Y2 - line.Y1, 2));
                 if (distance < 10) {
                     Connections.Remove(connection);
+                    break;
                 }
             }
         }
@@ -94,7 +100,7 @@ namespace GexUI {
             var list = (ListBox)sender;
             var controlName = (string)list.SelectedItem;
 
-            var node = new AudioNode(controlName);
+            var node = new AudioNode(controlName, IdGenerator.Next());
             node.NodeConnected += Node_NodeConnected;
             node.ControlRemoved += Node_ControlRemoved;
             PatchEditor.Children.Add(node);

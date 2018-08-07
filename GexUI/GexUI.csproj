@@ -73,6 +73,7 @@
     <Compile Include="AudioNode.xaml.cs">
       <DependentUpon>AudioNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NodeIdGenerator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

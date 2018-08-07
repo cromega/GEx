@@ -13,12 +13,14 @@ namespace GraphExperiment {
         [AudioNodeParameter]
         public int Release;
 
-        public Envelope(int id, int attack, int decay, double sustain, int release) : base(id) {
-            Attack = attack;
-            Decay = decay;
-            Sustain = sustain;
-            Release = release;
-        }
+        //public Envelope(int id, int attack, int decay, double sustain, int release) : base(id) {
+        //    Attack = attack;
+        //    Decay = decay;
+        //    Sustain = sustain;
+        //    Release = release;
+        //}
+
+        public Envelope(short id) : base(id) { }
 
         protected override Packet Update(Packet packet) {
             switch (packet.Control) {

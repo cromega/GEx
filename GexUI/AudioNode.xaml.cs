@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows.Shapes;
 using System.Linq;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace GexUI {
     /// <summary>
@@ -21,12 +22,16 @@ namespace GexUI {
     }
 
     partial class AudioNode : UserControl {
+        private GraphExperiment.AudioNode AudioControl;
+        private short NodeId;
+
         private Nullable<Point> dragStartPosition;
+        private Dictionary<UIElement, string> DynamicControls;
         public event EventHandler<NodeConnectedEventArgs> NodeConnected;
         public event EventHandler ControlRemoved;
 
 
-        public AudioNode(string className) {
+        public AudioNode(string className, short id) {
             InitializeComponent();
             Title.Text = className;
 
@@ -41,6 +46,16 @@ namespace GexUI {
             Canvas.SetTop(this, 0);
 
             AddDynamicControls(className);
+            NodeId = id;
+            AudioControl = CreateAudioControl(className);
+
+        }
+
+        private GraphExperiment.AudioNode CreateAudioControl(string className) {
+            string fullClassName = String.Format("GraphExperiment.{0},GraphExperiment", className);
+            var type = Type.GetType(fullClassName);
+            var control = type.GetConstructors().First().Invoke(new object[] { NodeId });
+            return (GraphExperiment.AudioNode)control;
         }
 
         private void Node_Drop(object sender, DragEventArgs e) {
@@ -87,32 +102,70 @@ namespace GexUI {
         }
 
         private void AddDynamicControls(string className) {
+            DynamicControls = new Dictionary<UIElement, string>();
+
             string fullClassName = String.Format("GraphExperiment.{0},GraphExperiment", className);
             var members = from m in Type.GetType(fullClassName, throwOnError: true).GetMembers()
                           where m.HasAttribute(typeof(AudioNodeParameterAttribute))
                           select m;
 
             foreach (var member in members) {
-                AddDynamicControl(member);
+                var control = CreateDynamicControl(member);
+                Container.Children.Add(control);
             }
         }
 
-        private void AddDynamicControl(MemberInfo member) {
+        private UIElement CreateDynamicControl(MemberInfo member) {
             var nodeControlContainer = new GroupBox() { Header = member.Name };
 
+            UIElement nodeControl = null;
             var memberType = member.GetMemberUnderlyingType();
             if (memberType.IsEnum) {
-                var ctrl = new ComboBox();
+                var control = new ComboBox();
                 foreach (var enumValue in Enum.GetValues(memberType)) {
-                    ctrl.Items.Add(enumValue);
+                    control.Items.Add(enumValue);
                 }
-                ctrl.SelectedIndex = 0;
-                nodeControlContainer.Content = ctrl;
+                control.SelectedIndex = 0;
+                control.SelectionChanged += UpdateDynamicFields;
+                nodeControl = control;
             } else if (memberType == typeof(double) || memberType == typeof(int)) {
-                nodeControlContainer.Content = new TextBox();
+                var control = new TextBox();
+                control.TextChanged += UpdateDynamicFields;
+                nodeControl = control;
             }
 
-            Container.Children.Add(nodeControlContainer);
+            DynamicControls.Add(nodeControl, member.Name);
+            nodeControlContainer.Content = nodeControl;
+            return nodeControlContainer;
+        }
+
+        private void UpdateDynamicFields(object sender, EventArgs e) {
+            var memberName = DynamicControls[sender as UIElement];
+            var field = AudioControl.GetType().GetField(memberName);
+            var fieldType = field.GetMemberUnderlyingType();
+
+            try {
+                switch (sender.GetType().Name) {
+                    case "ComboBox": {
+                            var ctrl = sender as ComboBox;
+                            var value = ctrl.SelectedItem;
+                            field.SetValue(AudioControl, value);
+                            break;
+                        }
+                    case "TextBox": {
+                            var ctrl = sender as TextBox;
+                            var value = ctrl.Text;
+                            if (field.GetMemberUnderlyingType() == typeof(double)) {
+                                field.SetValue(AudioControl, double.Parse(value));
+                            } else if (field.GetMemberUnderlyingType() == typeof(int)) {
+                                field.SetValue(AudioControl, int.Parse(value));
+                            }
+                            break;
+                        }
+                }
+            } catch (FormatException) {
+                MessageBox.Show("wrong value");
+            }
         }
     }
 }

@@ -7,23 +7,19 @@ using System.Collections;
 
 namespace GraphExperiment {
     public abstract class AudioNode {
-        //public static Dictionary<int, AudioNode> Nodes = new Dictionary<int, AudioNode>();
-        public readonly int Id;
+        private static Dictionary<short, AudioNode> Nodes = new Dictionary<short, AudioNode>();
+
+        public readonly short Id;
         public Wire Connection;
         public Wire Input;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
 
-        public AudioNode(int id) {
+        public AudioNode(short id) {
+            Id = id;
             Input = new Wire(4410);
             Memory = new Dictionary<string, Hashtable>();
-            Run();
-        }
-
-        public AudioNode(int id, Wire connection) {
-            Connection = connection;
-            Input = new Wire(4410);
-            //Nodes.Add(Id, this);
+            Nodes.Add(id, this);
             Run();
         }
 
@@ -64,6 +60,11 @@ namespace GraphExperiment {
 
         protected void Save(string key, object value) {
             State[key] = value;
+        }
+
+
+        public static AudioNode Find(short nodeId) {
+            return Nodes[nodeId];
         }
     }
 }

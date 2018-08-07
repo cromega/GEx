@@ -35,9 +35,14 @@ namespace GraphExperiment {
         private List<Trigger> Triggers;
         private object Lock = new object();
 
-        public Generator(int id, SignalType signalType) : base(id) {
+        //public Generator(int id, SignalType signalType) : base(id) {
+        //    Triggers = new List<Trigger>();
+        //    SignalType = signalType;
+        //    Rnd = new Random();
+        //}
+
+        public Generator(short id) : base(id) {
             Triggers = new List<Trigger>();
-            SignalType = signalType;
             Rnd = new Random();
         }
 

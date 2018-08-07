@@ -42,15 +42,15 @@
   <ItemGroup>
     <Compile Include="Attributes.cs" />
     <Compile Include="AudioNode.cs" />
-    <Compile Include="ControlTest.cs" />
-    <Compile Include="Envelope.cs" />
+    <Compile Include="AudioNodes\ControlTest.cs" />
+    <Compile Include="AudioNodes\Envelope.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Instrument.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sample.cs" />
     <Compile Include="SoundSystem.cs" />
-    <Compile Include="Generator.cs" />
+    <Compile Include="AudioNodes\Generator.cs" />
     <Compile Include="Wire.cs" />
   </ItemGroup>
   <ItemGroup>
