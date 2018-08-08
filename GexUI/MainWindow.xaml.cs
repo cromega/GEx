@@ -28,27 +28,38 @@ namespace GexUI {
         private ObservableCollection<Connection> Connections;
         private NodeIdGenerator IdGenerator;
 
+        private Instrument Instrument;
+
         public MainWindow() {
             Logger.On();
             InitializeComponent();
-            NodeList.MouseDoubleClick += InstrumentsList_MouseDoubleClick;
-            PatchEditor.MouseWheel += PatchEditor_MouseWheel;
+            NodeList.MouseDoubleClick += AddAudioNode;
+            PatchEditor.MouseWheel += AdjustZoom;
             PatchEditor.MouseMove += PatchEditor_MouseMove;
-            PatchEditor.MouseRightButtonDown += PatchEditor_MouseRightButtonDown;
+            PatchEditor.MouseRightButtonDown += DeleteConnection;
 
             Connections = new ObservableCollection<Connection>();
-            Connections.CollectionChanged += Connections_CollectionChanged;
+            Connections.CollectionChanged += UpdateConnections;
 
             IdGenerator = new NodeIdGenerator();
             AddAudioControls();
+            Instrument = new Instrument(new SoundSystem(2205));
+            Instrument.Run();
+
+            BeepButton.Click += BeepButton_Click;
         }
 
-        private void PatchEditor_MouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+        private void BeepButton_Click(object sender, RoutedEventArgs e) {
+            var trigger = Instrument.Trigger(440);
+            Task.Run(() => {
+                Thread.Sleep(1000);
+                Instrument.Release(trigger);
+            });
+        }
+
+        private void DeleteConnection(object sender, MouseButtonEventArgs e) {
             var point = e.GetPosition(PatchEditor);
-            DeleteConnectionCloseToClick(point);
-        }
 
-        private void DeleteConnectionCloseToClick(Point point) {
             foreach (var connection in Connections.ToList()) {
                 var line = connection.Wire;
                 var distance = Math.Abs((line.X2 - line.X1) * (line.Y1 - point.Y) - (line.X1 - point.X) * (line.Y2 - line.Y1)) / Math.Sqrt(Math.Pow(line.X2 - line.X1, 2) + Math.Pow(line.Y2 - line.Y1, 2));
@@ -59,7 +70,7 @@ namespace GexUI {
             }
         }
 
-        private void Connections_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
+        private void UpdateConnections(object sender, NotifyCollectionChangedEventArgs e) {
             switch (e.Action) {
                 case NotifyCollectionChangedAction.Add:
                     var newWire = Connections[e.NewStartingIndex];
@@ -83,7 +94,7 @@ namespace GexUI {
             }
         }
 
-        private void PatchEditor_MouseWheel(object sender, MouseWheelEventArgs e) {
+        private void AdjustZoom(object sender, MouseWheelEventArgs e) {
             var transforms = (TransformGroup)PatchEditor.LayoutTransform;
             var scaler = (ScaleTransform)transforms.Children.First(transform => transform is ScaleTransform);
 
@@ -96,13 +107,14 @@ namespace GexUI {
             }
         }
 
-        private void InstrumentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void AddAudioNode(object sender, MouseButtonEventArgs e) {
             var list = (ListBox)sender;
             var controlName = (string)list.SelectedItem;
 
             var node = new AudioNode(controlName, IdGenerator.Next());
             node.NodeConnected += Node_NodeConnected;
             node.ControlRemoved += Node_ControlRemoved;
+            Instrument.AddNode(node.AudioControl);
             PatchEditor.Children.Add(node);
         }
 
@@ -116,10 +128,11 @@ namespace GexUI {
         }
 
         private void Node_NodeConnected(object sender, NodeConnectedEventArgs e) {
-            var source = sender as AudioNode;
-            var target = e.Target;
+            var source = e.Target;
+            var target = sender as AudioNode;
 
             var connection = new Connection(source, target);
+            source.AudioControl.Connect(target.AudioControl);
             Connections.Add(connection);
         }
 
@@ -130,6 +143,12 @@ namespace GexUI {
         }
 
         private IEnumerable<Type> GetAudioControls() {
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
+                if (type.HasAttribute(typeof(AudioNodeAttribute))) {
+                    yield return type;
+                }
+            }
+
             foreach (var reference in Assembly.GetExecutingAssembly().GetReferencedAssemblies()) {
                 var asm = Assembly.Load(reference);
                 foreach (var type in asm.GetTypes()) {

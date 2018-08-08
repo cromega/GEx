@@ -22,7 +22,7 @@ namespace GexUI {
     }
 
     partial class AudioNode : UserControl {
-        private GraphExperiment.AudioNode AudioControl;
+        public readonly GraphExperiment.AudioNode AudioControl;
         private short NodeId;
 
         private Nullable<Point> dragStartPosition;
@@ -64,8 +64,7 @@ namespace GexUI {
         }
 
         private GraphExperiment.AudioNode CreateAudioControl(string className) {
-            string fullClassName = String.Format("GraphExperiment.{0},GraphExperiment", className);
-            var type = Type.GetType(fullClassName);
+            var type = Utils.GetControlType(className);
             var control = type.GetConstructors().First().Invoke(new object[] { NodeId });
             return (GraphExperiment.AudioNode)control;
         }
@@ -116,8 +115,8 @@ namespace GexUI {
         private void AddDynamicControls(string className) {
             DynamicControls = new Dictionary<UIElement, string>();
 
-            string fullClassName = String.Format("GraphExperiment.{0},GraphExperiment", className);
-            var members = from m in Type.GetType(fullClassName, throwOnError: true).GetMembers()
+            var type = Utils.GetControlType(className);
+            var members = from m in type.GetMembers()
                           where m.HasAttribute(typeof(AudioNodeParameterAttribute))
                           select m;
 

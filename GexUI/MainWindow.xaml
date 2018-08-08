@@ -8,6 +8,9 @@
         Title="MainWindow" Height="768" Width="1024">
     <DockPanel Name="MainContainer">
         <ListBox Name="NodeList" MinWidth="100" />
+        <DockPanel Height="50" DockPanel.Dock="Bottom" Focusable="True">
+            <Button Content="Beep!" Name="BeepButton"/>
+        </DockPanel>
         <Canvas Name="PatchEditor" Background="LightGray" Focusable="True">
             <Canvas.LayoutTransform>
                 <TransformGroup>
@@ -15,6 +18,5 @@
                 </TransformGroup>
             </Canvas.LayoutTransform>
         </Canvas>
-
     </DockPanel>
 </Window>

@@ -89,7 +89,7 @@ namespace GraphExperiment {
 
         public void Write(short[] data) {
             var buffer = BufferQueue.Take();
-            Logger.Log("prepping buffer {0}", buffer);
+            //Logger.Log("prepping buffer {0}", buffer);
             Marshal.Copy(data, 0, buffer, data.Length);
             var whdr = new WaveHeader { lpData = buffer, dwBufferLength = (uint)data.Length * sizeof(short) };
             var whdrptr = Marshal.AllocHGlobal(Marshal.SizeOf(whdr));
@@ -122,7 +122,7 @@ namespace GraphExperiment {
                     break;
                 case WOM_DONE:
                     var whdr = Marshal.PtrToStructure<WaveHeader>(param1);
-                    Logger.Log("playback done on {0}", whdr.lpData);
+                    //Logger.Log("playback done on {0}", whdr.lpData);
                     BufferQueue.Add(whdr.lpData);
                     lock (Lock) { waveOutUnprepareHeader(DeviceHandle, param1, (uint)Marshal.SizeOf(whdr)); }
                     Marshal.FreeHGlobal(param1);

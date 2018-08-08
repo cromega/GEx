@@ -2,6 +2,7 @@
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace GexUI {
     public class Connection {

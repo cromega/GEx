@@ -47,6 +47,7 @@ namespace GraphExperiment {
         }
 
         protected override void Run() {
+            var packets = new List<Packet>();
             Task.Run(() => {
                 for (; ; ) {
                     lock (Lock) {
@@ -59,9 +60,11 @@ namespace GraphExperiment {
                             }
                             var packet = new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time);
                             trigger.Time++;
-                            Send(packet);
+                            packets.Add(packet);
                         });
                     }
+                    packets.ForEach(packet => Send(packet));
+                    packets.Clear();
                 }
             });
         }
@@ -75,18 +78,21 @@ namespace GraphExperiment {
             lock (Lock) {
                 Triggers.Add(trigger);
             }
+            Logger.Log("Starting trigger {0}", trigger.ID);
             return trigger.ID;
         }
 
         public void Release(string triggerID) {
             lock(Lock) {
+                Logger.Log("releasing trigger {0}", triggerID);
                 Triggers.First(trigger => trigger.ID == triggerID).Triggered = false;
             }
         }
 
         public void Remove(string triggerID) {
-            lock(Lock) {
-                Triggers.RemoveAll(trigger => trigger.ID == triggerID);
+            lock (Lock) {
+                Logger.Log("Removing trigger {0}", triggerID);
+                Logger.Log("Removed {0} triggers", Triggers.RemoveAll(trigger => trigger.ID == triggerID));
             }
         }
 

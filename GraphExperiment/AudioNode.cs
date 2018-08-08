@@ -10,7 +10,7 @@ namespace GraphExperiment {
         private static Dictionary<short, AudioNode> Nodes = new Dictionary<short, AudioNode>();
 
         public readonly short Id;
-        public Wire Connection;
+        public Wire Output;
         public Wire Input;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
@@ -24,7 +24,7 @@ namespace GraphExperiment {
         }
 
         public void Send(Packet packet) {
-            Connection.Add(packet);
+            Output.Add(packet);
         }
 
         protected virtual void Run() {
@@ -34,6 +34,10 @@ namespace GraphExperiment {
                     Send(Update(packet));
                 }
             });
+        }
+
+        public void Connect(AudioNode other) {
+            Output = other.Input;
         }
 
         public Packet Read() {
@@ -62,6 +66,9 @@ namespace GraphExperiment {
             State[key] = value;
         }
 
+        public string Type() {
+            return GetType().Name;
+        }
 
         public static AudioNode Find(short nodeId) {
             return Nodes[nodeId];
