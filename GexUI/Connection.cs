@@ -21,10 +21,10 @@ namespace GexUI {
         }
 
         public void Update() {
-            Wire.X1 = Canvas.GetLeft(Source) + Source.ActualWidth / 2;
-            Wire.Y1 = Canvas.GetTop(Source);
-            Wire.X2 = Canvas.GetLeft(Target) + Target.ActualWidth / 2;
-            Wire.Y2 = Canvas.GetTop(Target) + Target.ActualHeight;
+            Wire.X2 = Canvas.GetLeft(Source) + Source.ActualWidth / 2;
+            Wire.Y2 = Canvas.GetTop(Source) + Source.ActualHeight;
+            Wire.X1 = Canvas.GetLeft(Target) + Target.ActualWidth / 2;
+            Wire.Y1 = Canvas.GetTop(Target);
         }
     }
 }

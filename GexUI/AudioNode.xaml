@@ -20,7 +20,7 @@
 
     <StackPanel Background="Transparent" AllowDrop="True" Name="Node">
         <WrapPanel Height="15" Background="Transparent" HorizontalAlignment="Right">
-            <Ellipse Height="10" Width="10" Margin="0 0 45 0" Name="OutputAnchor"/>
+            <Ellipse Height="10" Width="10" Margin="0 0 45 0" Name="InputAnchor"/>
             <Button Content="X" Padding="0 -2" Name="DeleteButton"/>
         </WrapPanel>
         <DockPanel Background="DarkGray">
@@ -29,7 +29,7 @@
         </DockPanel>
         <StackPanel Background="DarkGray" MinHeight="50" Name="Container" />
         <Grid Height="15" Background="Transparent" HorizontalAlignment="Center">
-            <Ellipse Height="10" Width="10" Name="InputAnchor"/>
+            <Ellipse Height="10" Width="10" Name="OutputAnchor"/>
         </Grid>
     </StackPanel>
 </UserControl>
