@@ -2,8 +2,9 @@
 
 namespace GraphExperiment {
     public enum AudioNodeDirection {
-        OutputOnly,
         InputOutput,
+        OutputOnly,
+        InputOnly,
     }
 
     public class AudioNodeAttribute : Attribute {

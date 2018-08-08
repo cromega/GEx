@@ -45,10 +45,22 @@ namespace GexUI {
             Canvas.SetLeft(this, 0);
             Canvas.SetTop(this, 0);
 
+            SetAnchors(className);
+
             AddDynamicControls(className);
             NodeId = id;
             AudioControl = CreateAudioControl(className);
+        }
 
+        private void SetAnchors(string className) {
+            var type = Utils.GetControlType(className);
+            var attr = type.GetCustomAttribute<AudioNodeAttribute>() as AudioNodeAttribute;
+            switch (attr.Direction) {
+                case AudioNodeDirection.InputOnly:
+                    OutputAnchor.Visibility = Visibility.Hidden; break;
+                case AudioNodeDirection.OutputOnly:
+                    InputAnchor.Visibility = Visibility.Hidden; break;
+            }
         }
 
         private GraphExperiment.AudioNode CreateAudioControl(string className) {
