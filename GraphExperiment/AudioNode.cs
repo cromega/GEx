@@ -10,48 +10,65 @@ namespace GraphExperiment {
         private static Dictionary<short, AudioNode> Nodes = new Dictionary<short, AudioNode>();
 
         public readonly short Id;
-        public Wire Output;
-        public Wire Input;
+        //public Wire Output;
+        //public Wire Input;
+        public AudioNode Previous;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
 
         public AudioNode(short id) {
             Id = id;
-            Input = new Wire(4410);
+            //Input = new Wire(4410);
             Memory = new Dictionary<string, Hashtable>();
             Nodes.Add(id, this);
-            Run();
+            //Run();
         }
 
-        public void Send(Packet packet) {
-            Output.Add(packet);
-        }
+        //public void Send(Packet packet) {
+        //    Output.Add(packet);
+        //}
 
-        protected virtual void Run() {
-            Task.Run(() => {
-                for (; ; ) {
-                    var packet = Read();
-                    Send(Update(packet));
-                }
-            });
+        //protected virtual void Run() {
+        //    Task.Run(() => {
+        //        for (; ; ) {
+        //            var packet = Read();
+        //            Send(Update(packet));
+        //        }
+        //    });
+        //}
+
+        public virtual Packet[] Fetch() {
+            var packets = Previous.Fetch();
+            foreach (var packet in packets) { Update(packet); }
+            return packets;
         }
 
         public void Connect(AudioNode other) {
-            Output = other.Input;
+            other.Previous = this;
+            //Output = other.Input;
         }
 
-        public Packet Read() {
-            if (Input == null) { return null; }
-
-            var packet = Input.Take();
-            if (!Memory.ContainsKey(packet.TriggerID)) {
-                Memory[packet.TriggerID] = new Hashtable();
+        private void LoadState(string id) {
+            if (!Memory.ContainsKey(id)) {
+                Memory[id] = new Hashtable();
             }
-            State = Memory[packet.TriggerID];
+            State = Memory[id];
+        }
+
+        //public Packet Read() {
+        //    if (Input == null) { return null; }
+
+        //    var packet = Input.Take();
+        //    if (!Memory.ContainsKey(packet.TriggerID)) {
+        //        Memory[packet.TriggerID] = new Hashtable();
+        //    }
+        //    State = Memory[packet.TriggerID];
+        //    return packet;
+        //}
+
+        protected virtual Packet Update(Packet packet) {
             return packet;
         }
-
-        protected abstract Packet Update(Packet packet);
 
         protected T Fetch<T>(string key) {
             return (T)(State[key]);

@@ -46,32 +46,55 @@ namespace GraphExperiment {
             Rnd = new Random();
         }
 
-        protected override void Run() {
+        public override Packet[] Fetch() {
             var packets = new List<Packet>();
-            Task.Run(() => {
-                for (; ; ) {
-                    lock (Lock) {
-                        Triggers.ForEach(trigger => {
-                            double sample = 0;
-                            switch (SignalType) {
-                                case SignalType.Sine: sample = Sine(trigger.Frequency, trigger.Time); break;
-                                case SignalType.Square: sample = Square(trigger.Frequency, trigger.Time); break;
-                                case SignalType.Noise: sample = Noise(); break;
-                            }
-                            var packet = new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time);
-                            trigger.Time++;
-                            packets.Add(packet);
-                        });
-                    }
-                    packets.ForEach(packet => Send(packet));
-                    packets.Clear();
+
+            for (;;) {
+                if (Triggers.Count() > 0) {
+                    break;
                 }
+                System.Threading.Thread.Sleep(1);
+            }
+
+            Triggers.ForEach(trigger => {
+                double sample = 0;
+                switch (SignalType) {
+                    case SignalType.Sine: sample = Sine(trigger.Frequency, trigger.Time); break;
+                    case SignalType.Square: sample = Square(trigger.Frequency, trigger.Time); break;
+                    case SignalType.Noise: sample = Noise(); break;
+                }
+                packets.Add(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time));
             });
+
+            return packets.ToArray();
         }
 
-        protected override Packet Update(Packet packet) {
-            return null;
-        }
+        //protected override void Run() {
+        //    var packets = new List<Packet>();
+        //    Task.Run(() => {
+        //        for (; ; ) {
+        //            lock (Lock) {
+        //                Triggers.ForEach(trigger => {
+        //                    double sample = 0;
+        //                    switch (SignalType) {
+        //                        case SignalType.Sine: sample = Sine(trigger.Frequency, trigger.Time); break;
+        //                        case SignalType.Square: sample = Square(trigger.Frequency, trigger.Time); break;
+        //                        case SignalType.Noise: sample = Noise(); break;
+        //                    }
+        //                    var packet = new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time);
+        //                    trigger.Time++;
+        //                    packets.Add(packet);
+        //                });
+        //            }
+        //            packets.ForEach(packet => Send(packet));
+        //            packets.Clear();
+        //        }
+        //    });
+        //}
+
+        //protected override Packet Update(Packet packet) {
+        //    return null;
+        //}
 
         public string Start(double frequency) {
             var trigger = new Trigger(frequency);

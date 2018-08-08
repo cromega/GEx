@@ -44,7 +44,8 @@ namespace GexUI {
             IdGenerator = new NodeIdGenerator();
             AddAudioControls();
             Instrument = new Instrument(new SoundSystem(2205));
-            Instrument.Run();
+            //Instrument.Run();
+            Task.Run(() => Instrument.Run2());
 
             BeepButton.Click += BeepButton_Click;
         }

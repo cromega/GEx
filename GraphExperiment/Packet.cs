@@ -22,5 +22,9 @@ namespace GraphExperiment {
             Sample = sample;
             Time = time;
         }
+
+        public static Packet Empty() {
+            return new Packet("", Control.Signal, new Sample(), 0);
+        }
     }
 }
