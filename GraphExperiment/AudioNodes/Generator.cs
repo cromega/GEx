@@ -35,12 +35,6 @@ namespace GraphExperiment {
         private List<Trigger> Triggers;
         private object Lock = new object();
 
-        //public Generator(int id, SignalType signalType) : base(id) {
-        //    Triggers = new List<Trigger>();
-        //    SignalType = signalType;
-        //    Rnd = new Random();
-        //}
-
         public Generator(short id) : base(id) {
             Triggers = new List<Trigger>();
             Rnd = new Random();
@@ -63,38 +57,11 @@ namespace GraphExperiment {
                     case SignalType.Square: sample = Square(trigger.Frequency, trigger.Time); break;
                     case SignalType.Noise: sample = Noise(); break;
                 }
-                packets.Add(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time));
+                packets.Add(new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time++));
             });
 
             return packets.ToArray();
         }
-
-        //protected override void Run() {
-        //    var packets = new List<Packet>();
-        //    Task.Run(() => {
-        //        for (; ; ) {
-        //            lock (Lock) {
-        //                Triggers.ForEach(trigger => {
-        //                    double sample = 0;
-        //                    switch (SignalType) {
-        //                        case SignalType.Sine: sample = Sine(trigger.Frequency, trigger.Time); break;
-        //                        case SignalType.Square: sample = Square(trigger.Frequency, trigger.Time); break;
-        //                        case SignalType.Noise: sample = Noise(); break;
-        //                    }
-        //                    var packet = new Packet(trigger.ID, trigger.Triggered ? Control.Signal : Control.End, new Sample(sample), trigger.Time);
-        //                    trigger.Time++;
-        //                    packets.Add(packet);
-        //                });
-        //            }
-        //            packets.ForEach(packet => Send(packet));
-        //            packets.Clear();
-        //        }
-        //    });
-        //}
-
-        //protected override Packet Update(Packet packet) {
-        //    return null;
-        //}
 
         public string Start(double frequency) {
             var trigger = new Trigger(frequency);

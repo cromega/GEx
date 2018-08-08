@@ -22,7 +22,7 @@ namespace GraphExperiment {
 
         public Envelope(short id) : base(id) { }
 
-        protected override Packet Update(Packet packet) {
+        protected override void Update(Packet packet) {
             switch (packet.Control) {
                 case Control.Signal:
                     packet.Sample *= HandleSignal(packet.Sample, packet.Time);
@@ -34,7 +34,6 @@ namespace GraphExperiment {
                     break;
             }
             packet.Control = Fetch<int>("ReleasedFor", 0) > Release ? Control.End : Control.Signal;
-            return packet;
         }
 
         private double HandleSignal(Sample sample, int time) {

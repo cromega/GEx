@@ -9,14 +9,12 @@ namespace GraphExperiment {
     public class Instrument {
         private Generator Generator;
         private SoundSystem Output;
-        //private Wire Connection;
         AudioNode LastNode;
         public volatile bool IsActive;
         private List<AudioNode> Nodes;
 
         public Instrument(SoundSystem output) {
             Output = output;
-            //Connection = new Wire(2205);
             IsActive = false;
             Nodes = new List<AudioNode>();
         }
@@ -37,10 +35,9 @@ namespace GraphExperiment {
 
         public void Last(AudioNode node) {
             LastNode = node;
-            //node.Output = Connection;
         }
 
-        public void Run2() {
+        public void Run() {
             var buffer = new short[4410];
             for (; ; ) {
                 if (LastNode == null) { System.Threading.Thread.Sleep(1); continue; }
@@ -60,30 +57,6 @@ namespace GraphExperiment {
                 }
                 Output.Write(buffer);
             }
-        }
-
-        public void Run() {
-            var buffer = new short[4410];
-            Task.Run(() => {
-                for (; ; ) {
-                    if (LastNode == null) { System.Threading.Thread.Sleep(1); continue; }
-                    Packet packet = null;
-                    for (int i = 0; i < 4410; i += 2) {
-                        var packets = LastNode.Fetch();
-                        if (packets.Length == 0) { break; }
-
-                        packet = packets[0];
-                        packet.Sample *= 20000;
-                        buffer[i] = (short)(packet.Sample.L);
-                        buffer[i + 1] = (short)(packet.Sample.R);
-                    }
-
-                    if (packet.Control == Control.End) {
-                        Generator.Remove(packet.TriggerID);
-                    }
-                    Output.Write(buffer);
-                }
-            });
         }
 
         public string Trigger(double frequency) {

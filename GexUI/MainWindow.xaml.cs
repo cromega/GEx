@@ -44,18 +44,21 @@ namespace GexUI {
             IdGenerator = new NodeIdGenerator();
             AddAudioControls();
             Instrument = new Instrument(new SoundSystem(2205));
-            //Instrument.Run();
-            Task.Run(() => Instrument.Run2());
+            Task.Run(() => Instrument.Run());
 
             BeepButton.Click += BeepButton_Click;
         }
 
         private void BeepButton_Click(object sender, RoutedEventArgs e) {
-            var trigger = Instrument.Trigger(440);
-            Task.Run(() => {
-                Thread.Sleep(1000);
-                Instrument.Release(trigger);
-            });
+            try {
+                var trigger = Instrument.Trigger(440);
+                Task.Run(() => {
+                    Thread.Sleep(1000);
+                    Instrument.Release(trigger);
+                });
+            } catch {
+                MessageBox.Show("wtf");
+            }
         }
 
         private void DeleteConnection(object sender, MouseButtonEventArgs e) {
