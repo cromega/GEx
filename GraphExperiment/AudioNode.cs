@@ -22,12 +22,16 @@ namespace GraphExperiment {
         }
 
         public virtual Packet[] Fetch() {
+            //FIXME
             while (Previous == null) {
                 Thread.Sleep(1);
             }
 
             var packets = Previous.Fetch();
-            foreach (var packet in packets) { Update(packet); }
+            foreach (var packet in packets) {
+                LoadState(packet.TriggerID);
+                Update(packet);
+            }
             return packets;
         }
 

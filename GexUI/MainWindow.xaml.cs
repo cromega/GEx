@@ -83,6 +83,7 @@ namespace GexUI {
                 case NotifyCollectionChangedAction.Remove:
                     foreach (Connection connection in e.OldItems) {
                         PatchEditor.Children.Remove(connection.Wire);
+                        connection.Target.AudioControl.Previous = null;
                     }
                     break;
             }
@@ -112,14 +113,19 @@ namespace GexUI {
         }
 
         private void AddAudioNode(object sender, MouseButtonEventArgs e) {
-            var list = (ListBox)sender;
-            var controlName = (string)list.SelectedItem;
+            try {
+                var list = (ListBox)sender;
+                var controlName = (string)list.SelectedItem;
 
-            var node = new AudioNode(controlName, IdGenerator.Next());
-            node.NodeConnected += Node_NodeConnected;
-            node.ControlRemoved += Node_ControlRemoved;
-            Instrument.AddNode(node.AudioControl);
-            PatchEditor.Children.Add(node);
+                var node = new AudioNode(controlName, IdGenerator.Next());
+                node.NodeConnected += Node_NodeConnected;
+                node.ControlRemoved += Node_ControlRemoved;
+                Instrument.AddNode(node.AudioControl);
+                PatchEditor.Children.Add(node);
+            } catch (Exception ex) {
+                var result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.Cancel) { throw; }
+            }
         }
 
         private void Node_ControlRemoved(object sender, EventArgs e) {

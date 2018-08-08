@@ -42,14 +42,6 @@ namespace GraphExperiment {
 
         public override Packet[] Fetch() {
             var packets = new List<Packet>();
-
-            for (;;) {
-                if (Triggers.Count() > 0) {
-                    break;
-                }
-                System.Threading.Thread.Sleep(1);
-            }
-
             Triggers.ForEach(trigger => {
                 double sample = 0;
                 switch (SignalType) {

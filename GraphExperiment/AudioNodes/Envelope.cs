@@ -23,20 +23,22 @@ namespace GraphExperiment {
         public Envelope(short id) : base(id) { }
 
         protected override void Update(Packet packet) {
+            double value = 0;
             switch (packet.Control) {
                 case Control.Signal:
-                    packet.Sample *= HandleSignal(packet.Sample, packet.Time);
+                    value = GetVolume(packet.Time);
                     break;
                 case Control.End:
                     var time = Fetch<int>("ReleasedFor", 0);
-                    packet.Sample *= HandleRelease(packet.Sample, time);
+                    value = GetReleaseVolume(time);
                     Save("ReleasedFor", ++time);
                     break;
             }
+            packet.Sample *= value;
             packet.Control = Fetch<int>("ReleasedFor", 0) > Release ? Control.End : Control.Signal;
         }
 
-        private double HandleSignal(Sample sample, int time) {
+        private double GetVolume(int time) {
             if (time < Attack) {
                 return time / (double)Attack;
             } else if (time < Attack + Decay) {
@@ -47,7 +49,7 @@ namespace GraphExperiment {
             }
         }
 
-        private double HandleRelease(Sample sample, int time) {
+        private double GetReleaseVolume(int time) {
             var phase = 1.0 - time / (double)Release;
             return phase * Sustain;
         }
