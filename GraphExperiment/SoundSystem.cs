@@ -71,19 +71,21 @@ namespace GraphExperiment {
         private BlockingCollection<IntPtr> BufferQueue;
         private object Lock = new object();
         private waveOutHandle callbackHandle;
+        public readonly int Frames;
 
         public SoundSystem(int frames) {
-            var wf = new WaveFormatEx(44100, 16, 2);
+            Frames = frames;
 
             callbackHandle = new waveOutHandle(WaveOutHandler);
+            var wf = new WaveFormatEx(44100, 16, 2);
             var ret = waveOutOpen(ref DeviceHandle, WAVE_MAPPER, ref wf, callbackHandle, IntPtr.Zero, CALLBACK_FUNCTION);
             if (ret != MMSYS_NOERROR) {
                 throw new Exception(String.Format("failed to open audio device: {0}", ret));
             }
 
             BufferQueue = new BlockingCollection<IntPtr>() {
-                Marshal.AllocHGlobal(frames * 2 * sizeof(short)),
-                Marshal.AllocHGlobal(frames * 2 * sizeof(short)),
+                Marshal.AllocHGlobal(Frames * 2 * sizeof(short)),
+                Marshal.AllocHGlobal(Frames * 2 * sizeof(short)),
             };
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using Utils;
 
 namespace GraphExperiment {
@@ -39,13 +40,13 @@ namespace GraphExperiment {
 
         public void Run() {
             for (; ; ) {
-                var buffer = new short[4410];
-
                 //FIXME
-                if (LastNode == null) { System.Threading.Thread.Sleep(1); continue; }
+                if (LastNode == null) { Thread.Sleep(1); continue; }
+
+                var buffer = new short[Output.Frames * 2];
 
                 Packet packet = Packet.Empty();
-                for (int i = 0; i < 4410; i += 2) {
+                for (int i = 0; i < buffer.Length; i += 2) {
                     var packets = LastNode.Fetch();
                     if (packets.Length == 0) { break; }
 
