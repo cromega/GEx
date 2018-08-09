@@ -26,16 +26,17 @@ namespace GraphExperiment {
             double value = 0;
             switch (packet.Control) {
                 case Control.Signal:
-                    value = GetVolume(packet.Time);
+                    value = GetVolume(packet.TimeMS);
                     break;
                 case Control.End:
-                    var time = Fetch<int>("ReleasedFor", 0);
-                    value = GetReleaseVolume(time);
-                    Save("ReleasedFor", ++time);
+                    var tick = Fetch<int>("ReleasedFor", 0);
+                    var timeMS = (int)(tick / 44.1);
+                    value = GetReleaseVolume(timeMS);
+                    packet.Control = timeMS < Release ? Control.Signal : Control.End;
+                    Save("ReleasedFor", ++tick);
                     break;
             }
             packet.Sample *= value;
-            packet.Control = Fetch<int>("ReleasedFor", 0) > Release ? Control.End : Control.Signal;
         }
 
         private double GetVolume(int time) {
