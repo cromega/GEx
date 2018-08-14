@@ -29,7 +29,7 @@ namespace GraphExperiment {
                     value = GetValue(packet.TimeMS);
                     break;
                 case Control.End:
-                    var tick = Fetch<int>("ReleasedFor", 0);
+                    var tick = Get<int>("ReleasedFor", 0);
                     var timeMS = (int)(tick / 44.1);
                     value = GetReleasedValue(timeMS);
                     packet.Control = timeMS < Release ? Control.Signal : Control.End;
