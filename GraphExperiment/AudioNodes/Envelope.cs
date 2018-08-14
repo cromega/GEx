@@ -52,6 +52,8 @@ namespace GraphExperiment {
         }
 
         private double GetReleasedValue(int time) {
+            if (time > Release) { return 0; }
+
             var phase = 1.0 - time / (double)Release;
             return phase * Sustain;
         }
