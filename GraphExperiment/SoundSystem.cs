@@ -126,7 +126,7 @@ namespace GraphExperiment {
                     var whdr = Marshal.PtrToStructure<WaveHeader>(param1);
                     //Logger.Log("playback done on {0}", whdr.lpData);
                     BufferQueue.Add(whdr.lpData);
-                    lock (Lock) { waveOutUnprepareHeader(DeviceHandle, param1, (uint)Marshal.SizeOf(whdr)); }
+                    //lock (Lock) { waveOutUnprepareHeader(DeviceHandle, param1, (uint)Marshal.SizeOf(whdr)); }
                     Marshal.FreeHGlobal(param1);
                     break;
                 case WOM_CLOSE:
