@@ -51,7 +51,7 @@ namespace GexUI {
 
         private void BeepButton_Click(object sender, RoutedEventArgs e) {
             try {
-                var trigger = Instrument.Trigger(440);
+                var trigger = Instrument.Start(440);
                 Task.Run(() => {
                     Thread.Sleep(1000);
                     Instrument.Release(trigger);

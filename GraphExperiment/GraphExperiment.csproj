@@ -44,6 +44,7 @@
     <Compile Include="AudioNode.cs" />
     <Compile Include="AudioNodes\ControlTest.cs" />
     <Compile Include="AudioNodes\Envelope.cs" />
+    <Compile Include="AudioNodes\Trigger.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Instrument.cs" />
     <Compile Include="Packet.cs" />

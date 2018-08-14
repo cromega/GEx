@@ -8,7 +8,7 @@ using Utils;
 
 namespace GraphExperiment {
     public class Instrument {
-        private Generator Generator;
+        private Trigger Trigger;
         private SoundSystem Output;
         AudioNode LastNode;
         public volatile bool IsActive;
@@ -25,13 +25,13 @@ namespace GraphExperiment {
             Nodes.Add(node);
 
             switch (node.Type()) {
-                case "Generator": First(node as Generator); break;
+                case "Trigger": First(node as Trigger); break;
                 case "Output": Last(node); break;
             }
         }
 
-        public void First(Generator node) {
-            Generator = node;
+        public void First(Trigger node) {
+            Trigger = node;
         }
 
         public void Last(AudioNode node) {
@@ -57,18 +57,18 @@ namespace GraphExperiment {
                 }
 
                 if (packet.Control == Control.End) {
-                    Generator.Remove(packet.TriggerID);
+                    Trigger.Remove(packet.TriggerID);
                 }
                 Output.Write(buffer);
             }
         }
 
-        public string Trigger(double frequency) {
-            return Generator.Start(frequency);
+        public string Start(double frequency) {
+            return Trigger.Start(frequency);
         }
 
         public void Release(string triggerId) {
-            Generator.Release(triggerId);
+            Trigger.Release(triggerId);
         }
     }
 }

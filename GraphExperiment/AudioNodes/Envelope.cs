@@ -22,7 +22,7 @@ namespace GraphExperiment {
 
         public Envelope(short id) : base(id) { }
 
-        protected override void Update(Packet packet) {
+        protected override Packet Update(Packet packet) {
             double value = 0;
             switch (packet.Control) {
                 case Control.Signal:
@@ -37,6 +37,7 @@ namespace GraphExperiment {
                     break;
             }
             packet.Sample *= value;
+            return packet;
         }
 
         private double GetVolume(int time) {

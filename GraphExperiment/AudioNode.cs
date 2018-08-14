@@ -21,6 +21,18 @@ namespace GraphExperiment {
             Nodes.Add(id, this);
         }
 
+        protected virtual Packet Update(Packet packet) {
+            return packet;
+        }
+
+        protected virtual Packet[] Update(Packet[] packets) {
+            for (int i=0; i<packets.Length; i++) {
+                LoadState(packets[i].TriggerID);
+                packets[i] = Update(packets[i]);
+            }
+            return packets;
+        }
+
         public virtual Packet[] Fetch() {
             //FIXME
             while (Previous == null) {
@@ -28,11 +40,7 @@ namespace GraphExperiment {
             }
 
             var packets = Previous.Fetch();
-            foreach (var packet in packets) {
-                LoadState(packet.TriggerID);
-                Update(packet);
-            }
-            return packets;
+            return Update(packets);
         }
 
         public void Connect(AudioNode other) {
@@ -45,8 +53,6 @@ namespace GraphExperiment {
             }
             State = Memory[id];
         }
-
-        protected virtual void Update(Packet packet) { }
 
         protected T Fetch<T>(string key) {
             return (T)(State[key]);
