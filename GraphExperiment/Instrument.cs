@@ -47,7 +47,7 @@ namespace GraphExperiment {
 
                 Packet packet = Packet.Empty();
                 for (int i = 0; i < buffer.Length; i += 2) {
-                    var packets = LastNode.Fetch();
+                    var packets = LastNode.Next();
                     if (packets.Length == 0) { break; }
 
                     packet = packets[0];

@@ -21,26 +21,33 @@ namespace GraphExperiment {
             Nodes.Add(id, this);
         }
 
-        protected virtual Packet Update(Packet packet) {
-            return packet;
-        }
+        public Packet[] Next() {
+            var packets = Fetch();
+            packets = Update(packets);
 
-        protected virtual Packet[] Update(Packet[] packets) {
             for (int i=0; i<packets.Length; i++) {
                 LoadState(packets[i].TriggerID);
                 packets[i] = Update(packets[i]);
             }
+
             return packets;
         }
 
-        public virtual Packet[] Fetch() {
+        protected virtual Packet[] Update(Packet[] packets) {
+            return packets;
+        }
+
+        protected virtual Packet Update(Packet packet) {
+            return packet;
+        }
+
+        protected virtual Packet[] Fetch() {
             //FIXME
             while (Previous == null) {
                 Thread.Sleep(1);
             }
 
-            var packets = Previous.Fetch();
-            return Update(packets);
+            return Previous.Next();
         }
 
         public void Connect(AudioNode other) {
