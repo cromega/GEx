@@ -26,12 +26,12 @@ namespace GraphExperiment {
             double value = 0;
             switch (packet.Control) {
                 case Control.Signal:
-                    value = GetVolume(packet.TimeMS);
+                    value = GetValue(packet.TimeMS);
                     break;
                 case Control.End:
                     var tick = Fetch<int>("ReleasedFor", 0);
                     var timeMS = (int)(tick / 44.1);
-                    value = GetReleaseVolume(timeMS);
+                    value = GetReleasedValue(timeMS);
                     packet.Control = timeMS < Release ? Control.Signal : Control.End;
                     Save("ReleasedFor", ++tick);
                     break;
@@ -40,7 +40,7 @@ namespace GraphExperiment {
             return packet;
         }
 
-        private double GetVolume(int time) {
+        private double GetValue(int time) {
             if (time < Attack) {
                 return time / (double)Attack;
             } else if (time < Attack + Decay) {
@@ -51,7 +51,7 @@ namespace GraphExperiment {
             }
         }
 
-        private double GetReleaseVolume(int time) {
+        private double GetReleasedValue(int time) {
             var phase = 1.0 - time / (double)Release;
             return phase * Sustain;
         }
