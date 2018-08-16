@@ -8,13 +8,13 @@ namespace GraphExperiment{
     [AudioNode(Direction = AudioNodeDirection.OutputOnly)]
     public class Trigger : AudioNode {
         private object Lock = new object();
-        private List<TriggerInstance> Triggers;
+        public List<TriggerInstance> Triggers;
 
         public Trigger(short id) : base(id) {
             Triggers = new List<TriggerInstance>();
         }
 
-        class TriggerInstance {
+        public class TriggerInstance {
             public string ID;
             public double Frequency;
             public int Time;

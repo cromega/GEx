@@ -1,48 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Chirpesizer;
-using System.IO;
+using GraphExperiment;
+using System.Threading;
+using Utils;
 
 namespace OscillatorTest {
     class Program {
         static void Main(string[] args) {
-            var newosc = new Oscillator(OscillatorType.Sine);
-            var oldosc = new StatefulOscillator(OscillatorType.Sine);
+            Logger.On();
+            var wav = new Utils.WavWriter("output.wav");
 
-            var num = 100;
-            int samples = 44100 / num;
-            var audio = new SoundSystem(samples);
-            var buf = new short[samples * 2];
-            var log = File.CreateText("log.txt");
+            int frames = 4410;
+            var audio = new SoundSystem(frames);
+            var trigger = new Trigger(1);
+            var envelope = new Envelope(2) {
+                Attack = 250,
+                Decay = 250,
+                Sustain = 0.5,
+                Release = 200,
+            };
+            var osc = new Generator(3) {
+                SignalType = SignalType.Sine,
+            };
+            //trigger.Connect(osc);
+            trigger.Connect(envelope);
+            envelope.Connect(osc);
+            trigger.Start(440);
 
-            for (int i=0; i<num; i++) {
-                var freq = 220 + i * 2;
-                for (int j=0; j<samples; j++) {
-                    var value = oldosc.Next(freq) * short.MaxValue;
-                    buf[j * 2] = (short)value;
-                    buf[j * 2 + 1] = (short)value;
+            for (int i = 0; i < 10; i++) {
+                var buffer = new short[frames * 2];
+                for (int j = 0; j < buffer.Length; j += 2) {
+                    var packets = osc.Next();
+
+                    var sample = packets[0].Sample * 20000;
+                    buffer[j] = (short)sample.L;
+                    buffer[j + 1] = (short)sample.R;
+                    //trigger.Triggers[0].Frequency -= 0.005;
                 }
-                audio.Write(buf);
+                audio.Write(buffer);
+                wav.Write(buffer);
             }
-
-            System.Threading.Thread.Sleep(500);
-
-            for (int i=0; i<num; i++) {
-                var freq = 220 + i * 2;
-                for (int j=0; j<samples; j++) {
-                    newosc.SetFrequency(freq);
-                    var value = newosc.Next() * short.MaxValue;
-                    buf[j * 2] = (short)value;
-                    buf[j * 2 + 1] = (short)value;
-                }
-                audio.Write(buf);
-            }
-
-            log.Close();
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(envelope.Release + 100);
+            audio.Close();
+            wav.Close();
+            Console.ReadKey();
         }
     }
 }
