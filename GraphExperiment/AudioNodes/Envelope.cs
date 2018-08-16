@@ -30,7 +30,7 @@ namespace GraphExperiment {
                     break;
                 case Control.End:
                     var tick = Get<int>("ReleasedFor", 0);
-                    var timeMS = (int)(tick / 44.1);
+                    var timeMS = tick / 44.1;
                     value = GetReleasedValue(timeMS);
                     packet.Control = timeMS < Release ? Control.Signal : Control.End;
                     Save("ReleasedFor", ++tick);
@@ -40,21 +40,21 @@ namespace GraphExperiment {
             return packet;
         }
 
-        private double GetValue(int time) {
+        private double GetValue(double time) {
             if (time < Attack) {
-                return time / (double)Attack;
+                return time / Attack;
             } else if (time < Attack + Decay) {
-                var phase = (time - Attack) / (double)Decay;
+                var phase = (time - Attack) / Decay;
                 return 1.0 - phase * (1 - Sustain);
             } else {
                 return Sustain;
             }
         }
 
-        private double GetReleasedValue(int time) {
+        private double GetReleasedValue(double time) {
             if (time > Release) { return 0; }
 
-            var phase = 1.0 - time / (double)Release;
+            var phase = 1.0 - time / Release;
             return phase * Sustain;
         }
     }

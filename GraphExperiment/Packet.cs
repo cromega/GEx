@@ -16,8 +16,8 @@ namespace GraphExperiment {
         public Control Control;
         public int Tick;
 
-        public int TimeMS {
-            get { return (int)(Tick / 44.1); }
+        public double TimeMS {
+            get { return Tick / 44.1; }
         }
 
         public Packet(string triggerId, Control control, Sample sample, int tick) {
