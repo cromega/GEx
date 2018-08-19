@@ -18,8 +18,12 @@ namespace GraphExperiment {
             L = value;
             R = value;
         }
+
         public static Sample operator + (Sample sample, double value) {
-            return new Sample { L = sample.L + value, R = sample.R + value };
+            return new Sample {
+                L = sample.L >= 0 ? sample.L + value : sample.L - value,
+                R = sample.R >= 0 ? sample.R + value : sample.R - value,
+            };
         }
 
         public static Sample operator * (Sample sample, double value) {

@@ -30,9 +30,14 @@ namespace TestGEx {
             (sample.R).Should().Be(10);
 
             sample = new Sample(5);
+            sample += -2;
+            (sample.L).Should().Be(3);
+            (sample.R).Should().Be(3);
+
+            sample = new Sample(-5);
             sample += 2;
-            (sample.L).Should().Be(7);
-            (sample.R).Should().Be(7);
+            (sample.L).Should().Be(-7);
+            (sample.R).Should().Be(-7);
         }
     }
 }

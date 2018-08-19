@@ -30,5 +30,9 @@ namespace GraphExperiment {
         public static Packet Empty() {
             return new Packet("", Control.Signal, new Sample(), 0);
         }
+
+        public override string ToString() {
+            return String.Format("L: {0}, R: {1}", Sample.L, Sample.R);
+        }
     }
 }
