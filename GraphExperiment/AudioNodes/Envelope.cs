@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace GraphExperiment {
     [AudioNode]
     public class Envelope : AudioNode {
@@ -12,13 +9,6 @@ namespace GraphExperiment {
         public double Sustain;
         [AudioNodeParameter]
         public int Release;
-
-        //public Envelope(int id, int attack, int decay, double sustain, int release) : base(id) {
-        //    Attack = attack;
-        //    Decay = decay;
-        //    Sustain = sustain;
-        //    Release = release;
-        //}
 
         public Envelope(short id) : base(id) { }
 
