@@ -31,7 +31,7 @@ namespace OscillatorTest {
                 for (int j = 0; j < buffer.Length; j += 2) {
                     var packets = osc.Next();
 
-                    var sample = packets[0].Sample * 20000;
+                    var sample = packets[0].Sample;
                     buffer[j] = (short)sample.L;
                     buffer[j + 1] = (short)sample.R;
                     //trigger.Triggers[0].Frequency -= 0.005;

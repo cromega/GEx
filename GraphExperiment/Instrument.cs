@@ -51,7 +51,6 @@ namespace GraphExperiment {
                     if (packets.Length == 0) { break; }
 
                     packet = packets[0];
-                    packet.Sample *= 20000;
                     buffer[i] = (short)(packet.Sample.L);
                     buffer[i + 1] = (short)(packet.Sample.R);
                 }

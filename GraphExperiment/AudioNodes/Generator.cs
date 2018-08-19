@@ -27,7 +27,7 @@ namespace GraphExperiment {
 
         protected override Packet Update(Packet packet) {
             Osc.SetFrequency(packet.Sample.L);
-            packet.Sample = new Sample(Osc.Next(SignalType));
+            packet.Sample = new Sample(Osc.Next(SignalType) * 0.2 * short.MaxValue);
             return packet;
         }
     }
