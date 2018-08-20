@@ -33,7 +33,7 @@ namespace GexUI {
 
         public AudioNode(string className, short id) {
             InitializeComponent();
-            Title.Text = className;
+            Title.Content = className;
 
             DeleteButton.Click += DeleteButton_Click;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;

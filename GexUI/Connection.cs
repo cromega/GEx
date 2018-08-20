@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Shapes;
+﻿using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows;
@@ -21,10 +20,11 @@ namespace GexUI {
         }
 
         public void Update() {
-            Wire.X2 = Canvas.GetLeft(Source) + Source.ActualWidth / 2;
-            Wire.Y2 = Canvas.GetTop(Source) + Source.ActualHeight;
-            Wire.X1 = Canvas.GetLeft(Target) + Target.ActualWidth / 2;
-            Wire.Y1 = Canvas.GetTop(Target);
+            //FIXME contain this logic in the nodes probably
+            Wire.X2 = Canvas.GetLeft(Source) + Source.ActualWidth;
+            Wire.Y2 = Canvas.GetTop(Source) + Source.ActualHeight / 2;
+            Wire.X1 = Canvas.GetLeft(Target);
+            Wire.Y1 = Canvas.GetTop(Target) + Target.ActualHeight / 2;
         }
     }
 }

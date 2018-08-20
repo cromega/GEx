@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GexUI"
              mc:Ignorable="d"
-             Width="120"
              BorderBrush="DarkGray" BorderThickness="1">
     <UserControl.Resources>
         <Style TargetType="Ellipse">
@@ -18,17 +17,18 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Background="Transparent" AllowDrop="True" Name="Node">
-        <WrapPanel Height="15" Background="Transparent" HorizontalAlignment="Right">
-            <Ellipse Height="10" Width="10" Margin="0 0 45 0" Name="InputAnchor"/>
-            <Button Content="X" Padding="0 -2" Name="DeleteButton"/>
-        </WrapPanel>
-        <DockPanel Background="DarkGray">
-            <Rectangle DockPanel.Dock="Right" Width="10" Height="10" Fill="Green" />
-            <TextBlock Text="ANYAD" DockPanel.Dock="Left" Name="Title" FontSize="10"/>
-        </DockPanel>
-        <StackPanel Background="DarkGray" MinHeight="50" Name="Container" />
-        <Grid Height="15" Background="Transparent" HorizontalAlignment="Center">
+    <StackPanel Background="Transparent" AllowDrop="True" Name="Node" Orientation="Horizontal">
+        <Grid>
+            <Ellipse Height="10" Width="10" Name="InputAnchor"/>
+        </Grid>
+        <StackPanel Background="DarkGray">
+            <WrapPanel HorizontalAlignment="Right">
+                <Label Content="ANYAD" Padding="0 0 50 0" FontSize="10" Name="Title"/>
+                <Button Content="X" Name="DeleteButton"/>
+            </WrapPanel>
+            <StackPanel Background="DarkGray" MinWidth="100" MinHeight="50" Name="Container" />
+        </StackPanel>
+        <Grid>
             <Ellipse Height="10" Width="10" Name="OutputAnchor"/>
         </Grid>
     </StackPanel>
