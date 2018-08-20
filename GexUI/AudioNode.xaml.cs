@@ -143,6 +143,8 @@ namespace GexUI {
                 var control = new TextBox();
                 control.TextChanged += UpdateDynamicFields;
                 nodeControl = control;
+            } else {
+                throw new NotImplementedException();
             }
 
             DynamicControls.Add(nodeControl, member.Name);
@@ -170,9 +172,13 @@ namespace GexUI {
                                 field.SetValue(AudioControl, double.Parse(value));
                             } else if (field.GetMemberUnderlyingType() == typeof(int)) {
                                 field.SetValue(AudioControl, int.Parse(value));
+                            } else {
+                                throw new NotImplementedException();
                             }
                             break;
                         }
+                    default:
+                        throw new NotImplementedException();
                 }
             } catch (FormatException) {
                 MessageBox.Show("wrong value");
