@@ -133,7 +133,7 @@ namespace GexUI {
             PatchEditor.Children.Remove(node);
 
             foreach (var connection in Connections.ToList()) {
-                if (connection.Source == node || connection.Target == node) { Connections.Remove(connection); }
+                if (connection.IsAttachedTo(node)) { Connections.Remove(connection); }
             }
         }
 

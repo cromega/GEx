@@ -26,5 +26,9 @@ namespace GexUI {
             Wire.X1 = Canvas.GetLeft(Target);
             Wire.Y1 = Canvas.GetTop(Target) + Target.ActualHeight / 2;
         }
+
+        public bool IsAttachedTo(AudioNode node) {
+            return Source == node || Target == node;
+        }
     }
 }
