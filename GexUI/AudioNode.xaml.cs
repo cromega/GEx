@@ -25,7 +25,7 @@ namespace GexUI {
         public readonly GraphExperiment.AudioNode AudioControl;
         private short NodeId;
 
-        private Nullable<Point> dragStartPosition;
+        private Point? dragStartPosition;
         private Dictionary<UIElement, string> DynamicControls;
         public event EventHandler<NodeConnectedEventArgs> NodeConnected;
         public event EventHandler ControlRemoved;
