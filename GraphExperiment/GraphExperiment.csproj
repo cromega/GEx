@@ -53,7 +53,6 @@
     <Compile Include="Sample.cs" />
     <Compile Include="SoundSystem.cs" />
     <Compile Include="AudioNodes\Generator.cs" />
-    <Compile Include="Wire.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chirpesizer\Chirpesizer.csproj">
