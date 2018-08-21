@@ -37,6 +37,9 @@ namespace GexUI {
             PatchEditor.MouseWheel += AdjustZoom;
             PatchEditor.MouseMove += PatchEditor_MouseMove;
             PatchEditor.MouseRightButtonDown += DeleteConnection;
+            PatchEditor.MouseLeftButtonDown += PatchEditor_MouseLeftButtonDown;
+            PatchEditor.KeyDown += PatchEditor_KeyDown;
+            PatchEditor.KeyUp += PatchEditor_KeyUp;
 
             Connections = new ObservableCollection<Connection>();
             Connections.CollectionChanged += UpdateConnections;
@@ -45,19 +48,47 @@ namespace GexUI {
             AddAudioControls();
             Instrument = new Instrument(new SoundSystem(2205));
             Task.Run(() => Instrument.Run());
-
-            BeepButton.Click += BeepButton_Click;
         }
 
-        private void BeepButton_Click(object sender, RoutedEventArgs e) {
-            try {
-                var trigger = Instrument.Start(440);
-                Task.Run(() => {
-                    Thread.Sleep(1000);
-                    Instrument.Release(trigger);
-                });
-            } catch {
-                MessageBox.Show("wtf");
+        private const double BASE_FREQUENCY = 16.35d;
+        private Key[] NoteKeys = new Key[] {
+            Key.Q,
+            Key.A,
+            Key.W,
+            Key.S,
+            Key.E,
+            Key.R,
+            Key.F,
+            Key.T,
+            Key.G,
+            Key.Y,
+            Key.H,
+            Key.U,
+            Key.I,
+        };
+        private Dictionary<Key, string> ActiveTriggeres = new Dictionary<Key, string>();
+
+        private void PatchEditor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            PatchEditor.Focus();
+        }
+
+        private double GetNoteFrequency(int noteIndex) {
+            return BASE_FREQUENCY * Math.Pow(1.059463094, noteIndex);
+        }
+
+        private void PatchEditor_KeyDown(object sender, KeyEventArgs e) {
+            if (e.IsRepeat) { return; }
+
+            var freq = GetNoteFrequency(48 + Array.IndexOf(NoteKeys, e.Key));
+            var triggerId = Instrument.Start(freq);
+            ActiveTriggeres.Add(e.Key, triggerId);
+        }
+
+        private void PatchEditor_KeyUp(object sender, KeyEventArgs e) {
+            if (ActiveTriggeres.ContainsKey(e.Key)) {
+                var triggerId = ActiveTriggeres[e.Key];
+                Instrument.Release(triggerId);
+                ActiveTriggeres.Remove(e.Key);
             }
         }
 
