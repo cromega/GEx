@@ -39,7 +39,7 @@ namespace OscillatorTest {
                 audio.Write(buffer);
                 wav.Write(buffer);
             }
-            Thread.Sleep(envelope.Release + 100);
+            Thread.Sleep(envelope.Release + 200);
             audio.Close();
             wav.Close();
             Console.ReadKey();
