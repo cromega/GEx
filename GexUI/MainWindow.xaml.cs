@@ -173,7 +173,7 @@ namespace GexUI {
             var target = sender as AudioNode;
 
             var connection = new Connection(source, target);
-            source.AudioControl.Connect(target.AudioControl);
+            target.AudioControl.Connect(source.AudioControl);
             Connections.Add(connection);
         }
 

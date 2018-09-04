@@ -51,7 +51,7 @@ namespace GraphExperiment {
         }
 
         public void Connect(AudioNode other) {
-            other.Previous = this;
+            Previous = other;
         }
 
         private void LoadState(string id) {
