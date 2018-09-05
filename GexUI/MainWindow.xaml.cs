@@ -43,11 +43,10 @@ namespace GexUI {
 
             Connections = new ObservableCollection<Connection>();
             Connections.CollectionChanged += UpdateConnections;
+            Instrument = new Instrument();
 
             IdGenerator = new NodeIdGenerator();
             AddAudioControls();
-            Instrument = new Instrument(new SoundSystem(2205));
-            Task.Run(() => Instrument.Run());
         }
 
         private const double BASE_FREQUENCY = 16.35d;

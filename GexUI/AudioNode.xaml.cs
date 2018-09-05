@@ -75,7 +75,6 @@ namespace GexUI {
                 return;
             }
 
-            var nodeConnected = NodeConnected;
             var args = new NodeConnectedEventArgs(target);
             NodeConnected(this, args);
         }

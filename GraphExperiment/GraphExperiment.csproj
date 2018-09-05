@@ -47,7 +47,6 @@
     <Compile Include="AudioNodes\Trigger.cs" />
     <Compile Include="AudioNodes\Vibrator.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Instrument.cs" />
     <Compile Include="Oscillator.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
