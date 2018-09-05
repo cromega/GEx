@@ -19,15 +19,15 @@ namespace GraphExperiment {
         public double Frequency;
         [AudioNodeParameter]
         public SignalType SignalType;
-        private Oscillator Osc;
 
-        public Generator(short id) : base(id) {
-            Osc = new Oscillator();
-        }
+        public Generator(short id) : base(id) { }
 
         protected override Packet Update(Packet packet) {
-            Osc.SetFrequency(packet.Sample.L);
-            packet.Sample = new Sample(Osc.Next(SignalType) * 0.2 * short.MaxValue);
+            var osc = Get<Oscillator>("Oscillator") ?? new Oscillator();
+
+            osc.SetFrequency(packet.Sample.L);
+            packet.Sample = new Sample(osc.Next(SignalType) * 0.2 * short.MaxValue);
+            Save("Oscillator", osc);
             return packet;
         }
     }

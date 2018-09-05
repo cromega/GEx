@@ -24,26 +24,32 @@ namespace GexUI {
             Task.Run(() => Run());
         }
 
-        public void Run() {
+        private void Run() {
             for (; ; ) {
                 //FIXME
                 if (Previous == null) { Thread.Sleep(1); continue; }
 
                 var buffer = new short[Audio.Frames * 2];
 
-                Packet packet = Packet.Empty();
                 for (int i = 0; i < buffer.Length; i += 2) {
                     var packets = Previous.Next();
                     if (packets.Length == 0) { break; }
 
-                    packet = packets[0];
-                    buffer[i] = (short)(packet.Sample.L);
-                    buffer[i + 1] = (short)(packet.Sample.R);
+                    double mixedL = 0d;
+                    double mixedR = 0d;
+                    foreach (var packet in packets) {
+                        if (packet.Control == Control.End) {
+                            TriggerEnded(this, new TriggerEndedEventArgs(packet.TriggerID));
+                            continue;
+                        }
+                        mixedL += packet.Sample.L;
+                        mixedR += packet.Sample.R;
+                    }
+
+                    buffer[i] = (short)mixedL;
+                    buffer[i + 1] = (short)mixedR;
                 }
 
-                if (packet.Control == Control.End) {
-                    TriggerEnded(this, new TriggerEndedEventArgs(packet.TriggerID));
-                }
 
                 Audio.Write(buffer);
             }
