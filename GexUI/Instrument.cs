@@ -31,18 +31,19 @@ namespace GexUI {
         }
 
         private void Stop(string triggerID) {
-            var trigger = Nodes.Find(node => node is Trigger) as Trigger;
-            trigger.Remove(triggerID);
+            GetFirstTrigger().Remove(triggerID);
         }
 
         public string Start(double frequency) {
-            var trigger = Nodes.Find(node => node is Trigger) as Trigger;
-            return trigger.Start(frequency);
+            return GetFirstTrigger().Start(frequency);
         }
 
         public void Release(string triggerID) {
-            var trigger = Nodes.Find(node => node is Trigger) as Trigger;
-            trigger.Release(triggerID);
+            GetFirstTrigger().Release(triggerID);
+        }
+
+        private Trigger GetFirstTrigger() {
+            return Nodes.Find(node => node is Trigger) as Trigger;
         }
     }
 }
