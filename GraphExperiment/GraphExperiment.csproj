@@ -45,6 +45,7 @@
     <Compile Include="AudioNodes\ControlTest.cs" />
     <Compile Include="AudioNodes\Envelope.cs" />
     <Compile Include="AudioNodes\Hydra.cs" />
+    <Compile Include="AudioNodes\PassFilter.cs" />
     <Compile Include="AudioNodes\Trigger.cs" />
     <Compile Include="AudioNodes\Vibrator.cs" />
     <Compile Include="Logger.cs" />
