@@ -31,7 +31,7 @@ namespace GraphExperiment {
         }
 
         private double Sine() {
-            return SineTable[(int)Math.Round(Phase) % SineTable.Length];
+            return SineTable[(long)Math.Round(Phase) % SineTable.Length];
         }
 
         private double Square() {
@@ -43,11 +43,11 @@ namespace GraphExperiment {
         }
 
         private double Sawtooth() {
-            return SawtoothTable[(int)Math.Round(Phase) % SawtoothTable.Length];
+            return SawtoothTable[(long)Math.Round(Phase) % SawtoothTable.Length];
         }
 
         private double Triangle() {
-            return TriangleTable[(int)Math.Round(Phase) % TriangleTable.Length];
+            return TriangleTable[(long)Math.Round(Phase) % TriangleTable.Length];
         }
 
         public const int LOOKUP_TABLE_LENGTH = 1000;
