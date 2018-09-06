@@ -13,28 +13,29 @@ namespace OscillatorTest {
             var audio = new SoundSystem(frames);
             var trigger = new Trigger(1);
             var envelope = new Envelope(2) {
-                Attack = 250,
+                Attack = 50,
                 Decay = 250,
-                Sustain = 0.5,
+                Sustain = 1.0,
                 Release = 200,
             };
-            var osc = new Generator(3) {
-                SignalType = SignalType.Sine,
+            var osc = new Hydra(3) {
+                SignalType = SignalType.Sawtooth,
+                Cents = 5,
             };
-            //trigger.Connect(osc);
-            trigger.Connect(envelope);
             envelope.Connect(osc);
-            trigger.Start(440);
+            osc.Connect(trigger);
+            trigger.Start(110);
 
-            for (int i = 0; i < 10; i++) {
+            var last = envelope;
+
+            for (int i = 0; i < 20; i++) {
                 var buffer = new short[frames * 2];
                 for (int j = 0; j < buffer.Length; j += 2) {
-                    var packets = osc.Next();
+                    var packets = last.Next();
 
                     var sample = packets[0].Sample;
                     buffer[j] = (short)sample.L;
                     buffer[j + 1] = (short)sample.R;
-                    //trigger.Triggers[0].Frequency -= 0.005;
                 }
                 audio.Write(buffer);
                 wav.Write(buffer);
