@@ -77,6 +77,7 @@ namespace GexUI {
 
         private void PatchEditor_KeyDown(object sender, KeyEventArgs e) {
             if (e.IsRepeat) { return; }
+            if (ActiveTriggeres.ContainsKey(e.Key)) { return; }
 
             var freq = GetNoteFrequency(48 + Array.IndexOf(NoteKeys, e.Key));
             var triggerId = Instrument.Start(freq);
