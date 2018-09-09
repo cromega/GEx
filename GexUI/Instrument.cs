@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using GraphExperiment;
 
 namespace GexUI {
-    class Instrument {
+    class Instrument : INotifyPropertyChanged {
         private Output Audio;
+        private event PropertyChangedEventHandler PropertyChanged;
+
         List<GraphExperiment.AudioNode> Nodes;
 
         public Instrument() {
@@ -44,6 +47,10 @@ namespace GexUI {
 
         private Trigger GetFirstTrigger() {
             return Nodes.Find(node => node is Trigger) as Trigger;
+        }
+
+        public void OnPropertyChanged(string propertyName) {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
