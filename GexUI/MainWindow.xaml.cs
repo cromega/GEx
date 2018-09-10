@@ -142,7 +142,6 @@ namespace GexUI {
                 node.NodeConnected += Node_NodeConnected;
                 node.ControlRemoved += Node_ControlRemoved;
                 Instrument.AddNode(node);
-                //(PatchEditor.Content as Canvas).Children.Add(node);
                 PatchEditor.Children.Add(node);
             } catch (Exception ex) {
                 var result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OKCancel);
@@ -152,7 +151,6 @@ namespace GexUI {
 
         private void Node_ControlRemoved(object sender, EventArgs e) {
             var node = sender as AudioNode;
-            //(PatchEditor.Content as Canvas).Children.Remove(node);
             PatchEditor.Children.Remove(node);
             Instrument.RemoveNode(node);
 
