@@ -36,7 +36,7 @@ namespace GexUI {
             NodeList.MouseDoubleClick += AddAudioNode;
             PatchEditor.MouseWheel += AdjustZoom;
             PatchEditor.MouseMove += PatchEditor_MouseMove;
-            PatchEditor.MouseRightButtonDown += DeleteConnection;
+            PatchEditor.MouseRightButtonDown += HighlightConnection;
             PatchEditor.MouseLeftButtonDown += PatchEditor_MouseLeftButtonDown;
             PatchEditor.KeyDown += PatchEditor_KeyDown;
             PatchEditor.KeyUp += PatchEditor_KeyUp;
@@ -69,6 +69,13 @@ namespace GexUI {
 
         private void PatchEditor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             PatchEditor.Focus();
+            DeselectConnections();
+        }
+
+        private void DeselectConnections() {
+            foreach (var conn in Connections) {
+                conn.Deselect();
+            }
         }
 
         private double GetNoteFrequency(int noteIndex) {
@@ -76,6 +83,11 @@ namespace GexUI {
         }
 
         private void PatchEditor_KeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Delete) {
+                DeleteSelectedConnetions();
+                return;
+            }
+
             if (e.IsRepeat) { return; }
             if (ActiveTriggeres.ContainsKey(e.Key)) { return; }
             if (!NoteKeys.Contains(e.Key)) { return; }
@@ -83,6 +95,12 @@ namespace GexUI {
             var freq = GetNoteFrequency(48 + Array.IndexOf(NoteKeys, e.Key));
             var triggerId = Instrument.Start(freq);
             ActiveTriggeres.Add(e.Key, triggerId);
+        }
+
+        private void DeleteSelectedConnetions() {
+            foreach (var conn in Connections.ToList()) {
+                if (conn.IsSelected) { Connections.Remove(conn); }
+            }
         }
 
         private void PatchEditor_KeyUp(object sender, KeyEventArgs e) {
@@ -93,17 +111,12 @@ namespace GexUI {
             }
         }
 
-        private void DeleteConnection(object sender, MouseButtonEventArgs e) {
+        private void HighlightConnection(object sender, MouseButtonEventArgs e) {
             var point = e.GetPosition(PatchEditor);
+            var conn = Connections.FirstOrDefault(c => c.NearTo(point));
+            if (conn == null) { return; }
 
-            foreach (var connection in Connections.ToList()) {
-                var line = connection.Wire;
-                var distance = Math.Abs((line.X2 - line.X1) * (line.Y1 - point.Y) - (line.X1 - point.X) * (line.Y2 - line.Y1)) / Math.Sqrt(Math.Pow(line.X2 - line.X1, 2) + Math.Pow(line.Y2 - line.Y1, 2));
-                if (distance < 10) {
-                    Connections.Remove(connection);
-                    break;
-                }
-            }
+            conn.Select();
         }
 
         private void UpdateConnections(object sender, NotifyCollectionChangedEventArgs e) {

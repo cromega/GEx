@@ -54,6 +54,10 @@ namespace GraphExperiment {
             Previous = other;
         }
 
+        public void Disconnect() {
+            Previous = null;
+        }
+
         private void LoadState(string id) {
             if (!Memory.ContainsKey(id)) {
                 Memory[id] = new Hashtable();
