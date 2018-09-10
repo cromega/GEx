@@ -4,53 +4,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using GraphExperiment;
 
 namespace GexUI {
     class Instrument : INotifyPropertyChanged {
-        private Output Audio;
-        private event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        List<GraphExperiment.AudioNode> Nodes;
+        private List<AudioNode> Nodes;
+        private GraphExperiment.Machine Machine;
 
         public Instrument() {
-            Audio = null;
-            Nodes = new List<GraphExperiment.AudioNode>();
+            Nodes = new List<AudioNode>();
+            Machine = new GraphExperiment.Machine();
         }
 
-        public void AddNode(GraphExperiment.AudioNode node) {
-            if (node is Output) {
-                if (Audio != null) {
-                    throw new Exception("There can be only 1 Output.");
-                }
-                Audio = node as Output;
-                Audio.TriggerEnded += (s, e) => {
-                    Stop(e.TriggerID);
-                };
-                return;
+        public void AddNode(AudioNode node) {
+            if (node.Type() == "Output") {
+                SetUpOutput(node);
             }
 
             Nodes.Add(node);
+            Machine.Add(node.AudioControl);
+            _PropertyChanged("Nodes");
         }
 
-        private void Stop(string triggerID) {
-            GetFirstTrigger().Remove(triggerID);
+        public void RemoveNode(AudioNode node) {
+            Nodes.Remove(node);
+            Machine.Remove(node.AudioControl);
+            _PropertyChanged("Nodes");
+        }
+
+        private void SetUpOutput(AudioNode node) {
+            if (Nodes.Any(n => n.Type() == "Output")) {
+                throw new Exception("There can be only 1 Output.");
+            }
+            var output = node.AudioControl as Output;
+            output.TriggerEnded += (s, e) => {
+                Stop(e.TriggerID);
+            };
         }
 
         public string Start(double frequency) {
-            return GetFirstTrigger().Start(frequency);
+            return Machine.Trigger(frequency);
+        }
+
+        private void Stop(string triggerID) {
+            Machine.Stop(triggerID);
         }
 
         public void Release(string triggerID) {
-            GetFirstTrigger().Release(triggerID);
+            Machine.Release(triggerID);
         }
 
-        private Trigger GetFirstTrigger() {
-            return Nodes.Find(node => node is Trigger) as Trigger;
-        }
-
-        public void OnPropertyChanged(string propertyName) {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        private void _PropertyChanged(string propertyName) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

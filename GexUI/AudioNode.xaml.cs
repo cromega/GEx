@@ -52,6 +52,10 @@ namespace GexUI {
             AudioControl = CreateAudioControl(className);
         }
 
+        public string Type() {
+            return AudioControl.Type();
+        }
+
         private void SetAnchors(string className) {
             var type = Utils.GetControlType(className);
             var attr = type.GetCustomAttribute<AudioNodeAttribute>() as AudioNodeAttribute;

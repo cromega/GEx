@@ -11,8 +11,8 @@ namespace GraphExperiment{
             public int Time;
             public bool Triggered;
 
-            public TriggerInstance(double frequency) {
-                ID = Guid.NewGuid().ToString();
+            public TriggerInstance(double frequency, string id) {
+                ID = id;
                 Frequency = frequency;
                 Triggered = true;
                 Time = 0;
@@ -37,10 +37,10 @@ namespace GraphExperiment{
             return packets.ToArray();
         }
 
-        public string Start(double frequency) {
+        public string Start(double frequency, string id) {
             TriggerInstance trigger = null;
             lock (Lock) {
-                trigger = new TriggerInstance(frequency);
+                trigger = new TriggerInstance(frequency, id);
                 Triggers.Add(trigger);
             }
             return trigger.ID;
