@@ -154,6 +154,7 @@ namespace GexUI {
             var node = sender as AudioNode;
             //(PatchEditor.Content as Canvas).Children.Remove(node);
             PatchEditor.Children.Remove(node);
+            Instrument.RemoveNode(node);
 
             foreach (var connection in Connections.ToList()) {
                 if (connection.IsAttachedTo(node)) { Connections.Remove(connection); }
