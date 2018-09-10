@@ -23,7 +23,9 @@ namespace GexUI {
 
         public Connection(AudioNode source, AudioNode target) {
             Source = source;
+            Source.PositionChanged += (e, s) => Update();
             Target = target;
+            target.PositionChanged += (e, s) => Update();
 
             _IsSelected = false;
         }

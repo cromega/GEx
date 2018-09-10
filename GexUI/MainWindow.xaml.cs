@@ -39,7 +39,6 @@ namespace GexUI {
             InitializeComponent();
             NodeList.MouseDoubleClick += AddAudioNode;
             PatchEditor.MouseWheel += AdjustZoom;
-            PatchEditor.MouseMove += PatchEditor_MouseMove;
             PatchEditor.MouseRightButtonDown += HighlightConnection;
             PatchEditor.MouseLeftButtonDown += PatchEditor_MouseLeftButtonDown;
             PatchEditor.KeyDown += PatchEditor_KeyDown;
@@ -119,16 +118,6 @@ namespace GexUI {
             if (conn == null) { return; }
 
             conn.Select();
-        }
-
-        private void PatchEditor_MouseMove(object sender, MouseEventArgs e) {
-            UpdateConnections();
-        }
-
-        private void UpdateConnections() {
-            foreach (var connection in Connections) {
-                connection.Update();
-            }
         }
 
         private void AdjustZoom(object sender, MouseWheelEventArgs e) {

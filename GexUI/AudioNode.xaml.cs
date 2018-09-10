@@ -29,6 +29,7 @@ namespace GexUI {
         private Dictionary<UIElement, string> DynamicControls;
         public event EventHandler<NodeConnectedEventArgs> NodeConnected;
         public event EventHandler ControlRemoved;
+        public event EventHandler PositionChanged;
 
 
         public AudioNode(string className, short id) {
@@ -107,6 +108,7 @@ namespace GexUI {
                 var newPos = e.GetPosition(Parent as UIElement);
                 Canvas.SetLeft(this, newPos.X - dragStartPosition.Value.X);
                 Canvas.SetTop(this, newPos.Y - dragStartPosition.Value.Y);
+                PositionChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
