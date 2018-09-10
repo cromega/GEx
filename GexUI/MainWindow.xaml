@@ -17,24 +17,15 @@
                   Stroke="Black"
                   Style="{StaticResource WireStyle}" />
         </DataTemplate>
+        <TransformGroup x:Key="PatchEditorZoom">
+            <ScaleTransform />
+        </TransformGroup>
     </Window.Resources>
 
     <DockPanel Name="MainContainer">
         <ListBox Name="NodeList" MinWidth="100" />
-        <Canvas Name="PatchEditor" Background="LightGray" Focusable="True">
-            <Canvas.LayoutTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                </TransformGroup>
-            </Canvas.LayoutTransform>
-
-            <ItemsControl ItemsSource="{Binding Connections}" ItemTemplate="{StaticResource WireTemplate}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+        <Canvas Name="PatchEditor" Background="LightGray" Focusable="True" LayoutTransform="{StaticResource PatchEditorZoom}">
+            <ItemsControl ItemsSource="{Binding Connections}" ItemTemplate="{StaticResource WireTemplate}" />
         </Canvas>
     </DockPanel>
 </Window>
