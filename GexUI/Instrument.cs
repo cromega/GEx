@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace GexUI {
-    class Instrument : INotifyPropertyChanged {
-        public event PropertyChangedEventHandler PropertyChanged;
-
+    class Instrument : ObservableObject {
         private List<AudioNode> Nodes;
         private GraphExperiment.Machine Machine;
 
@@ -55,8 +53,5 @@ namespace GexUI {
             Machine.Release(triggerID);
         }
 
-        private void _PropertyChanged(string propertyName) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

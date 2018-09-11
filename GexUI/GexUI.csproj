@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Instrument.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Utils.cs" />

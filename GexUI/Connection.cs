@@ -6,8 +6,7 @@ using System;
 using System.ComponentModel;
 
 namespace GexUI {
-    public class Connection :INotifyPropertyChanged {
-        public event PropertyChangedEventHandler PropertyChanged;
+    public class Connection : ObservableObject {
         public AudioNode Source;
         public AudioNode Target;
 
@@ -31,10 +30,10 @@ namespace GexUI {
         }
 
         public void Update() {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("X1"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Y1"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("X2"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Y2"));
+            _PropertyChanged("X1");
+            _PropertyChanged("Y1");
+            _PropertyChanged("X2");
+            _PropertyChanged("Y2");
         }
 
         public bool IsAttachedTo(AudioNode node) {
@@ -48,12 +47,12 @@ namespace GexUI {
 
         public void Select() {
             _IsSelected = true;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
+            _PropertyChanged("IsSelected");
         }
 
         public void Deselect() {
             _IsSelected = false;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
+            _PropertyChanged("IsSelected");
         }
 
         private double _X1() {
