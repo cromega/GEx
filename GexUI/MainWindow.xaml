@@ -8,13 +8,14 @@
         Title="MainWindow" Height="768" Width="1024"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
+        <local:WireColourConverter x:Key="WireColourConverter" />
         <Style x:Key="WireStyle" TargetType="Line">
             <Setter Property="StrokeThickness" Value="3"/>
         </Style>
         <DataTemplate x:Key="WireTemplate">
             <Line X1="{Binding X1}" X2="{Binding X2}"
                   Y1="{Binding Y1}" Y2="{Binding Y2}"
-                  Stroke="Black"
+                  Stroke="{Binding IsSelected, Converter={StaticResource WireColourConverter}}"
                   Style="{StaticResource WireStyle}" />
         </DataTemplate>
         <TransformGroup x:Key="PatchEditorZoom">

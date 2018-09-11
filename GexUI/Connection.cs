@@ -48,10 +48,12 @@ namespace GexUI {
 
         public void Select() {
             _IsSelected = true;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
         }
 
         public void Deselect() {
             _IsSelected = false;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsSelected"));
         }
 
         private double _X1() {
