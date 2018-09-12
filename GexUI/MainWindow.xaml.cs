@@ -29,12 +29,13 @@ namespace GexUI {
         public ObservableCollection<Connection> Connections { get; set; }
         private NodeIdGenerator IdGenerator;
 
-        private Instrument Instrument;
+        public Instrument Instrument { get; set; }
 
         public MainWindow() {
             Logger.On();
 
             Connections = new ObservableCollection<Connection>();
+            Instrument = new Instrument();
 
             InitializeComponent();
             NodeList.MouseDoubleClick += AddAudioNode;
@@ -44,7 +45,6 @@ namespace GexUI {
             PatchEditor.KeyDown += PatchEditor_KeyDown;
             PatchEditor.KeyUp += PatchEditor_KeyUp;
 
-            Instrument = new Instrument();
 
             IdGenerator = new NodeIdGenerator();
             AddAudioControls();
@@ -142,7 +142,6 @@ namespace GexUI {
                 node.NodeConnected += Node_NodeConnected;
                 node.ControlRemoved += Node_ControlRemoved;
                 Instrument.AddNode(node);
-                PatchEditor.Children.Add(node);
             } catch (Exception ex) {
                 var result = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OKCancel);
                 if (result == MessageBoxResult.Cancel) { throw; }
@@ -151,7 +150,6 @@ namespace GexUI {
 
         private void Node_ControlRemoved(object sender, EventArgs e) {
             var node = sender as AudioNode;
-            PatchEditor.Children.Remove(node);
             Instrument.RemoveNode(node);
 
             foreach (var connection in Connections.ToList()) {

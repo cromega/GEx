@@ -31,7 +31,6 @@ namespace GexUI {
         public event EventHandler ControlRemoved;
         public event EventHandler PositionChanged;
 
-
         public AudioNode(string className, short id) {
             InitializeComponent();
             Title.Content = className;
@@ -98,14 +97,14 @@ namespace GexUI {
             var point = e.GetPosition(this);
             // on drag drop a mouse button down is triggered with weird coordinates, ignore it
             if (point.X < 0 || point.Y < 0) { return; }
-            var node = sender as UIElement;
-            dragStartPosition = e.GetPosition(node);
+            dragStartPosition = point;
             CaptureMouse();
         }
 
         private void Node_MouseMove(object sender, MouseEventArgs e) {
             if (dragStartPosition != null && e.LeftButton == MouseButtonState.Pressed) {
-                var newPos = e.GetPosition(Parent as UIElement);
+                var parent = VisualTreeHelper.GetParent(this);
+                var newPos = e.GetPosition(parent as UIElement);
                 Canvas.SetLeft(this, newPos.X - dragStartPosition.Value.X);
                 Canvas.SetTop(this, newPos.Y - dragStartPosition.Value.Y);
                 PositionChanged?.Invoke(this, EventArgs.Empty);

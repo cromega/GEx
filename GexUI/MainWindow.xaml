@@ -9,24 +9,28 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <local:WireColourConverter x:Key="WireColourConverter" />
-        <Style x:Key="WireStyle" TargetType="Line">
-            <Setter Property="StrokeThickness" Value="3"/>
-        </Style>
         <DataTemplate x:Key="WireTemplate">
             <Line X1="{Binding X1}" X2="{Binding X2}"
                   Y1="{Binding Y1}" Y2="{Binding Y2}"
                   Stroke="{Binding IsSelected, Converter={StaticResource WireColourConverter}}"
-                  Style="{StaticResource WireStyle}" />
+                  StrokeThickness="3"/>
+        </DataTemplate>
+        <DataTemplate x:Key="NodeTemplate">
+            <local:AudioNode/>
         </DataTemplate>
         <TransformGroup x:Key="PatchEditorZoom">
             <ScaleTransform />
         </TransformGroup>
+        <ItemsPanelTemplate x:Key="CanvasPanel">
+            <Canvas Name="EditorArea"/>
+        </ItemsPanelTemplate>
     </Window.Resources>
 
     <DockPanel Name="MainContainer">
         <ListBox Name="NodeList" MinWidth="100" />
         <Canvas Name="PatchEditor" Background="LightGray" Focusable="True" LayoutTransform="{StaticResource PatchEditorZoom}">
-            <ItemsControl ItemsSource="{Binding Connections}" ItemTemplate="{StaticResource WireTemplate}" />
+            <ItemsControl ItemsSource="{Binding Connections}" ItemTemplate="{StaticResource WireTemplate}" ItemsPanel="{StaticResource CanvasPanel}" />
+            <ItemsControl ItemsSource="{Binding Path=Instrument.Nodes}" ItemTemplate="{StaticResource NodeTemplate}" ItemsPanel="{StaticResource CanvasPanel}" />
         </Canvas>
     </DockPanel>
 </Window>

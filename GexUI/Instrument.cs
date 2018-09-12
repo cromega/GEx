@@ -4,14 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace GexUI {
-    class Instrument : ObservableObject {
-        private List<AudioNode> Nodes;
+    public class Instrument : ObservableObject {
+        private List<AudioNode> _Nodes;
+        public List<AudioNode> Nodes {
+            get { return _Nodes.ToList(); }
+        }
+
         private GraphExperiment.Machine Machine;
 
         public Instrument() {
-            Nodes = new List<AudioNode>();
+            _Nodes = new List<AudioNode>();
             Machine = new GraphExperiment.Machine();
         }
 
@@ -20,13 +25,13 @@ namespace GexUI {
                 SetUpOutput(node);
             }
 
-            Nodes.Add(node);
+            _Nodes.Add(node);
             Machine.Add(node.AudioControl);
             _PropertyChanged("Nodes");
         }
 
         public void RemoveNode(AudioNode node) {
-            Nodes.Remove(node);
+            _Nodes.Remove(node);
             Machine.Remove(node.AudioControl);
             _PropertyChanged("Nodes");
         }
