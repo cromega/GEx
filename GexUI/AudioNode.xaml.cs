@@ -38,6 +38,8 @@ namespace GexUI {
             InitializeComponent();
             Title.Content = className;
 
+            DynamicControls = new Dictionary<UIElement, string>();
+
             DeleteButton.Click += DeleteButton_Click;
             MouseLeftButtonDown += MouseLeftButtonDownHandler;
             MouseLeftButtonUp += Node_MouseLeftButtonUp;
@@ -120,17 +122,10 @@ namespace GexUI {
         }
 
         private void AddDynamicControls(string className) {
-            DynamicControls = new Dictionary<UIElement, string>();
-
-            var type = Utils.GetControlType(className);
-            var members = from m in type.GetMembers()
-                          where m.HasAttribute(typeof(AudioNodeParameterAttribute))
-                          select m;
-
-            foreach (var member in members) {
-                var control = CreateDynamicControl(member);
-                Container.Children.Add(control);
-            }
+            Utils.GetControlType(className).GetMembers().
+                Where(member => member.HasAttribute(typeof(AudioNodeParameterAttribute))).
+                ToList().
+                ForEach(member => Container.Children.Add(CreateDynamicControl(member)));
         }
 
         private UIElement CreateDynamicControl(MemberInfo member) {
