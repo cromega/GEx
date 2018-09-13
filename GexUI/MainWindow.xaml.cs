@@ -136,25 +136,23 @@ namespace GexUI {
         }
 
         private void AddAudioControls() {
-            foreach (Type type in GetAudioControls()) {
-               NodeList.Items.Add(type.Name);
+            foreach (var controlClass in GetAudioControls()) {
+                NodeList.Items.Add(controlClass.Name);
             }
         }
 
-        private IEnumerable<Type> GetAudioControls() {
-            var assemblyNames = new List<AssemblyName> {
-                Assembly.GetExecutingAssembly().GetName()
-            };
-            assemblyNames.AddRange(Assembly.GetExecutingAssembly().GetReferencedAssemblies());
+        private List<Type> GetAudioControls() {
+            var runningAssembly = Assembly.GetExecutingAssembly();
 
-            foreach (var name in assemblyNames) {
-                var asm = Assembly.Load(name);
-                foreach (var type in asm.GetTypes()) {
-                    if (type.HasAttribute(typeof(AudioNodeAttribute))) {
-                        yield return type;
-                    }
-                }
-            }
+            var assemblyNames = new List<AssemblyName> {
+                runningAssembly.GetName()
+            };
+            assemblyNames.AddRange(runningAssembly.GetReferencedAssemblies());
+
+            return assemblyNames.
+                SelectMany(name => Assembly.Load(name).GetTypes()).
+                Where(type => type.HasAttribute(typeof(AudioNodeAttribute))).
+                ToList();
         }
     }
 }
