@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GexUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        Title="MainWindow" Height="768" Width="1024">
     <Window.Resources>
         <local:WireColourConverter x:Key="WireColourConverter" />
         <DataTemplate x:Key="WireTemplate">
@@ -30,7 +29,7 @@
         <ListBox Name="NodeList" MinWidth="100" />
         <Canvas Name="PatchEditor" Background="LightGray" Focusable="True" LayoutTransform="{StaticResource PatchEditorZoom}">
             <ItemsControl ItemsSource="{Binding Connections}" ItemTemplate="{StaticResource WireTemplate}" ItemsPanel="{StaticResource CanvasPanel}" />
-            <ItemsControl ItemsSource="{Binding Path=Instrument.Nodes}" ItemTemplate="{StaticResource NodeTemplate}" ItemsPanel="{StaticResource CanvasPanel}" />
+            <ItemsControl ItemsSource="{Binding Nodes}" ItemTemplate="{StaticResource NodeTemplate}" ItemsPanel="{StaticResource CanvasPanel}" />
         </Canvas>
     </DockPanel>
 </Window>

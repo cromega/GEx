@@ -31,6 +31,9 @@ namespace GexUI {
         public event EventHandler ControlRemoved;
         public event EventHandler PositionChanged;
 
+        //WPF is complains if this empty constructor is not here
+        public AudioNode() { }
+
         public AudioNode(string className, short id) {
             InitializeComponent();
             Title.Content = className;

@@ -1,23 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.Specialized;
 using GraphExperiment;
-using System.Diagnostics;
 
 namespace GexUI {
     /// <summary>
@@ -26,18 +15,18 @@ namespace GexUI {
 
     public partial class MainWindow : Window {
         private static double ZOOM_FACTOR = 1.1;
-        public ObservableCollection<Connection> Connections { get; set; }
         private NodeIdGenerator IdGenerator;
 
-        public Instrument Instrument { get; set; }
+        private Instrument Instrument;
 
         public MainWindow() {
             Logger.On();
 
-            Connections = new ObservableCollection<Connection>();
             Instrument = new Instrument();
 
             InitializeComponent();
+            DataContext = Instrument;
+
             NodeList.MouseDoubleClick += AddAudioNode;
             PatchEditor.MouseWheel += AdjustZoom;
             PatchEditor.MouseRightButtonDown += HighlightConnection;
@@ -70,13 +59,6 @@ namespace GexUI {
 
         private void PatchEditor_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             PatchEditor.Focus();
-            DeselectConnections();
-        }
-
-        private void DeselectConnections() {
-            foreach (var conn in Connections) {
-                conn.Deselect();
-            }
         }
 
         private double GetNoteFrequency(int noteIndex) {
@@ -85,7 +67,7 @@ namespace GexUI {
 
         private void PatchEditor_KeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Delete) {
-                DeleteSelectedConnetions();
+                Instrument.DeleteSelectedConnections();
                 return;
             }
 
@@ -98,12 +80,6 @@ namespace GexUI {
             ActiveTriggeres.Add(e.Key, triggerId);
         }
 
-        private void DeleteSelectedConnetions() {
-            foreach (var conn in Connections.ToList()) {
-                if (conn.IsSelected) { Connections.Remove(conn); }
-            }
-        }
-
         private void PatchEditor_KeyUp(object sender, KeyEventArgs e) {
             if (ActiveTriggeres.ContainsKey(e.Key)) {
                 var triggerId = ActiveTriggeres[e.Key];
@@ -114,10 +90,7 @@ namespace GexUI {
 
         private void HighlightConnection(object sender, MouseButtonEventArgs e) {
             var point = e.GetPosition(PatchEditor);
-            var conn = Connections.FirstOrDefault(c => c.NearTo(point));
-            if (conn == null) { return; }
-
-            conn.Select();
+            Instrument.SelectConnectionNearTo(point);
         }
 
         private void AdjustZoom(object sender, MouseWheelEventArgs e) {
@@ -151,10 +124,6 @@ namespace GexUI {
         private void Node_ControlRemoved(object sender, EventArgs e) {
             var node = sender as AudioNode;
             Instrument.RemoveNode(node);
-
-            foreach (var connection in Connections.ToList()) {
-                if (connection.IsAttachedTo(node)) { Connections.Remove(connection); }
-            }
         }
 
         private void Node_NodeConnected(object sender, NodeConnectedEventArgs e) {
@@ -163,8 +132,7 @@ namespace GexUI {
 
             var connection = new Connection(source, target);
             target.AudioControl.Connect(source.AudioControl);
-            Connections.Add(connection);
-            Debug.WriteLine("connection added");
+            Instrument.Connect(source, target);
         }
 
         private void AddAudioControls() {

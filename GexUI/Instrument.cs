@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace GexUI {
     public class Instrument : ObservableObject {
@@ -13,10 +14,16 @@ namespace GexUI {
             get { return _Nodes.ToList(); }
         }
 
+        private List<Connection> _Connections;
+        public List<Connection> Connections {
+            get { return _Connections.ToList(); }
+        }
+
         private GraphExperiment.Machine Machine;
 
         public Instrument() {
             _Nodes = new List<AudioNode>();
+            _Connections = new List<Connection>();
             Machine = new GraphExperiment.Machine();
         }
 
@@ -34,6 +41,24 @@ namespace GexUI {
             _Nodes.Remove(node);
             Machine.Remove(node.AudioControl);
             _PropertyChanged("Nodes");
+        }
+
+        public void Connect(AudioNode source, AudioNode target) {
+            _Connections.Add(new Connection(source, target));
+            _PropertyChanged("Connections");
+        }
+
+        public void DeleteSelectedConnections() {
+            _Connections.RemoveAll(c => c.IsSelected);
+            _PropertyChanged("Connections");
+        }
+
+        public void SelectConnectionNearTo(Point point) {
+            _Connections.Find(c => c.NearTo(point))?.Select();
+        }
+
+        public void DeselectAllConnections() {
+            _Connections.ForEach(c => c.Deselect());
         }
 
         private void SetUpOutput(AudioNode node) {
