@@ -41,6 +41,7 @@ namespace GexUI {
 
         public void Connect(AudioNode source, AudioNode target) {
             _Connections.Add(new Connection(source, target));
+            target.AudioControl.Connect(source.AudioControl);
             _PropertyChanged("Connections");
         }
 
