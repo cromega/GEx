@@ -129,8 +129,6 @@ namespace GexUI {
             var source = e.Target;
             var target = sender as AudioNode;
 
-            var connection = new Connection(source, target);
-            target.AudioControl.Connect(source.AudioControl);
             Instrument.Connect(source, target);
         }
 
