@@ -10,14 +10,10 @@ using System.Windows;
 namespace GexUI {
     public class Instrument : ObservableObject {
         private List<AudioNode> _Nodes;
-        public List<AudioNode> Nodes {
-            get { return _Nodes.ToList(); }
-        }
+        public List<AudioNode> Nodes => _Nodes.ToList();
 
         private List<Connection> _Connections;
-        public List<Connection> Connections {
-            get { return _Connections.ToList(); }
-        }
+        public List<Connection> Connections => _Connections.ToList();
 
         private GraphExperiment.Machine Machine;
 

@@ -20,7 +20,7 @@ namespace GexUI {
                 }
             }
 
-            throw new Exception(String.Format("Type {0} was not found", className));
+            throw new Exception($"Type {className} was not found");
         }
     }
 }
