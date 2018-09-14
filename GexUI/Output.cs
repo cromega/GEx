@@ -32,7 +32,7 @@ namespace GexUI {
                 var buffer = new short[Audio.Frames * 2];
 
                 for (int i = 0; i < buffer.Length; i += 2) {
-                    var packets = Previous.Next();
+                    var packets = Previous.SelectMany(node => node.Next()).ToArray();
                     if (packets.Length == 0) { break; }
 
                     double mixedL = 0d;

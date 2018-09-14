@@ -39,5 +39,15 @@ namespace TestGEx {
             (sample.L).Should().Be(-7);
             (sample.R).Should().Be(-7);
         }
+
+        [Fact]
+        public void TestSampleAdditionWithSample() {
+            var s1 = new Sample(1);
+            var s2 = new Sample(2);
+            var sum = s1 + s2;
+
+            sum.L.Should().Be(3);
+            sum.R.Should().Be(3);
+        }
     }
 }

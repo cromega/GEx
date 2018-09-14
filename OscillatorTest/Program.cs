@@ -22,13 +22,11 @@ namespace OscillatorTest {
                 SignalType = SignalType.Sawtooth,
                 Cents = 5,
             };
-            var filter = new PassFilter(4);
-            filter.Connect(osc);
-            //envelope.Connect(osc);
+            envelope.Connect(osc);
             osc.Connect(trigger);
-            trigger.Start(110);
+            trigger.Start(440, "t");
 
-            var last = filter;
+            var last = envelope;
 
             for (int i = 0; i < 20; i++) {
                 var buffer = new short[frames * 2];

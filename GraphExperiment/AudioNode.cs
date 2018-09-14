@@ -11,7 +11,7 @@ namespace GraphExperiment {
         private static Dictionary<short, AudioNode> Nodes = new Dictionary<short, AudioNode>();
 
         public readonly short Id;
-        public AudioNode Previous;
+        public List<AudioNode> Previous;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
 
@@ -19,22 +19,31 @@ namespace GraphExperiment {
             Id = id;
             Memory = new Dictionary<string, Hashtable>();
             Nodes.Add(id, this);
+            Previous = new List<AudioNode>();
         }
 
         public Packet[] Next() {
             var packets = Fetch();
-            packets = Update(packets);
 
-            for (int i=0; i<packets.Length; i++) {
-                LoadState(packets[i].TriggerID);
-                packets[i] = Update(packets[i]);
+            //mux samples by trigger id
+            var mixedTriggers = packets.GroupBy(sample => sample.TriggerID).
+                Select(group =>
+                    new Packet(
+                        group.Key,
+                        group.First().Control,
+                        new Sample(
+                            group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample).L,
+                            group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample).R
+                                ),
+                        group.First().Tick)).ToArray();
+
+
+            for (int i = 0; i < mixedTriggers.Count(); i++) {
+                LoadState(mixedTriggers[i].TriggerID);
+                mixedTriggers[i] = Update(mixedTriggers[i]);
             }
 
-            return packets;
-        }
-
-        protected virtual Packet[] Update(Packet[] packets) {
-            return packets;
+            return mixedTriggers;
         }
 
         protected virtual Packet Update(Packet packet) {
@@ -47,11 +56,13 @@ namespace GraphExperiment {
                 Thread.Sleep(1);
             }
 
-            return Previous.Next();
+            return Previous.
+                SelectMany(node => node.Next())
+                .ToArray();
         }
 
         public void Connect(AudioNode other) {
-            Previous = other;
+            Previous.Add(other);
         }
 
         public void Disconnect() {

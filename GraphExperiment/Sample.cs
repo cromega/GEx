@@ -19,6 +19,11 @@ namespace GraphExperiment {
             R = value;
         }
 
+        public Sample(double l, double r) {
+            L = l;
+            R = r;
+        }
+
         public static Sample operator + (Sample sample, double value) {
             return new Sample {
                 L = sample.L >= 0 ? sample.L + value : sample.L - value,
@@ -28,6 +33,10 @@ namespace GraphExperiment {
 
         public static Sample operator * (Sample sample, double value) {
             return new Sample { L = sample.L * value, R = sample.R * value };
+        }
+
+        public static Sample operator + (Sample sample, Sample other) {
+            return new Sample { L = sample.L + other.L, R = sample.R + other.R };
         }
     }
 }
