@@ -108,8 +108,7 @@ namespace GexUI {
 
         private void AddAudioNode(object sender, MouseButtonEventArgs e) {
             try {
-                var list = (ListBox)sender;
-                var controlName = (string)list.SelectedItem;
+                var controlName = NodeList.SelectedItem.ToString();
 
                 var node = new AudioNode(controlName, IdGenerator.Next());
                 node.NodeConnected += Node_NodeConnected;
