@@ -82,12 +82,12 @@ namespace TestGEx {
             testNode.Connect(g2);
 
             g1.AddSample("a", 1);
-            g2.AddSample("a", 1);
+            g2.AddSample("a", 2);
 
             var output = testNode.Next();
 
             output.Length.Should().Be(1);
-            output[0].Sample.L.Should().Be(2);
+            output[0].Sample.L.Should().Be(3);
         }
     }
 }
