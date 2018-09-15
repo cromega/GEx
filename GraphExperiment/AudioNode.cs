@@ -31,11 +31,10 @@ namespace GraphExperiment {
                     new Packet(
                         group.Key,
                         group.First().Control,
-                        new Sample(
-                            group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample).L,
-                            group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample).R
-                                ),
-                        group.First().Tick)).ToArray();
+                        group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample),
+                        group.First().Tick
+                     )
+                 ).ToArray();
 
 
             for (int i = 0; i < mixedTriggers.Count(); i++) {
