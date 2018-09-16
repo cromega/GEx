@@ -64,8 +64,8 @@ namespace GraphExperiment {
             Previous.Add(other);
         }
 
-        public void Disconnect() {
-            Previous = null;
+        public void Disconnect(AudioNode target) {
+            Previous.Remove(target);
         }
 
         private void LoadState(string id) {

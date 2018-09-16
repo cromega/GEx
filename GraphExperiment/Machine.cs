@@ -27,7 +27,7 @@ namespace GraphExperiment {
         }
 
         public void Disconnect(AudioNode source, AudioNode target) {
-            target.Disconnect();
+            target.Disconnect(source);
         }
 
         public string Trigger(double frequency) {
