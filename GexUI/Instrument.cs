@@ -48,7 +48,10 @@ namespace GexUI {
         }
 
         public void DeleteSelectedConnections() {
-            _Connections.RemoveAll(c => c.IsSelected);
+            _Connections.Where(c => c.IsSelected).ToList().ForEach(connection => {
+                Machine.Disconnect(connection.Source.AudioControl, connection.Target.AudioControl);
+                _Connections.Remove(connection);
+            });
             _PropertyChanged("Connections");
         }
 
