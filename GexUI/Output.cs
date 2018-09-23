@@ -18,10 +18,12 @@ namespace GexUI {
     class Output : GraphExperiment.AudioNode {
         private SoundSystem Audio;
         public event EventHandler<TriggerEndedEventArgs> TriggerEnded;
+        private long Tick;
 
         public Output(short id) : base(id) {
             Audio = new SoundSystem(2205); ;
             Task.Run(() => Run());
+            Tick = 0;
         }
 
         private void Run() {
@@ -32,7 +34,7 @@ namespace GexUI {
                 var buffer = new short[Audio.Frames * 2];
 
                 for (int i = 0; i < buffer.Length; i += 2) {
-                    var packets = Previous.SelectMany(node => node.Next()).ToArray();
+                    var packets = Previous.SelectMany(node => node.Next(Tick++)).ToArray();
                     if (packets.Length == 0) { break; }
 
                     double mixedL = 0d;

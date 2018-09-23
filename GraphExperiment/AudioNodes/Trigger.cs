@@ -27,7 +27,7 @@ namespace GraphExperiment{
             Lock = new object();
         }
 
-        protected override Packet[] Fetch() {
+        protected override Packet[] Fetch(long tick) {
             var packets = new List<Packet>();
             Triggers.ForEach(trigger => {
                 var state = trigger.Triggered ? Control.Signal : Control.End;

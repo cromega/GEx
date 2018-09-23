@@ -19,9 +19,9 @@ namespace TestGEx {
             SampleSets.Add(new Tuple<string, double>(triggerId, value));
         }
 
-        protected override Packet[] Fetch() {
+        protected override Packet[] Fetch(long tick) {
             var output = SampleSets.
-                Select(sample => new Packet(sample.Item1, Control.Signal, new Sample(sample.Item2), 0)).
+                Select(sample => new Packet(sample.Item1, Control.Signal, new Sample(sample.Item2), tick)).
                 ToArray();
             SampleSets.Clear();
 
@@ -58,7 +58,7 @@ namespace TestGEx {
             g.AddSample("a", 1);
             g.AddSample("b", 2);
 
-            var output = testNode.Next();
+            var output = testNode.Next(0);
 
             output.Length.Should().Be(2);
             output[0].Sample.L.Should().Be(1);
@@ -67,7 +67,7 @@ namespace TestGEx {
             g.AddSample("a", 1);
             g.AddSample("b", 2);
 
-            output = testNode.Next();
+            output = testNode.Next(1);
             output.Length.Should().Be(2);
             output[0].Sample.L.Should().Be(2);
             output[1].Sample.L.Should().Be(4);
@@ -84,10 +84,27 @@ namespace TestGEx {
             g1.AddSample("a", 1);
             g2.AddSample("a", 2);
 
-            var output = testNode.Next();
+            var output = testNode.Next(0);
 
             output.Length.Should().Be(1);
             output[0].Sample.L.Should().Be(3);
+        }
+
+        [Fact]
+        public void TestMultipleInputs() {
+            var g = new TestGenerator(0);
+            g.AddSample("t", 1);
+            var testNode1 = new AccumulatingTestNode(1);
+            var testNode2 = new AccumulatingTestNode(2);
+            var testNode3 = new AccumulatingTestNode(3);
+
+            testNode3.Connect(testNode2);
+            testNode3.Connect(testNode1);
+            testNode2.Connect(g);
+            testNode1.Connect(g);
+
+            var output = testNode3.Next(9001);
+            output[0].Sample.L.Should().Be(2);
         }
     }
 }
