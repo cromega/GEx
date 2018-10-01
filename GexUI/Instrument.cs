@@ -34,6 +34,11 @@ namespace GexUI {
         }
 
         public void RemoveNode(AudioNode node) {
+            _Connections.
+                FindAll(conn => conn.Source == node).
+                ToList().
+                ForEach(conn => Machine.Disconnect(node.AudioControl, conn.Target.AudioControl));
+
             _Nodes.Remove(node);
             Machine.Remove(node.AudioControl);
             _Connections.RemoveAll(conn => conn.IsAttachedTo(node));
