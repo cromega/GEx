@@ -73,7 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\SimpleGenerator.cs" />
     <Compile Include="TestAudioNode.cs" />
+    <Compile Include="TestReverb.cs" />
     <Compile Include="TestSample.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,32 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using GraphExperiment;
+using TestGEx.Support;
 
 using Xunit;
 using FluentAssertions;
 
 namespace TestGEx {
     // a node that sends a set of preloaded samples to the downstream node
-    class TestGenerator : AudioNode {
-        private List<Tuple<string, double>> SampleSets;
-
-        public TestGenerator(short id) : base(id) {
-            SampleSets = new List<Tuple<string, double>>();
-        }
-
-        public void AddSample(string triggerId, double value) {
-            SampleSets.Add(new Tuple<string, double>(triggerId, value));
-        }
-
-        protected override Packet[] Fetch(long tick) {
-            var output = SampleSets.
-                Select(sample => new Packet(sample.Item1, Signal.Active, new Sample(sample.Item2), tick)).
-                ToArray();
-            SampleSets.Clear();
-
-            return output;
-        }
-    }
 
     internal class AccumulatingTestNode : AudioNode {
         public AccumulatingTestNode(short id) : base(id) { }
@@ -51,7 +32,7 @@ namespace TestGEx {
 
         [Fact]
         public void TestMultipleTriggersFromSingleInput() {
-            var g = new TestGenerator(0);
+            var g = new SimpleGenerator(0);
             var testNode = new AccumulatingTestNode(1);
             testNode.Connect(g);
 
@@ -75,8 +56,8 @@ namespace TestGEx {
 
         [Fact]
         public void TestSingleTriggerFromMultipleInputs() {
-            var g1 = new TestGenerator(0);
-            var g2 = new TestGenerator(1);
+            var g1 = new SimpleGenerator(0);
+            var g2 = new SimpleGenerator(1);
             var testNode = new AccumulatingTestNode(2);
             testNode.Connect(g1);
             testNode.Connect(g2);
@@ -92,7 +73,7 @@ namespace TestGEx {
 
         [Fact]
         public void TestMultipleInputs() {
-            var g = new TestGenerator(0);
+            var g = new SimpleGenerator(0);
             g.AddSample("t", 1);
             var testNode1 = new AccumulatingTestNode(1);
             var testNode2 = new AccumulatingTestNode(2);
