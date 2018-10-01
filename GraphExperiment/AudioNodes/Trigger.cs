@@ -30,7 +30,7 @@ namespace GraphExperiment{
         protected override Packet[] Fetch(long tick) {
             var packets = new List<Packet>();
             Triggers.ForEach(trigger => {
-                var state = trigger.Triggered ? Control.Signal : Control.End;
+                var state = trigger.Triggered ? Signal.Active : Signal.End;
                 packets.Add(new Packet(trigger.ID, state, new Sample(trigger.Frequency), trigger.Time++));
             });
 

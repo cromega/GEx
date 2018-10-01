@@ -21,7 +21,7 @@ namespace TestGEx {
 
         protected override Packet[] Fetch(long tick) {
             var output = SampleSets.
-                Select(sample => new Packet(sample.Item1, Control.Signal, new Sample(sample.Item2), tick)).
+                Select(sample => new Packet(sample.Item1, Signal.Active, new Sample(sample.Item2), tick)).
                 ToArray();
             SampleSets.Clear();
 

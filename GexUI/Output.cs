@@ -40,7 +40,7 @@ namespace GexUI {
                     double mixedL = 0d;
                     double mixedR = 0d;
                     foreach (var packet in packets) {
-                        if (packet.Control == Control.End) {
+                        if (packet.Signal == Signal.End) {
                             TriggerEnded(this, new TriggerEndedEventArgs(packet.TriggerID));
                             continue;
                         }

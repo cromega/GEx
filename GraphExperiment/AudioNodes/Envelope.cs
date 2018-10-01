@@ -14,15 +14,15 @@ namespace GraphExperiment {
 
         protected override Packet Update(Packet packet) {
             double value = 0;
-            switch (packet.Control) {
-                case Control.Signal:
+            switch (packet.Signal) {
+                case Signal.Active:
                     value = GetValue(packet.TimeMS);
                     break;
-                case Control.End:
+                case Signal.End:
                     var tick = Get<int>("ReleasedFor", 0);
                     var timeMS = tick / 44.1;
                     value = GetReleasedValue(timeMS);
-                    packet.Control = timeMS < Release ? Control.Signal : Control.End;
+                    packet.Signal = timeMS < Release ? Signal.Active : Signal.End;
                     Save("ReleasedFor", ++tick);
                     break;
             }

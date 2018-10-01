@@ -5,30 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphExperiment {
-    public enum Control {
-        Signal,
+    public enum Signal {
+        Active,
         End,
     }
 
     public class Packet {
         public string TriggerID;
         public Sample Sample;
-        public Control Control;
+        public Signal Signal;
         public long Tick;
 
         public double TimeMS {
             get { return Tick / 44.1; }
         }
 
-        public Packet(string triggerId, Control control, Sample sample, long tick) {
+        public Packet(string triggerId, Signal control, Sample sample, long tick) {
             TriggerID = triggerId;
-            Control = control;
+            Signal = control;
             Sample = sample;
             Tick = tick;
         }
 
         public static Packet Empty() {
-            return new Packet("", Control.Signal, new Sample(), 0);
+            return new Packet("", Signal.Active, new Sample(), 0);
         }
 
         public override string ToString() {

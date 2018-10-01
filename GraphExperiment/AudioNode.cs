@@ -43,7 +43,7 @@ namespace GraphExperiment {
                 Select(group =>
                     new Packet(
                         group.Key,
-                        group.First().Control,
+                        group.First().Signal,
                         group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample),
                         group.First().Tick
                      )
