@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Attributes.cs" />
     <Compile Include="AudioNode.cs" />
-    <Compile Include="AudioNodes\ControlTest.cs" />
     <Compile Include="AudioNodes\Envelope.cs" />
     <Compile Include="AudioNodes\Hydra.cs" />
     <Compile Include="AudioNodes\PassFilter.cs" />
