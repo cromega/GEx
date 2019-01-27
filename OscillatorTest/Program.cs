@@ -28,10 +28,11 @@ namespace OscillatorTest {
 
             var last = envelope;
 
+            var tick = 0;
             for (int i = 0; i < 20; i++) {
                 var buffer = new short[frames * 2];
                 for (int j = 0; j < buffer.Length; j += 2) {
-                    var packets = last.Next();
+                    var packets = last.Next(tick++);
 
                     var sample = packets[0].Sample;
                     buffer[j] = (short)sample.L;

@@ -29,7 +29,7 @@ namespace GraphExperiment{
 
         protected override Packet[] Fetch(long tick) {
             var packets = new List<Packet>();
-            Triggers.ForEach(trigger => {
+            Triggers.ToList().ForEach(trigger => {
                 var state = trigger.Triggered ? Signal.Active : Signal.End;
                 packets.Add(new Packet(trigger.ID, state, new Sample(trigger.Frequency), trigger.Time++));
             });
@@ -56,6 +56,10 @@ namespace GraphExperiment{
             lock (Lock) {
                 Triggers.RemoveAll(trigger => trigger.ID == triggerID);
             }
+        }
+
+        public static AudioNode Parse(string data) {
+            return new Trigger();
         }
     }
 }
