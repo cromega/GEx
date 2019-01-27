@@ -9,7 +9,7 @@ namespace TestGEx {
         [Fact]
         public void ParsesNodeGraph() {
             var p = new Parser();
-            var data = "0trigger:>1; 1generator:0>2; 2envelope:5,5,0.5,5>-";
+            var data = "0Trigger:>1; 1Generator:0>2; 2Envelope:5,5,0.5,5>-";
             var machine = p.ParseMachine(data);
             machine.Nodes.Should().HaveCount(3);
         }

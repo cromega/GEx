@@ -11,7 +11,7 @@ namespace OscillatorTest {
 
             int frames = 4410;
             var audio = new SoundSystem(frames);
-            var mdata = "0trigger:1; 1hydra:0,2>2; 2envelope:50,250,1.0,200>-";
+            var mdata = "0Trigger:1; 1Hydra:0,2>2; 2Envelope:50,250,1.0,200>-";
             var machine = new Parser().ParseMachine(mdata);
             //var trigger = new Trigger();
             //var envelope = new Envelope() {

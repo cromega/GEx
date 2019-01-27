@@ -38,7 +38,6 @@ namespace GraphExperiment {
             var parts = node.Split(':', '>');
             var id = node[0];
             var className = parts[0].Substring(1);
-            className = char.ToUpper(className[0]) + className.Substring(1);
             var fullClassName = $"GraphExperiment.{className},GraphExperiment";
             var nodeType = Type.GetType(fullClassName, true);
 
