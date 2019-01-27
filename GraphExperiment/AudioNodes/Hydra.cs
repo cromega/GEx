@@ -15,8 +15,6 @@ namespace GraphExperiment {
 
         private const int OscillatorsCount = 5;
 
-        public Hydra(short id) : base(id) { }
-
         protected override Packet Update(Packet packet) {
             var oscillators = Get<Oscillator[]>("Oscillators");
             if (oscillators == null) {
@@ -41,6 +39,15 @@ namespace GraphExperiment {
 
         private double GetSeparation() {
             return Cents / 1200d;
+        }
+
+        public static Hydra Parse(string data) {
+            var parts = data.Split(',');
+            var h = new Hydra();
+            h.SignalType = (SignalType)int.Parse(parts[0]);
+            h.Cents = int.Parse(parts[1]);
+
+            return h;
         }
     }
 }

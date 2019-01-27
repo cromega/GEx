@@ -13,18 +13,13 @@ namespace GraphExperiment {
             public Packet[] Data;
         }
 
-        private static Dictionary<short, AudioNode> Nodes = new Dictionary<short, AudioNode>();
-
-        public readonly short Id;
         public List<AudioNode> Previous;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
         private FetchData PreviousFetch;
 
-        public AudioNode(short id) {
-            Id = id;
+        public AudioNode() {
             Memory = new Dictionary<string, Hashtable>();
-            Nodes.Add(id, this);
             Previous = new List<AudioNode>();
             PreviousFetch = new FetchData { Tick = -1 };
         }
@@ -103,10 +98,6 @@ namespace GraphExperiment {
 
         public string Type() {
             return GetType().Name;
-        }
-
-        public static AudioNode Find(short nodeId) {
-            return Nodes[nodeId];
         }
     }
 }

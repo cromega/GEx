@@ -20,7 +20,7 @@ namespace GraphExperiment {
 
         private const double DT = 1d / 44100;
 
-        public PassFilter(short id) : base(id) {
+        public PassFilter() : base() {
             Cutoff = 440;
         }
 

@@ -8,31 +8,35 @@ namespace GraphExperiment {
     public class Parser {
         struct NodeInfo {
             public AudioNode Node;
-            public int Id;
-            public int Target;
-        }
+            public char Id;
+            public char Target;
 
-        public Parser() {
+            public bool IsOutput {
+                get { return Target == '-'; }
+            }
         }
 
         public Machine ParseMachine(string data) {
             var m = new Machine();
 
-            var nodes = data.Split(';').
+            var nodes = data.Replace(" ", "").Split(';').
                 Select(ParseNode).
                 ToList();
 
             nodes.ForEach(node => {
                 m.Add(node.Node);
-                m.Connect(node.Node, nodes.Find(n => n.Id == node.Id).Node);
+                if (!node.IsOutput) {
+                    m.Connect(node.Node, nodes.Find(n => n.Id == node.Target).Node);
+                }
             });
 
             return m;
         }
 
         private NodeInfo ParseNode(string node) {
+            // 0: id, 1: node constructor params, 2: connection
             var parts = node.Split(':', '>');
-            var id = int.Parse(node[0].ToString());
+            var id = node[0];
             var className = parts[0].Substring(1);
             className = char.ToUpper(className[0]) + className.Substring(1);
             var fullClassName = $"GraphExperiment.{className},GraphExperiment";
@@ -41,7 +45,7 @@ namespace GraphExperiment {
             var ni = new NodeInfo {
                 Node = (AudioNode)nodeType.GetMethod("Parse").Invoke(null, new object[] { parts[1] }),
                 Id = id,
-                Target = parts.Last() == "-" ? -1 : int.Parse(parts.Last())
+                Target = parts.Last()[0],
             };
 
             return ni;

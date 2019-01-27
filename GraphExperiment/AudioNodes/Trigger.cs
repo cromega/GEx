@@ -22,7 +22,7 @@ namespace GraphExperiment{
         private readonly object Lock;
         private List<TriggerInstance> Triggers;
 
-        public Trigger(short id) : base(id) {
+        public Trigger() : base() {
             Triggers = new List<TriggerInstance>();
             Lock = new object();
         }

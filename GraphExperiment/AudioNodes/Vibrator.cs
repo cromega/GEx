@@ -19,7 +19,7 @@ namespace GraphExperiment {
 
         private Oscillator Osc;
 
-        public Vibrator(short id) : base(id) {
+        public Vibrator() : base() {
             Osc = new Oscillator();
         }
 

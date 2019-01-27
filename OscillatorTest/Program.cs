@@ -11,22 +11,25 @@ namespace OscillatorTest {
 
             int frames = 4410;
             var audio = new SoundSystem(frames);
-            var trigger = new Trigger(1);
-            var envelope = new Envelope(2) {
-                Attack = 50,
-                Decay = 250,
-                Sustain = 1.0,
-                Release = 200,
-            };
-            var osc = new Hydra(3) {
-                SignalType = SignalType.Sawtooth,
-                Cents = 5,
-            };
-            envelope.Connect(osc);
-            osc.Connect(trigger);
-            trigger.Start(440, "t");
+            var mdata = "0trigger:1; 1hydra:0,2>2; 2envelope:50,250,1.0,200>-";
+            var machine = new Parser().ParseMachine(mdata);
+            //var trigger = new Trigger();
+            //var envelope = new Envelope() {
+            //    Attack = 50,
+            //    Decay = 250,
+            //    Sustain = 1.0,
+            //    Release = 200,
+            //};
+            //var osc = new Hydra() {
+            //    SignalType = SignalType.Sawtooth,
+            //    Cents = 5,
+            //};
+            //envelope.Connect(osc);
+            //osc.Connect(trigger);
+            //trigger.Start(440, "t");
 
-            var last = envelope;
+            var last = machine.Nodes[2];
+            (machine.Nodes[0] as Trigger).Start(440, "t");
 
             var tick = 0;
             for (int i = 0; i < 20; i++) {
@@ -41,7 +44,7 @@ namespace OscillatorTest {
                 audio.Write(buffer);
                 wav.Write(buffer);
             }
-            Thread.Sleep(envelope.Release + 200);
+            Thread.Sleep(400);
             audio.Close();
             wav.Close();
             Console.ReadKey();

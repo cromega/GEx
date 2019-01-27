@@ -12,9 +12,9 @@ namespace TestGEx {
     public class TestReverb {
         [Fact]
         public void TestReverbEffect() {
-            var g = new SimpleGenerator(0);
+            var g = new SimpleGenerator();
 
-            var effect = new Reverb(1);
+            var effect = new Reverb();
             effect.Delay = 2;
             effect.Decay = 0.5;
 

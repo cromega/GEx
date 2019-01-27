@@ -20,7 +20,7 @@ namespace GraphExperiment {
         [AudioNodeParameter]
         public SignalType SignalType;
 
-        public Generator(short id) : base(id) { }
+        public Generator() : base() { }
 
         protected override Packet Update(Packet packet) {
             var osc = Get<Oscillator>("Oscillator") ?? new Oscillator();
@@ -29,6 +29,12 @@ namespace GraphExperiment {
             packet.Sample = new Sample(osc.Next(SignalType) * 0.2 * short.MaxValue);
             Save("Oscillator", osc);
             return packet;
+        }
+
+        public static Generator Parse(string data) {
+            var g = new Generator();
+            g.SignalType = (SignalType)int.Parse(data);
+            return g;
         }
     }
 }

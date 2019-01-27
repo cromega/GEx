@@ -11,7 +11,7 @@ namespace TestGEx {
     // a node that sends a set of preloaded samples to the downstream node
 
     internal class AccumulatingTestNode : AudioNode {
-        public AccumulatingTestNode(short id) : base(id) { }
+        public AccumulatingTestNode() : base() { }
 
         protected override Packet Update(Packet packet) {
             var value = Get<double>("value", 0d);
@@ -32,8 +32,8 @@ namespace TestGEx {
 
         [Fact]
         public void TestMultipleTriggersFromSingleInput() {
-            var g = new SimpleGenerator(0);
-            var testNode = new AccumulatingTestNode(1);
+            var g = new SimpleGenerator();
+            var testNode = new AccumulatingTestNode();
             testNode.Connect(g);
 
             g.AddSample("a", 1);
@@ -56,9 +56,9 @@ namespace TestGEx {
 
         [Fact]
         public void TestSingleTriggerFromMultipleInputs() {
-            var g1 = new SimpleGenerator(0);
-            var g2 = new SimpleGenerator(1);
-            var testNode = new AccumulatingTestNode(2);
+            var g1 = new SimpleGenerator();
+            var g2 = new SimpleGenerator();
+            var testNode = new AccumulatingTestNode();
             testNode.Connect(g1);
             testNode.Connect(g2);
 
@@ -73,11 +73,11 @@ namespace TestGEx {
 
         [Fact]
         public void TestMultipleInputs() {
-            var g = new SimpleGenerator(0);
+            var g = new SimpleGenerator();
             g.AddSample("t", 1);
-            var testNode1 = new AccumulatingTestNode(1);
-            var testNode2 = new AccumulatingTestNode(2);
-            var testNode3 = new AccumulatingTestNode(3);
+            var testNode1 = new AccumulatingTestNode();
+            var testNode2 = new AccumulatingTestNode();
+            var testNode3 = new AccumulatingTestNode();
 
             testNode3.Connect(testNode2);
             testNode3.Connect(testNode1);

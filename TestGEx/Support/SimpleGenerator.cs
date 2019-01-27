@@ -9,7 +9,7 @@ namespace TestGEx.Support {
     class SimpleGenerator : AudioNode {
         private List<Tuple<string, double>> SampleSets;
 
-        public SimpleGenerator(short id) : base(id) {
+        public SimpleGenerator() : base() {
             SampleSets = new List<Tuple<string, double>>();
         }
 

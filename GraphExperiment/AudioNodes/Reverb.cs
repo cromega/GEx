@@ -13,9 +13,6 @@ namespace GraphExperiment{
         [AudioNodeParameter]
         public double Decay;
 
-        public Reverb(short id) : base(id) {
-        }
-
         protected override Packet Update(Packet packet) {
             var DelayBuffer = Get<Sample[]>("DelayBuffer") ?? new Sample[Delay];
             if (DelayBuffer.Length != Delay) { DelayBuffer = new Sample[Delay]; }

@@ -10,8 +10,6 @@ namespace GraphExperiment {
         [AudioNodeParameter]
         public int Release;
 
-        public Envelope(short id) : base(id) { }
-
         protected override Packet Update(Packet packet) {
             double value = 0;
             switch (packet.Signal) {
@@ -46,6 +44,17 @@ namespace GraphExperiment {
 
             var phase = 1.0 - time / Release;
             return phase * Sustain;
+        }
+
+        public static Envelope Parse(string data) {
+            var parts = data.Split(',');
+            var e = new Envelope();
+            e.Attack = int.Parse(parts[0]);
+            e.Decay = int.Parse(parts[1]);
+            e.Sustain = float.Parse(parts[2]);
+            e.Release = int.Parse(parts[3]);
+
+            return e;
         }
     }
 }
