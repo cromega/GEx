@@ -44,6 +44,7 @@
     <Compile Include="AudioNodes\Vibrator.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Machine.cs" />
+    <Compile Include="Muxer.cs" />
     <Compile Include="Oscillator.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Parser.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="Sample.cs" />
     <Compile Include="SoundSystem.cs" />
     <Compile Include="AudioNodes\Generator.cs" />
+    <Compile Include="Track.cs" />
+    <Compile Include="Trigger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
