@@ -8,20 +8,12 @@ namespace GraphExperiment {
     public class Sample {
         public double L;
         public double R;
-        public double[] AsArray {
-            get { return new double[] { L, R }; }
-        }
 
         public Sample() { }
 
         public Sample(double value) {
             L = value;
             R = value;
-        }
-
-        public Sample(double l, double r) {
-            L = l;
-            R = r;
         }
 
         public static Sample operator + (Sample sample, double value) {

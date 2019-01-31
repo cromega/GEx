@@ -19,12 +19,10 @@ namespace GraphExperiment{
             }
         }
 
-        private readonly object Lock;
         private List<TriggerInstance> Triggers;
 
         public Trigger() : base() {
             Triggers = new List<TriggerInstance>();
-            Lock = new object();
         }
 
         protected override Packet[] Fetch(long tick) {
@@ -39,23 +37,17 @@ namespace GraphExperiment{
 
         public string Start(double frequency, string id) {
             TriggerInstance trigger = null;
-            lock (Lock) {
-                trigger = new TriggerInstance(frequency, id);
-                Triggers.Add(trigger);
-            }
+            trigger = new TriggerInstance(frequency, id);
+            Triggers.Add(trigger);
             return trigger.ID;
         }
 
         public void Release(string triggerID) {
-            lock(Lock) {
-                Triggers.First(trigger => trigger.ID == triggerID).Triggered = false;
-            }
+            Triggers.First(trigger => trigger.ID == triggerID).Triggered = false;
         }
 
         public void Remove(string triggerID) {
-            lock (Lock) {
-                Triggers.RemoveAll(trigger => trigger.ID == triggerID);
-            }
+            Triggers.RemoveAll(trigger => trigger.ID == triggerID);
         }
 
         public static AudioNode Parse(string data) {
