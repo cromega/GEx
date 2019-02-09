@@ -5,12 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphExperiment {
-    [AudioNode(Direction = AudioNodeDirection.InputOutput)]
     public class Hydra : AudioNode {
-        [AudioNodeParameter]
         public SignalType SignalType;
-
-        [AudioNodeParameter]
         public int Cents;
 
         private const int OscillatorsCount = 5;

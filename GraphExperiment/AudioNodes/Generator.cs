@@ -14,10 +14,8 @@ namespace GraphExperiment {
         Triangle,
     }
 
-    [AudioNode]
     public class Generator : AudioNode {
         public double Frequency;
-        [AudioNodeParameter]
         public SignalType SignalType;
 
         public Generator() : base() { }

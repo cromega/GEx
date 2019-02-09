@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 using GraphExperiment;
 
 namespace GraphExperiment {
-    [AudioNode]
     public class Vibrator : AudioNode {
-        [AudioNodeParameter]
         public SignalType Signal;
-
-        [AudioNodeParameter]
         public double Frequency;
-
-        [AudioNodeParameter]
         public double Amount;
 
         private Oscillator Osc;

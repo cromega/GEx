@@ -91,7 +91,9 @@ namespace GraphExperiment {
 
         public void Write(short[] data) {
             var buffer = BufferQueue.Take();
-            //Logger.Log("prepping buffer {0}", buffer);
+#if DEBUG
+            Logger.Log("prepping buffer {0}", buffer);
+#endif
             Marshal.Copy(data, 0, buffer, data.Length);
             var whdr = new WaveHeader { lpData = buffer, dwBufferLength = (uint)data.Length * sizeof(short) };
             var whdrptr = Marshal.AllocHGlobal(Marshal.SizeOf(whdr));
@@ -120,13 +122,17 @@ namespace GraphExperiment {
         private void WaveOutHandler(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2) {
             switch (message) {
                 case WOM_OPEN:
+#if DEBUG
                     Logger.Log("Audio Device opened.");
+#endif
                     break;
                 case WOM_DONE:
                     var whdr = Marshal.PtrToStructure<WaveHeader>(param1);
-                    //Logger.Log("playback done on {0}", whdr.lpData);
+#if DEBUG
+                    Logger.Log("playback done on {0}", whdr.lpData);
+#endif
                     BufferQueue.Add(whdr.lpData);
-                    //lock (Lock) { waveOutUnprepareHeader(DeviceHandle, param1, (uint)Marshal.SizeOf(whdr)); }
+                    lock (Lock) { waveOutUnprepareHeader(DeviceHandle, param1, (uint)Marshal.SizeOf(whdr)); }
                     Marshal.FreeHGlobal(param1);
                     break;
                 case WOM_CLOSE:

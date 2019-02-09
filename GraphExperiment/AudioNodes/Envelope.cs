@@ -1,14 +1,9 @@
 namespace GraphExperiment {
-    [AudioNode]
     public class Envelope : AudioNode {
-        [AudioNodeParameter]
-        public int Attack ;
-        [AudioNodeParameter]
-        public int Decay;
-        [AudioNodeParameter]
-        public double Sustain;
-        [AudioNodeParameter]
-        public int Release;
+        public int A ;
+        public int D;
+        public double S;
+        public int R;
 
         protected override Packet Update(Packet packet) {
             double value = 0;
@@ -20,7 +15,7 @@ namespace GraphExperiment {
                     var tick = Get<int>("ReleasedFor", 0);
                     var timeMS = tick / 44.1;
                     value = GetReleasedValue(timeMS);
-                    packet.Signal = timeMS < Release ? Signal.Active : Signal.End;
+                    packet.Signal = timeMS < R ? Signal.Active : Signal.End;
                     Save("ReleasedFor", ++tick);
                     break;
             }
@@ -29,30 +24,32 @@ namespace GraphExperiment {
         }
 
         private double GetValue(double time) {
-            if (time < Attack) {
-                return time / Attack;
-            } else if (time < Attack + Decay) {
-                var phase = (time - Attack) / Decay;
-                return 1.0 - phase * (1 - Sustain);
+            if (time < A) {
+                return time / A;
+            } else if (time < A + D) {
+                var phase = (time - A) / D;
+                return 1.0 - phase * (1 - S);
             } else {
-                return Sustain;
+                return S;
             }
         }
 
         private double GetReleasedValue(double time) {
-            if (time == 0 || time > Release) { return 0; }
+            if (time == 0) { return S; }
+            // may not be needed
+            if (time > R) { return 0; }
 
-            var phase = 1.0 - time / Release;
-            return phase * Sustain;
+            var phase = 1.0 - time / R;
+            return phase * S;
         }
 
         public static Envelope Parse(string data) {
             var parts = data.Split(',');
             var e = new Envelope();
-            e.Attack = int.Parse(parts[0]);
-            e.Decay = int.Parse(parts[1]);
-            e.Sustain = float.Parse(parts[2]);
-            e.Release = int.Parse(parts[3]);
+            e.A = int.Parse(parts[0]);
+            e.D = int.Parse(parts[1]);
+            e.S = float.Parse(parts[2]);
+            e.R = int.Parse(parts[3]);
 
             return e;
         }

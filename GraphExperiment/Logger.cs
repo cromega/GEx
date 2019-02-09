@@ -1,6 +1,7 @@
 using System;
 
 namespace GraphExperiment {
+#if DEBUG
     public static class Logger {
         private static int StartTime;
         private static bool IsOn;
@@ -16,4 +17,5 @@ namespace GraphExperiment {
             Console.WriteLine("{0}: {1}", time, String.Format(message, args));
         }
     }
+#endif
 }

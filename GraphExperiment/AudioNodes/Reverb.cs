@@ -5,12 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphExperiment{
-    [AudioNode(Direction = AudioNodeDirection.InputOutput)]
     public class Reverb : AudioNode {
-        [AudioNodeParameter]
         public int Delay;
-
-        [AudioNodeParameter]
         public double Decay;
 
         protected override Packet Update(Packet packet) {

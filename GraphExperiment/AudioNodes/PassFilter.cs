@@ -10,12 +10,8 @@ namespace GraphExperiment {
         HiPass,
     }
 
-    [AudioNode(Direction = AudioNodeDirection.InputOutput)]
     public class PassFilter : AudioNode {
-        [AudioNodeParameter]
         public FilterType Filter;
-
-        [AudioNodeParameter]
         public int Cutoff;
 
         private const double DT = 1d / 44100;

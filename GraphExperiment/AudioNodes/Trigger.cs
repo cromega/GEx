@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace GraphExperiment{
-    [AudioNode(Direction = AudioNodeDirection.OutputOnly)]
     public class Trigger : AudioNode {
         class TriggerInstance {
             public string ID;
