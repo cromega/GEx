@@ -63,11 +63,6 @@ namespace GraphExperiment {
         }
 
         protected virtual Packet[] Fetch(long tick) {
-            //FIXME
-            while (Previous.Count() == 0) {
-                Thread.Sleep(1);
-            }
-
             return Previous.
                 SelectMany(node => node.Next(tick))
                 .ToArray();
@@ -99,10 +94,6 @@ namespace GraphExperiment {
 
         protected void Save(string key, object value) {
             State[key] = value;
-        }
-
-        public string Type() {
-            return GetType().Name;
         }
     }
 }
