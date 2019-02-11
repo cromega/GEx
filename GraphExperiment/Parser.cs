@@ -5,36 +5,36 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphExperiment {
-    public class Parser {
-        struct NodeInfo {
-            public AudioNode Node;
-            public char Id;
-            public char Target;
+    public struct NodeInfo {
+        public AudioNode Node;
+        public char Id;
+        public char Target;
 
-            public bool IsOutput {
-                get { return Target == '-'; }
-            }
+        public bool IsOutput {
+            get { return Target == '-'; }
         }
+
+        public bool IsInput {
+
+        }
+    }
+
+    public class Parser {
 
         public Machine ParseMachine(string data) {
             var m = new Machine();
 
-            var nodes = data.Replace(" ", "").Split(';').
+            data.Replace(" ", "").Split(';').
                 Select(ParseNode).
-                ToList();
+                ToList().
+                ForEach(node => m.Add(node));
 
-            nodes.ForEach(node => {
-                m.Add(node.Node);
-                if (!node.IsOutput) {
-                    m.Connect(node.Node, nodes.Find(n => n.Id == node.Target).Node);
-                }
-            });
 
             return m;
         }
 
         private NodeInfo ParseNode(string node) {
-            // 0: id, 1: node constructor params, 2: connection
+            // 0: id+class name, 1: node constructor params, 2: connection
             var parts = node.Split(':', '>');
             var id = node[0];
             var className = parts[0].Substring(1);

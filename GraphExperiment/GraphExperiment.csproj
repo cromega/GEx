@@ -39,7 +39,7 @@
     <Compile Include="AudioNodes\Hydra.cs" />
     <Compile Include="AudioNodes\PassFilter.cs" />
     <Compile Include="AudioNodes\Reverb.cs" />
-    <Compile Include="AudioNodes\Trigger.cs" />
+    <Compile Include="Trigger.cs" />
     <Compile Include="AudioNodes\Vibrator.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Machine.cs" />
@@ -52,7 +52,6 @@
     <Compile Include="SoundSystem.cs" />
     <Compile Include="AudioNodes\Generator.cs" />
     <Compile Include="Track.cs" />
-    <Compile Include="Trigger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

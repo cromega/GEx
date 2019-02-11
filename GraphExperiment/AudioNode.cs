@@ -7,24 +7,29 @@ using System.Collections;
 using System.Threading;
 
 namespace GraphExperiment {
-    public abstract class AudioNode {
+    public interface INode {
+        Packet[] Next(long tick);
+    }
+
+    public abstract class AudioNode : INode {
         struct FetchData {
             public long Tick;
             public Packet[] Data;
         }
 
-        public List<AudioNode> Previous;
+        public List<INode> Previous;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
         private FetchData PreviousFetch;
 
         public AudioNode() {
             Memory = new Dictionary<string, Hashtable>();
-            Previous = new List<AudioNode>();
+            Previous = new List<INode>();
             PreviousFetch = new FetchData { Tick = -1 };
         }
 
         public Packet[] Next(long tick) {
+
             Packet[] packets;
             if (tick == PreviousFetch.Tick) {
                 packets = PreviousFetch.Data;

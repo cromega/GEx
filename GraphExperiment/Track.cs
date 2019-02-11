@@ -20,9 +20,8 @@ namespace GraphExperiment {
             var packets = new Packet[size];
 
             for (var i=0; i<size; i++) {
-                for (var m=0; m<Machines.Length; m++) {
-                    Muxer.Add(Machines[i].ne)
-                
+                for (var m = 0; m < Machines.Length; m++) {
+                }
             }
             return null;
         }
