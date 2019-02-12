@@ -13,10 +13,6 @@ namespace GraphExperiment {
         public bool IsOutput {
             get { return Target == '-'; }
         }
-
-        public bool IsInput {
-
-        }
     }
 
     public class Parser {
