@@ -46,6 +46,7 @@ namespace GraphExperiment {
             packets.ToList().ForEach(p => Muxer.Add(p.Sample));
             var sample = Muxer.Mux();
 
+            // TODO: figure out what to do with machines that have multiple outputs. is it even a good idea?
             return new Packet(triggerId, packets.Any(p => p.Signal == Signal.Active) ? Signal.Active : Signal.End, sample, tick);
         }
 
