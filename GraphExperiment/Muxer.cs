@@ -19,11 +19,11 @@ namespace GraphExperiment {
             for (int i=0; i<Samples.Count; i++) {
                 sample += Samples[i];
             }
-            Samples.Clear();
 
             sample.L = sample.L / Samples.Count;
             sample.R = sample.R / Samples.Count;
 
+            Samples.Clear();
             return sample;
         }
     }

@@ -9,9 +9,19 @@ namespace TestGEx {
         [Fact]
         public void ParsesNodeGraph() {
             var p = new Parser();
-            var data = "0Trigger:>1; 1Generator:0>2; 2Envelope:5,5,0.5,5>-";
+            var data = ">0; 0Hydra:0,2>1; 1Envelope:5,5,0.5,5>-";
             var machine = p.ParseMachine(data);
-            machine.Nodes.Should().HaveCount(3);
+            machine.Receivers.Should().HaveCount(1);
+            machine.Outputs.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void ParseNodeGraphWithMultipleReceivers() {
+            var p = new Parser();
+            var data = ">0,1; 0Generator:0>-; 1Generator:1>-"; 
+            var machine = p.ParseMachine(data);
+            machine.Receivers.Should().HaveCount(2);
+            machine.Outputs.Should().HaveCount(2);
         }
     }
 }

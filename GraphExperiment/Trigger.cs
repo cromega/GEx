@@ -9,14 +9,17 @@ namespace GraphExperiment{
         private string Id;
         private bool IsActive;
 
-        public Trigger() {
+        public Trigger(Machine machine, double frequency) {
             IsActive = true;
             Id = Guid.NewGuid().ToString();
+            Machine = machine;
+            Frequency = frequency;
         }
 
         public Packet Next(long tick) {
-            Machine.In(new Packet(Id, IsActive ? Signal.Active : Signal.End, new Sample(Frequency), tick));
-            return Machine.Out(tick);
+            return Machine.Process(
+                tick,
+                new Packet(Id, IsActive ? Signal.Active : Signal.End, new Sample(Frequency), tick));
         }
 
         public void Release() {

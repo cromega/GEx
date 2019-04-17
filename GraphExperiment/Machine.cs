@@ -1,70 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphExperiment {
     public class Machine {
         class Source : INode {
-            public Packet[] packets = new Packet[1];
-
-            public void Add(Packet packet) {
-                packets[0] = packet;
-            }
-            public Packet[] Next(long tick) {
-                return packets;
-            }
+            private Packet Packet;
+            public void Set(Packet packet) { Packet = packet; }
+            public Packet[] Next(long tick) { return new Packet[] { Packet }; }
         }
 
-        private List<NodeInfo> NodeInfos;
-
-        private Packet PacketIn;
-        private List<AudioNode> Outputs;
-        private Source Src;
+        public List<AudioNode> Outputs;
+        public List<AudioNode> Receivers;
         private Muxer Muxer;
+        private Source Src;
+
 
         public Machine() {
             Outputs = new List<AudioNode>();
-            NodeInfos = new List<NodeInfo>();
-            Src = new Source();
+            Receivers = new List<AudioNode>();
             Muxer = new Muxer();
+            Src = new Source();
         }
 
-        public void Add(NodeInfo ni) {
-            NodeInfos.Add(ni);
-        }
-
-        public void In(Packet packet) {
-            Src.Add(packet);
-        }
-
-        public Packet Out(long tick) {
-            var packets = Outputs.SelectMany(node => node.Next(tick));
-            var triggerId = packets.First().TriggerID;
-
-            packets.ToList().ForEach(p => Muxer.Add(p.Sample));
-            var sample = Muxer.Mux();
-
-            // TODO: figure out what to do with machines that have multiple outputs. is it even a good idea?
-            return new Packet(triggerId, packets.Any(p => p.Signal == Signal.Active) ? Signal.Active : Signal.End, sample, tick);
-        }
-
-        public void Setup(INode source) {
-            //var data = "0Generator:0>2; 1Envelope:5,5,0.5,5>-";
-            NodeInfos.ForEach(ni => {
-                if (!ni.IsOutput) {
-                    Connect(ni.Node, NodeInfos.Find(n => n.Id == ni.Target).Node);
-                }
-                if (ni.IsOutput) { Outputs.Add(ni.Node); }
-            });
-            NodeInfos.First().Node.Previous.Add(Src);
-
+        public void Setup() {
+            foreach (var node in Receivers) { node.Connect(Src); }
 
         }
 
-        private void Connect(AudioNode source, AudioNode target) {
-            target.Connect(source);
+        internal Packet Process(long tick, Packet packet) {
+            Src.Set(packet);
+            var packets = Outputs.SelectMany(node => node.Next(tick)).ToArray();
+            for (int i = 0; i < packets.Count(); i++) { Muxer.Add(packets[i].Sample); }
+            packet.Sample = Muxer.Mux();
+            return packet;
         }
     }
 }

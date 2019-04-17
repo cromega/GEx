@@ -1,31 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphExperiment {
     public struct NodeInfo {
         public AudioNode Node;
-        public char Id;
-        public char Target;
+        public string Id;
+        public string Target;
 
         public bool IsOutput {
-            get { return Target == '-'; }
+            get { return Target == "-"; }
         }
     }
 
     public class Parser {
-
         public Machine ParseMachine(string data) {
             var m = new Machine();
 
-            data.Replace(" ", "").Split(';').
+            var parts = data.Replace(" ", "").Split(';');
+            var receivers = parts[0].Substring(1).Split(',');
+
+            var nodes = new Dictionary<string, NodeInfo>();
+            parts.Skip(1).
                 Select(ParseNode).
                 ToList().
-                ForEach(node => m.Add(node));
+                ForEach(node => nodes[node.Id] = node);
 
+            for (int i=0; i<receivers.Length; i++) {
+                m.Receivers.Add(nodes[receivers[i]].Node);
+            }
 
+            foreach (var node in nodes.Values) {
+                if (node.IsOutput) { m.Outputs.Add(node.Node); }
+                else { nodes[node.Target].Node.Connect(node.Node); }
+            }
+
+            m.Setup();
             return m;
         }
 
@@ -39,8 +49,8 @@ namespace GraphExperiment {
 
             var ni = new NodeInfo {
                 Node = (AudioNode)nodeType.GetMethod("Parse").Invoke(null, new object[] { parts[1] }),
-                Id = id,
-                Target = parts.Last()[0],
+                Id = id.ToString(),
+                Target = parts[2].ToString(),
             };
 
             return ni;

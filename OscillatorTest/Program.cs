@@ -11,42 +11,34 @@ namespace OscillatorTest {
 
             int frames = 4410;
             var audio = new SoundSystem(frames);
-            var mdata = "0Trigger:>1; 1Hydra:0,2>2; 2Envelope:50,250,1.0,200>-";
+            var mdata = ">a; aEnvelope:1,200,0,0>0; 0Hydra:1,2>1; 1Envelope:50,250,1.0,200>-";
             var machine = new Parser().ParseMachine(mdata);
-            //var trigger = new Trigger();
-            //var envelope = new Envelope() {
-            //    Attack = 50,
-            //    Decay = 250,
-            //    Sustain = 1.0,
-            //    Release = 200,
-            //};
-            //var osc = new Hydra() {
-            //    SignalType = SignalType.Sawtooth,
-            //    Cents = 5,
-            //};
-            //envelope.Connect(osc);
-            //osc.Connect(trigger);
-            //trigger.Start(440, "t");
+            var trigger = new Trigger(machine, 440);
 
-            var last = machine.Nodes[2];
-            (machine.Nodes[0] as Trigger).Start(440, "t");
+            var output = trigger.Next(0);
 
             var tick = 0;
-            for (int i = 0; i < 20; i++) {
+            var end = false;
+
+            for (; ;) {
+                if (tick == frames * 10) { trigger.Release(); }
+
                 var buffer = new short[frames * 2];
                 for (int j = 0; j < buffer.Length; j += 2) {
-                    var packets = last.Next(tick++);
+                    var packet = trigger.Next(tick++);
+                    if (packet.Signal == Signal.End) { Logger.Log("signal ended"); end = true; break; }
 
-                    var sample = packets[0].Sample;
+                    var sample = packet.Sample;
                     buffer[j] = (short)sample.L;
                     buffer[j + 1] = (short)sample.R;
                 }
                 audio.Write(buffer);
-                wav.Write(buffer);
+                if (end) { break; }
+                //wav.Write(buffer);
             }
-            Thread.Sleep(400);
+            Thread.Sleep(200);
             audio.Close();
-            wav.Close();
+            //wav.Close();
             Console.ReadKey();
         }
     }

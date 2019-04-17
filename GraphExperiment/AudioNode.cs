@@ -68,12 +68,8 @@ namespace GraphExperiment {
                 .ToArray();
         }
 
-        public void Connect(AudioNode other) {
-            Previous.Add(other);
-        }
-
-        public void Disconnect(AudioNode target) {
-            Previous.Remove(target);
+        public void Connect(INode previous) {
+            Previous.Add(previous);
         }
 
         private void LoadState(string id) {
