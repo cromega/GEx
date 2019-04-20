@@ -9,22 +9,22 @@ namespace GraphExperiment {
             Samples = new List<Sample>();
         }
 
-        public void Add(Sample packet) {
-            Samples.Add(packet);
+        public void Add(Sample sample) {
+            Samples.Add(sample);
         }
 
         public Sample Mux() {
-            var sample = new Sample(0);
+            var output = new Sample(0);
 
-            for (int i=0; i<Samples.Count; i++) {
-                sample += Samples[i];
+            foreach (var sample in Samples) {
+                output += sample;
             }
 
-            sample.L = sample.L / Samples.Count;
-            sample.R = sample.R / Samples.Count;
+            //output.L = output.L / Samples.Count;
+            //output.R = output.R / Samples.Count;
 
             Samples.Clear();
-            return sample;
+            return output;
         }
     }
 }

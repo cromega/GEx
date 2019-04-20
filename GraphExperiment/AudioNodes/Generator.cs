@@ -6,14 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphExperiment {
-    public enum SignalType : int {
-        Sine,
-        Square,
-        Noise,
-        Sawtooth,
-        Triangle,
-    }
-
     public class Generator : AudioNode {
         public double Frequency;
         public SignalType SignalType;

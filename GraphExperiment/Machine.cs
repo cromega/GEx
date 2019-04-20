@@ -5,7 +5,7 @@ using System.Linq;
 namespace GraphExperiment {
     public class Machine {
         class Source : INode {
-            private Packet Packet;
+            private volatile Packet Packet;
             public void Set(Packet packet) { Packet = packet; }
             public Packet[] Next(long tick) { return new Packet[] { Packet }; }
         }

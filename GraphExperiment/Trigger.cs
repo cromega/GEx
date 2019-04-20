@@ -7,23 +7,27 @@ namespace GraphExperiment{
         private Machine Machine;
         private double Frequency;
         private string Id;
-        private bool IsActive;
+        public bool IsActive {
+            get { return TTL > 0; }
+        }
+        public bool Dead;
+        private int TTL;
 
-        public Trigger(Machine machine, double frequency) {
-            IsActive = true;
+        public Trigger(Machine machine, double frequency, int ttl) {
             Id = Guid.NewGuid().ToString();
             Machine = machine;
             Frequency = frequency;
+            TTL = ttl;
+            Dead = false;
         }
 
         public Packet Next(long tick) {
-            return Machine.Process(
+            var packet = Machine.Process(
                 tick,
                 new Packet(Id, IsActive ? Signal.Active : Signal.End, new Sample(Frequency), tick));
-        }
-
-        public void Release() {
-            IsActive = false;
+            Dead = packet.Signal == Signal.End;
+            TTL--;
+            return packet;
         }
     }
 }

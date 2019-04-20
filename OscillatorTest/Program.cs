@@ -1,19 +1,19 @@
 ﻿using System;
 using GraphExperiment;
 using System.Threading;
-using Utils;
 
 namespace OscillatorTest {
     class Program {
         static void Main(string[] args) {
             Logger.On();
-            var wav = new Utils.WavWriter("output.wav");
+            //var wav = new Utils.WavWriter("output.wav");
 
             int frames = 4410;
             var audio = new SoundSystem(frames);
-            var mdata = ">a; aEnvelope:1,200,0,0>0; 0Hydra:1,2>1; 1Envelope:50,250,1.0,200>-";
+            //var mdata = ">a; aEnvelope:1,200,0,0>0; 0Hydra:1,2>1; 1Envelope:50,250,1.0,200>-";
+            var mdata = ">0; 0Hydra:1,5>1; 1Envelope:50,250,1.0,200>-";
             var machine = new Parser().ParseMachine(mdata);
-            var trigger = new Trigger(machine, 440);
+            var trigger = new Trigger(machine, 220);
 
             var output = trigger.Next(0);
 
@@ -21,7 +21,7 @@ namespace OscillatorTest {
             var end = false;
 
             for (; ;) {
-                if (tick == frames * 10) { trigger.Release(); }
+                if (tick == frames * 30) { trigger.Release(); }
 
                 var buffer = new short[frames * 2];
                 for (int j = 0; j < buffer.Length; j += 2) {

@@ -2,6 +2,14 @@ using System;
 using System.IO;
 
 namespace GraphExperiment {
+    public enum SignalType : int {
+        Sine,
+        Square,
+        Noise,
+        Sawtooth,
+        Triangle,
+    }
+
     public class Oscillator {
         private double Increment;
         private Random Rnd;

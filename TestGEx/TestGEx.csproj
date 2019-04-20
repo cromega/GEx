@@ -77,6 +77,7 @@
     <Compile Include="Support\SimpleGenerator.cs" />
     <Compile Include="TestAudioNode.cs" />
     <Compile Include="TestMuxer.cs" />
+    <Compile Include="TestNoteInfo.cs" />
     <Compile Include="TestParser.cs" />
     <Compile Include="TestReverb.cs" />
     <Compile Include="TestSample.cs" />
