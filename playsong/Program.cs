@@ -27,9 +27,9 @@ namespace playsong {
                     buffer[i * 2 + 1] = (short)sample.R;
                     if (track.HasEnded()) { break; }
                 }
-                if (track.HasEnded()) { break; }
 
                 audio.Write(buffer);
+                if (track.HasEnded()) { break; }
             }
             Thread.Sleep(200);
         }

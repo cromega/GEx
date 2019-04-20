@@ -29,31 +29,13 @@ namespace GraphExperiment {
         public Packet[] Next(long tick) {
 
             Packet[] packets;
-            if (tick == PreviousFetch.Tick) {
-                packets = PreviousFetch.Data;
-            } else {
-                packets = Fetch(tick);
-                PreviousFetch = new FetchData { Tick = tick, Data = packets };
+
+            packets = Fetch(tick);
+            for (int i=0; i<packets.Length; i++) {
+                LoadState(packets[i].TriggerID);
+                packets[i] = Update(packets[i]);
             }
-
-            //mux samples by trigger id
-            var mixedTriggers = packets.GroupBy(sample => sample.TriggerID).
-                Select(group =>
-                    new Packet(
-                        group.Key,
-                        group.First().Signal,
-                        group.Aggregate(new Sample(0), (sample, packet) => sample + packet.Sample),
-                        group.First().Tick
-                     )
-                 ).ToArray();
-
-
-            for (int i = 0; i < mixedTriggers.Count(); i++) {
-                LoadState(mixedTriggers[i].TriggerID);
-                mixedTriggers[i] = Update(mixedTriggers[i]);
-            }
-
-            return mixedTriggers;
+            return packets;
         }
 
         protected virtual Packet Update(Packet packet) {
