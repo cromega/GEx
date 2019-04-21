@@ -20,9 +20,6 @@ namespace GraphExperiment {
                 output += sample;
             }
 
-            //output.L = output.L / Samples.Count;
-            //output.R = output.R / Samples.Count;
-
             Samples.Clear();
             return output;
         }

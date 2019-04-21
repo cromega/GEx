@@ -22,16 +22,15 @@ namespace GraphExperiment {
 
         public double Next(SignalType signalType) {
             Phase += Increment;
-            var value = 0d;
             switch (signalType) {
-                case SignalType.Noise: value = Noise(); break;
-                case SignalType.Sine: value = Sine(); break;
-                case SignalType.Square: value = Square(); break;
-                case SignalType.Sawtooth: value = Sawtooth(); break;
-                case SignalType.Triangle: value = Triangle(); break;
+                case SignalType.Noise: return Noise();
+                case SignalType.Sine: return Sine();
+                case SignalType.Square: return Square();
+                case SignalType.Sawtooth: return Sawtooth();
+                case SignalType.Triangle: return Triangle();
             }
 
-            return value;
+            return 0d;
         }
 
         public void SetFrequency(double frequency) {

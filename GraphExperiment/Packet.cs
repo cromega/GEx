@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,29 +11,26 @@ namespace GraphExperiment {
         End,
     }
 
+#if DEBUG
+    [DebuggerDisplay("L: {Sample.L}, R: {Sample.R}")]
+#endif
     public class Packet {
         public string TriggerID;
         public Sample Sample;
         public Signal Signal;
         public long Tick;
+        public long TriggerLife;
 
-        public double TimeMS {
-            get { return Tick / 44.1; }
-        }
-
-        public Packet(string triggerId, Signal control, Sample sample, long tick) {
+        public Packet(string triggerId, Signal control, Sample sample, long tick, long triggerLife) {
             TriggerID = triggerId;
             Signal = control;
             Sample = sample;
             Tick = tick;
+            TriggerLife = triggerLife;
         }
 
         public static Packet Empty() {
-            return new Packet("", Signal.Active, new Sample(), 0);
+            return new Packet("", Signal.Active, new Sample(), 0, 0);
         }
-
-        public override string ToString() {
-            return String.Format("L: {0}, R: {1}", Sample.L, Sample.R);
-        }
-    }
+   }
 }

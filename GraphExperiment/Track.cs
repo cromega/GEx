@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace GraphExperiment {
     public class NoteInfo {
+        private static string[] Notes = new string[] { "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b" };
+
         public int Machine;
         public string Note;
         public float Length;
@@ -22,7 +24,6 @@ namespace GraphExperiment {
             Length = float.Parse(parts[2]);
         }
 
-        private string[] Notes = new string[] { "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b" };
 
         private double ConvertToFrequency(string note, int Octave) {
             var noteIndex = Array.IndexOf(Notes, note) + Octave * 12;
@@ -31,6 +32,7 @@ namespace GraphExperiment {
     }
 
     public class Track {
+        double Tempo;
         private int Tick;
         private Machine[] Machines;
         private string[] Lines;
@@ -42,6 +44,7 @@ namespace GraphExperiment {
             LoadTrack(trackData);
             Triggers = new List<Trigger>();
             LastLineIndex = -1;
+            Tempo = 2;
         }
 
         public Packet[] Next() {
@@ -52,7 +55,7 @@ namespace GraphExperiment {
                     Where(note => !string.IsNullOrEmpty(note)).
                     Select(note => new NoteInfo(note)).
                     ToList().
-                    ForEach(note => Triggers.Add(new Trigger(Machines[note.Machine], note.Frequency, (int)(4410 / note.Length))));
+                    ForEach(note => Triggers.Add(new Trigger(Machines[note.Machine], note.Frequency, (int)(Tempo * 4410 / note.Length))));
 
                 LastLineIndex++;
             }
@@ -67,7 +70,7 @@ namespace GraphExperiment {
         }
 
         private int LineCounter() {
-            return Tick / 4410;
+            return (int)(Tick / (4410 * Tempo));
         }
 
         public bool HasEnded() {

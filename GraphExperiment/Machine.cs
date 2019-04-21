@@ -25,10 +25,9 @@ namespace GraphExperiment {
 
         public void Setup() {
             foreach (var node in Receivers) { node.Connect(Src); }
-
         }
 
-        internal Packet Process(long tick, Packet packet) {
+        public Packet Process(long tick, Packet packet) {
             Src.Set(packet);
             var packets = Outputs.SelectMany(node => node.Next(tick)).ToArray();
             for (int i = 0; i < packets.Count(); i++) { Muxer.Add(packets[i].Sample); }

@@ -12,6 +12,7 @@ namespace GraphExperiment{
         }
         public bool Dead;
         private int TTL;
+        private long Tick;
 
         public Trigger(Machine machine, double frequency, int ttl) {
             Id = Guid.NewGuid().ToString();
@@ -19,12 +20,13 @@ namespace GraphExperiment{
             Frequency = frequency;
             TTL = ttl;
             Dead = false;
+            Tick = 0;
         }
 
         public Packet Next(long tick) {
             var packet = Machine.Process(
                 tick,
-                new Packet(Id, IsActive ? Signal.Active : Signal.End, new Sample(Frequency), tick));
+                new Packet(Id, IsActive ? Signal.Active : Signal.End, new Sample(Frequency), tick, Tick++));
             Dead = packet.Signal == Signal.End;
             TTL--;
             return packet;

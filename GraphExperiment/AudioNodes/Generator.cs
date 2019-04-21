@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace GraphExperiment {
     public class Generator : AudioNode {
-        public double Frequency;
         public SignalType SignalType;
 
         public Generator() : base() { }
@@ -22,9 +21,9 @@ namespace GraphExperiment {
         }
 
         public static Generator Parse(string data) {
-            var g = new Generator();
-            g.SignalType = (SignalType)int.Parse(data);
-            return g;
+            return new Generator() {
+                SignalType = (SignalType)int.Parse(data)
+            };
         }
     }
 }

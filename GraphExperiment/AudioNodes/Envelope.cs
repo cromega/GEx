@@ -9,7 +9,7 @@ namespace GraphExperiment {
             double value = 0;
             switch (packet.Signal) {
                 case Signal.Active:
-                    value = GetValue(packet.TimeMS);
+                    value = GetValue(packet.TriggerLife / 44.1);
                     break;
                 case Signal.End:
                     var tick = Get<int>("ReleasedFor", 0);
@@ -45,13 +45,12 @@ namespace GraphExperiment {
 
         public static Envelope Parse(string data) {
             var parts = data.Split(',');
-            var e = new Envelope();
-            e.A = int.Parse(parts[0]);
-            e.D = int.Parse(parts[1]);
-            e.S = float.Parse(parts[2]);
-            e.R = int.Parse(parts[3]);
-
-            return e;
+            return new Envelope {
+                A = int.Parse(parts[0]),
+                D = int.Parse(parts[1]),
+                S = float.Parse(parts[2]),
+                R = int.Parse(parts[3])
+            };
         }
     }
 }

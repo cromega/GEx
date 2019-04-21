@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GraphExperiment;
 using System.Text;
 using System.Threading;
+using Utils;
 
 namespace playsong {
     class Program {
@@ -14,6 +15,7 @@ namespace playsong {
             var song = File.ReadAllLines("song.txt");
             var track = new Track(song);
             var muxer = new Muxer();
+            var wav = new Utils.WavWriter("output.wav");
 
             for (; ;) {
                 var buffer = new short[frames * 2];
@@ -29,8 +31,10 @@ namespace playsong {
                 }
 
                 audio.Write(buffer);
+                wav.Write(buffer);
                 if (track.HasEnded()) { break; }
             }
+            wav.Close();
             Thread.Sleep(200);
         }
     }

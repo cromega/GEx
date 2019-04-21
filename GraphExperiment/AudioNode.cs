@@ -64,8 +64,8 @@ namespace GraphExperiment {
         }
 
         protected T Get<T>(string key, object defaultValue) {
-            var savedValue = State[key] ?? defaultValue;
-            return (T)savedValue;
+            var value = State[key] ?? defaultValue;
+            return (T)value;
         }
 
         protected void Save(string key, object value) {
