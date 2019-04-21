@@ -20,15 +20,15 @@ namespace GraphExperiment {
                 }
             }
 
-            double mixed = 0d;
+            var sample = new Sample(0);
             for (int i = 0; i < oscillators.Length; i++) {
                 var freq = packet.Sample.L * Math.Pow(2, GetSeparation() * (Math.Ceiling(oscillators.Length / 2d) - oscillators.Length + i));
 
                 oscillators[i].SetFrequency(freq);
-                mixed += oscillators[i].Next(SignalType) * 0.2 / oscillators.Length * short.MaxValue;
+                sample += oscillators[i].Next(SignalType) / OscillatorsCount;
             }
 
-            packet.Sample = new Sample(mixed);
+            packet.Sample = sample;
             Save("Oscillators", oscillators);
             return packet;
         }
@@ -39,11 +39,10 @@ namespace GraphExperiment {
 
         public static Hydra Parse(string data) {
             var parts = data.Split(',');
-            var h = new Hydra();
-            h.SignalType = (SignalType)int.Parse(parts[0]);
-            h.Cents = int.Parse(parts[1]);
-
-            return h;
+            return new Hydra {
+                SignalType = (SignalType)int.Parse(parts[0]),
+                Cents = int.Parse(parts[1])
+            };
         }
     }
 }

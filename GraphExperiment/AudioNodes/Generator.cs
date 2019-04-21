@@ -15,7 +15,7 @@ namespace GraphExperiment {
             var osc = Get<Oscillator>("Oscillator") ?? new Oscillator();
 
             osc.SetFrequency(packet.Sample.L);
-            packet.Sample = new Sample(osc.Next(SignalType) * 0.2 * short.MaxValue);
+            packet.Sample = new Sample(osc.Next(SignalType));
             Save("Oscillator", osc);
             return packet;
         }

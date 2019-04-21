@@ -17,7 +17,7 @@ namespace GraphExperiment {
         public Machine ParseMachine(string data) {
             var m = new Machine();
 
-            var parts = data.Replace(" ", "").Split(';');
+            var parts = data.Replace(" ", "").Split('#').First().Split(';');
             var receivers = parts[0].Substring(1).Split(',');
 
             var nodes = new Dictionary<string, NodeInfo>();
