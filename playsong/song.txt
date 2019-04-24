@@ -1,6 +1,6 @@
 >0; 0Envelope:5,100,0,100>1; 1Generator:0>2; 2Gain:0.2>3; 3Envelope:5,5,1.0,5>- #k
 >0; 0Generator:2>1; 1Gain:0.05>2; 2Envelope:5,5,0.2,5>- #hh
->0; 0Hydra:3,5>1; 1Gain:0.1>2; 2Envelope:500,0,1.0,100>- #lead
+>0; 0Hydra:3,5>1; 1Gain:0.1>2; 2Envelope:1000,0,1.0,100>- #lead
 0,c3,1;1,c2,8;2,e4,0.2
 0,c3,1
 1,c2,8
