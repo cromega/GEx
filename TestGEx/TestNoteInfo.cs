@@ -1,4 +1,4 @@
-﻿using GraphExperiment;
+﻿using GEx;
 using Xunit;
 using FluentAssertions;
 

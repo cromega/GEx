@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GraphExperiment;
+using GEx;
 using TestGEx.Support;
 
 using Xunit;

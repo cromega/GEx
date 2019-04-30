@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphExperiment {
+namespace GEx {
     public class Sample {
         public double L;
         public double R;

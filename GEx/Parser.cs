@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphExperiment {
+namespace GEx {
     public struct NodeInfo {
         public AudioNode Node;
         public string Id;
@@ -44,7 +44,7 @@ namespace GraphExperiment {
             var parts = node.Split(':', '>');
             var id = node[0];
             var className = parts[0].Substring(1);
-            var fullClassName = $"GraphExperiment.{className},GraphExperiment";
+            var fullClassName = $"GEx.{className},GEx";
             var nodeType = Type.GetType(fullClassName, true);
 
             var ni = new NodeInfo {

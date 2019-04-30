@@ -1,4 +1,4 @@
-namespace GraphExperiment {
+namespace GEx {
     public class Envelope : AudioNode {
         public int A ;
         public int D;

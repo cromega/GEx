@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphExperiment{
+namespace GEx{
     public class Trigger {
         private Machine Machine;
         private double Frequency;

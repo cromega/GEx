@@ -1,5 +1,5 @@
 ﻿using System;
-using GraphExperiment;
+using GEx;
 
 using Xunit;
 using FluentAssertions;
@@ -13,8 +13,8 @@ namespace TestGEx {
             muxer.Add(new Sample(4));
 
             var muxed = muxer.Mux();
-            muxed.L.Should().Be(3);
-            muxed.R.Should().Be(3);
+            muxed.L.Should().Be(6);
+            muxed.R.Should().Be(6);
         }
 
         [Fact]
@@ -26,8 +26,8 @@ namespace TestGEx {
             muxer.Add(new Sample(4));
 
             var muxed = muxer.Mux();
-            muxed.L.Should().Be(3);
-            muxed.R.Should().Be(3);
+            muxed.L.Should().Be(6);
+            muxed.R.Should().Be(6);
         }
     }
 }

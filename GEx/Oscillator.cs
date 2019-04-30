@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace GraphExperiment {
+namespace GEx {
     public enum SignalType : int {
         Sine,
         Square,

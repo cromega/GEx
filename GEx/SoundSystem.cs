@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 
-namespace GraphExperiment {
+namespace GEx {
     public class SoundSystem {
         #region WinMM native stuff
         private delegate void WaveOutProcType(IntPtr handle, uint message, IntPtr instance, IntPtr param1, IntPtr param2);

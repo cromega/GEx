@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Threading;
 
-namespace GraphExperiment {
+namespace GEx {
     public interface INode {
         Packet[] Next(long tick);
     }

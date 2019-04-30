@@ -4,7 +4,7 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "playsong", "playsong\playsong.csproj", "{15314CF6-A6F3-481B-9E1A-4C674474A3E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphExperiment", "GraphExperiment\GraphExperiment.csproj", "{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GEx", "GEx\GEx.csproj", "{BA5519F3-A053-41DA-80B9-AAEB0149DAFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GexUI", "GexUI\GexUI.csproj", "{E4BB398C-7FB9-4BF3-84AB-E069281EA5D4}"
 EndProject

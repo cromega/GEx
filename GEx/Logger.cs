@@ -1,6 +1,6 @@
 using System;
 
-namespace GraphExperiment {
+namespace GEx {
 #if DEBUG
     public static class Logger {
         private static int StartTime;

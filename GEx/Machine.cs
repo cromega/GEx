@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphExperiment {
+namespace GEx {
     public class Machine {
         class Source : INode {
             private volatile Packet Packet;

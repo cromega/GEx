@@ -1,21 +1,21 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using GraphExperiment;
+using GEx;
 using System.Text;
 using System.Threading;
-using Utils;
+//using Utils;
 
 namespace playsong {
     class Program {
         static void Main(string[] args) {
-            GraphExperiment.Logger.On();
+            Logger.On();
             var frames = 4410;
-            var audio = new GraphExperiment.SoundSystem(frames);
+            var audio = new SoundSystem(frames);
             var song = File.ReadAllLines("song.txt");
             var track = new Track(song);
             var muxer = new Muxer();
-            var wav = new Utils.WavWriter("output.wav");
+            //var wav = new Utils.WavWriter("output.wav");
 
             for (; ;) {
                 var buffer = new short[frames * 2];
@@ -31,10 +31,10 @@ namespace playsong {
                 }
 
                 audio.Write(buffer);
-                wav.Write(buffer);
+                //wav.Write(buffer);
                 if (track.HasEnded()) { break; }
             }
-            wav.Close();
+            //wav.Close();
             Thread.Sleep(200);
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphExperiment {
+namespace GEx {
     public class Hydra : AudioNode {
         public SignalType SignalType;
         public int Cents;

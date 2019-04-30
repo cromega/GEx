@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 using FluentAssertions;
-using GraphExperiment;
+using GEx;
 
 namespace TestGEx {
     public class TestSample {

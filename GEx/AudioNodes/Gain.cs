@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GraphExperiment{
+namespace GEx{
     class Gain : AudioNode {
         public double Level;
         protected override Packet Update(Packet packet) {

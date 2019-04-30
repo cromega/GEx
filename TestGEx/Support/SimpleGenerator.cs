@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GraphExperiment;
+using GEx;
 
 namespace TestGEx.Support {
     class SimpleGenerator : AudioNode {
@@ -19,7 +19,7 @@ namespace TestGEx.Support {
 
         protected override Packet[] Fetch(long tick) {
             var output = SampleSets.
-                Select(sample => new Packet(sample.Item1, Signal.Active, new Sample(sample.Item2), tick)).
+                Select(sample => new Packet(sample.Item1, Signal.Active, new Sample(sample.Item2), tick, tick)).
                 ToArray();
             SampleSets.Clear();
 

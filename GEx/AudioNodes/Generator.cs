@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphExperiment {
+namespace GEx {
     public class Generator : AudioNode {
         public SignalType SignalType;
 

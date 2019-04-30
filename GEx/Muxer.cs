@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GraphExperiment {
+namespace GEx {
     public class Muxer {
         private List<Sample> Samples;
 

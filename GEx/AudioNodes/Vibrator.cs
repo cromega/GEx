@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GraphExperiment;
 
-namespace GraphExperiment {
+namespace GEx {
     public class Vibrator : AudioNode {
         public SignalType Signal;
         public double Frequency;
