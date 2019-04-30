@@ -53,17 +53,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chirpesizer\Chirpesizer.csproj">
-      <Project>{c56c3a68-ab8c-4cc6-8e21-709cd63379bc}</Project>
-      <Name>Chirpesizer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GraphExperiment\GraphExperiment.csproj">
       <Project>{ba5519f3-a053-41da-80b9-aaeb0149daff}</Project>
       <Name>GraphExperiment</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
-      <Project>{9de6c80e-2bf9-4042-8518-6997a6986b0e}</Project>
-      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
