@@ -136,7 +136,9 @@ namespace GEx {
                     Marshal.FreeHGlobal(param1);
                     break;
                 case WOM_CLOSE:
+#if DEBUG
                     Logger.Log("Audio device closed.");
+#endif
                     break;
             }
         }
