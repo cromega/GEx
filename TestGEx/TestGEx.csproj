@@ -86,7 +86,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphExperiment\GEx.csproj">
+    <ProjectReference Include="..\GEx\GEx.csproj">
       <Project>{ba5519f3-a053-41da-80b9-aaeb0149daff}</Project>
       <Name>GEx</Name>
     </ProjectReference>
