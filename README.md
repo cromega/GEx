@@ -1,4 +1,4 @@
-# Chirp
+# GEx - experiments in procedural audio generation
 
 ## Projects
 
