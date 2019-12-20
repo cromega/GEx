@@ -47,13 +47,11 @@ namespace GEx {
             var fullClassName = $"GEx.{className},GEx";
             var nodeType = Type.GetType(fullClassName, true);
 
-            var ni = new NodeInfo {
+            return new NodeInfo {
                 Node = (AudioNode)nodeType.GetMethod("Parse").Invoke(null, new object[] { parts[1] }),
                 Id = id.ToString(),
                 Target = parts[2].ToString(),
             };
-
-            return ni;
         }
     }
 }

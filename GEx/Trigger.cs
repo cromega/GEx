@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GEx{
+namespace GEx {
     public class Trigger {
         private Machine Machine;
         private double Frequency;
@@ -10,7 +10,7 @@ namespace GEx{
         public bool IsActive {
             get { return TTL > 0; }
         }
-        public bool Dead;
+        public bool IsDead;
         private int TTL;
         private long Tick;
 
@@ -19,7 +19,7 @@ namespace GEx{
             Machine = machine;
             Frequency = frequency;
             TTL = ttl;
-            Dead = false;
+            IsDead = false;
             Tick = 0;
         }
 
@@ -27,7 +27,7 @@ namespace GEx{
             var packet = Machine.Process(
                 tick,
                 new Packet(Id, IsActive ? Signal.Active : Signal.End, new Sample(Frequency), tick, Tick++));
-            Dead = packet.Signal == Signal.End;
+            IsDead = packet.Signal == Signal.End;
             TTL--;
             return packet;
         }

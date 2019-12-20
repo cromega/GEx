@@ -11,6 +11,8 @@ namespace GEx {
     }
 
     public class Oscillator {
+        const int LOOKUP_TABLE_LENGTH = 1000;
+
         private double Increment;
         private Random Rnd;
         private double Phase;
@@ -57,7 +59,6 @@ namespace GEx {
             return TriangleTable[(long)Math.Round(Phase) % TriangleTable.Length];
         }
 
-        public const int LOOKUP_TABLE_LENGTH = 1000;
         private static double[] SineTable = GenerateSineTable();
         private static double[] GenerateSineTable() {
             var table = new double[LOOKUP_TABLE_LENGTH];

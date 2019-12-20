@@ -10,27 +10,17 @@ namespace GEx {
     }
 
     public abstract class AudioNode : INode {
-        struct FetchData {
-            public long Tick;
-            public Packet[] Data;
-        }
-
         public List<INode> Previous;
         private Dictionary<string, Hashtable> Memory;
         private Hashtable State;
-        private FetchData PreviousFetch;
 
         public AudioNode() {
             Memory = new Dictionary<string, Hashtable>();
             Previous = new List<INode>();
-            PreviousFetch = new FetchData { Tick = -1 };
         }
 
         public Packet[] Next(long tick) {
-
-            Packet[] packets;
-
-            packets = Fetch(tick);
+            var packets = Fetch(tick);
             for (int i=0; i<packets.Length; i++) {
                 LoadState(packets[i].TriggerID);
                 packets[i] = Update(packets[i]);
@@ -43,8 +33,8 @@ namespace GEx {
         }
 
         protected virtual Packet[] Fetch(long tick) {
-            return Previous.
-                SelectMany(node => node.Next(tick))
+            return Previous
+                .SelectMany(node => node.Next(tick))
                 .ToArray();
         }
 

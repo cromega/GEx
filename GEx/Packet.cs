@@ -23,9 +23,5 @@ namespace GEx {
             Tick = tick;
             TriggerLife = triggerLife;
         }
-
-        public static Packet Empty() {
-            return new Packet("", Signal.Active, new Sample(), 0, 0);
-        }
    }
 }

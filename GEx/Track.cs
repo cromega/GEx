@@ -65,7 +65,7 @@ namespace GEx {
                 packets.Add(trigger.Next(Tick));
             }
             Tick++;
-            Triggers.Where(t => t.Dead).ToList().ForEach(t => Triggers.Remove(t));
+            Triggers.Where(t => t.IsDead).ToList().ForEach(t => Triggers.Remove(t));
             return packets.ToArray();
         }
 
