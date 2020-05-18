@@ -18,15 +18,14 @@ namespace playsong {
             //var wav = new Utils.WavWriter("output.wav");
 
             for (; ;) {
-                var buffer = new short[frames * 2];
+                var buffer = new Sample[frames];
                 for (int i = 0; i < frames; i++) {
                     var packets = track.Next();
                     foreach (var packet in packets) {
                         muxer.Add(packet.Sample);
                     }
                     var sample = muxer.Mux();
-                    buffer[i * 2] = (short)sample.L;
-                    buffer[i * 2 + 1] = (short)sample.R;
+                    buffer[i] = sample;
                     if (track.HasEnded()) { break; }
                 }
 
