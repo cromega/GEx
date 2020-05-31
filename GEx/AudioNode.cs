@@ -11,18 +11,17 @@ namespace GEx {
 
     public abstract class AudioNode : INode {
         public List<INode> Previous;
-        private Dictionary<string, Hashtable> Memory;
-        private Hashtable State;
+        protected StateStorage Memory;
 
         public AudioNode() {
-            Memory = new Dictionary<string, Hashtable>();
+            Memory = new StateStorage();
             Previous = new List<INode>();
         }
 
         public Packet[] Next(long tick) {
             var packets = Fetch(tick);
             for (int i=0; i<packets.Length; i++) {
-                LoadState(packets[i].TriggerID);
+                Memory.SetState(packets[i].TriggerID);
                 packets[i] = Update(packets[i]);
             }
             return packets;
@@ -40,26 +39,6 @@ namespace GEx {
 
         public void Connect(INode previous) {
             Previous.Add(previous);
-        }
-
-        private void LoadState(string id) {
-            if (!Memory.ContainsKey(id)) {
-                Memory[id] = new Hashtable();
-            }
-            State = Memory[id];
-        }
-
-        protected T Get<T>(string key) {
-            return (T)(State[key]);
-        }
-
-        protected T Get<T>(string key, object defaultValue) {
-            var value = State[key] ?? defaultValue;
-            return (T)value;
-        }
-
-        protected void Save(string key, object value) {
-            State[key] = value;
         }
     }
 }

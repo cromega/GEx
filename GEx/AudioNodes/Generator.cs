@@ -12,11 +12,11 @@ namespace GEx {
         public Generator() : base() { }
 
         protected override Packet Update(Packet packet) {
-            var osc = Get<Oscillator>("Oscillator") ?? new Oscillator();
+            var osc = Memory.Get<Oscillator>("Oscillator") ?? new Oscillator();
 
             osc.SetFrequency(packet.Sample.L);
             packet.Sample = new Sample(osc.Next(SignalType));
-            Save("Oscillator", osc);
+            Memory.Set("Oscillator", osc);
             return packet;
         }
 

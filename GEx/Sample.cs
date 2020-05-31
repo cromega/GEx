@@ -16,19 +16,24 @@ namespace GEx {
             R = value;
         }
 
+        public Sample(double l, double r) {
+            L = l;
+            R = r;
+        }
+
         public static Sample operator + (Sample sample, double value) {
-            return new Sample {
-                L = sample.L >= 0 ? sample.L + value : sample.L - value,
-                R = sample.R >= 0 ? sample.R + value : sample.R - value,
-            };
+            return new Sample(
+                sample.L >= 0 ? sample.L + value : sample.L - value,
+                sample.R >= 0 ? sample.R + value : sample.R - value
+            );
         }
 
         public static Sample operator * (Sample sample, double value) {
-            return new Sample { L = sample.L * value, R = sample.R * value };
+            return new Sample(sample.L * value, sample.R * value);
         }
 
         public static Sample operator + (Sample sample, Sample other) {
-            return new Sample { L = sample.L + other.L, R = sample.R + other.R };
+            return new Sample(sample.L + other.L, sample.R + other.R);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace GEx {
         private const int OscillatorsCount = 5;
 
         protected override Packet Update(Packet packet) {
-            var oscillators = Get<Oscillator[]>("Oscillators");
+            var oscillators = Memory.Get<Oscillator[]>("Oscillators");
             if (oscillators == null) {
                 oscillators = new Oscillator[OscillatorsCount];
                 for (int i=0; i<oscillators.Length; i++) {
@@ -29,7 +29,7 @@ namespace GEx {
             }
 
             packet.Sample = sample;
-            Save("Oscillators", oscillators);
+            Memory.Set("Oscillators", oscillators);
             return packet;
         }
 

@@ -6,14 +6,14 @@ namespace GEx{
         public double Decay;
 
         protected override Packet Update(Packet packet) {
-            var DelayBuffer = Get<Sample[]>("DelayBuffer") ?? new Sample[Delay];
+            var DelayBuffer = Memory.Get<Sample[]>("DelayBuffer") ?? new Sample[Delay];
             if (DelayBuffer.Length != Delay) { DelayBuffer = new Sample[Delay]; }
-            var offset = Get<int>("Offset", 0);
+            var offset = Memory.Get<int>("Offset", 0);
 
             if (offset < Delay) {
                 DelayBuffer[offset] = packet.Sample;
-                Save("Offset", ++offset);
-                Save("DelayBuffer", DelayBuffer);
+                Memory.Set("Offset", ++offset);
+                Memory.Set("DelayBuffer", DelayBuffer);
                 return packet;
             }
 
@@ -22,7 +22,7 @@ namespace GEx{
             Array.Copy(DelayBuffer, 1, DelayBuffer, 0, DelayBuffer.Length - 1);
             DelayBuffer[DelayBuffer.Length - 1] = packet.Sample;
 
-            Save("DelayBuffer", DelayBuffer);
+            Memory.Set("DelayBuffer", DelayBuffer);
             return packet;
         }
     }

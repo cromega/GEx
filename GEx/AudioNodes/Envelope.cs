@@ -12,11 +12,11 @@ namespace GEx {
                     value = GetValue(packet.TriggerLife / 44.1);
                     break;
                 case Signal.End:
-                    var tick = Get<int>("ReleasedFor", 0);
+                    var tick = Memory.Get<int>("ReleasedFor", 0);
                     var timeMS = tick / 44.1;
                     value = GetReleasedValue(timeMS);
                     packet.Signal = timeMS < R ? Signal.Active : Signal.End;
-                    Save("ReleasedFor", ++tick);
+                    Memory.Set("ReleasedFor", ++tick);
                     break;
             }
             packet.Sample *= value;

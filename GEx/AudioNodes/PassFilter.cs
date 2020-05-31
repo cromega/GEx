@@ -24,8 +24,8 @@ namespace GEx {
             var RC = 1.0 / Cutoff * 2 * Math.PI;
             var alpha = DT / (RC + DT);
 
-            double previousFiltered = Get<double>("PreviousFiltered", 0d);
-            double previousRaw = Get<double>("PreviousRaw", 0d);
+            double previousFiltered = Memory.Get<double>("PreviousFiltered", 0d);
+            double previousRaw = Memory.Get<double>("PreviousRaw", 0d);
 
             double sample = 0;
 
@@ -38,8 +38,8 @@ namespace GEx {
                     break;
 
             }
-            Save("PreviousFiltered", sample);
-            Save("PreviousRaw", packet.Sample.L);
+            Memory.Set("PreviousFiltered", sample);
+            Memory.Set("PreviousRaw", packet.Sample.L);
 
             packet.Sample = new Sample(sample);
             return packet;
